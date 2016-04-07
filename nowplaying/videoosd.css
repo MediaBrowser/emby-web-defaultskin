@@ -48,6 +48,7 @@
 
 .osdTimeText {
     margin-left: 1em;
+	font-size: 150%;
 }
 
 .mouseIdle .videoOsdBottom .volumeButtons {
@@ -82,6 +83,18 @@
 .osdTitle {
     margin: 0;
     padding-left: .4em;
+}
+
+.osdPlaylistPosition {
+    margin: 0;
+    padding-left: .4em;
+	color:#9e9f9f;	
+	font-size: 150%;
+}
+
+.osdEndTimeText {
+	font-size: 85%;
+	color:#9e9f9f;	
 }
 
 .osdMediaInfo {

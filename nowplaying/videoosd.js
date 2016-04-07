@@ -10,6 +10,8 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         var nowPlayingPositionText = view.querySelector('.osdPositionText');
         var nowPlayingDurationText = view.querySelector('.osdDurationText');
+        var endTimeText = view.querySelector('.osdEndTimeText');
+        var playlistPositionText = view.querySelector('.osdPlaylistPosition');
 
         function getHeaderElement() {
             return document.querySelector('.skinHeader');
@@ -75,11 +77,30 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 view.querySelector('.btnAudio').classList.add('hide');
 
                 view.querySelector('.osdTitle').innerHTML = '';
+                playlistPositionText.innerHTML = '';
                 view.querySelector('.osdMediaInfo').innerHTML = '';
             }
 
             updatePlaylist();
         }
+
+        function getEndTime(remainingTicks) {
+            var itemMinutes = remainingTicks / 600000000;
+            itemMinutes = itemMinutes || 1;
+
+            var date = new Date();
+            date.setMinutes(date.getMinutes() + itemMinutes);
+
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+
+            return hours + ':' + minutes + ' ' + ampm;
+        }
+
 
         function setPoster(item) {
 
@@ -246,8 +267,20 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                         playbackManager.nextChapter();
                     }
                     break;
-                case 'up':
-                case 'down':
+                //case 'up':
+                //    {
+                //        playbackManager.nextTrack();
+                //        updatePlaylist();
+                //        break;
+                //    }
+                //case 'down':
+                //    {
+                //        playbackManager.previousTrack();
+                //        updatePlaylist();
+                //        break;
+                //    }
+                case 'volumedown':
+                case 'volumeup':
                 case 'select':
                 case 'menu':
                 case 'info':
@@ -256,6 +289,8 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 case 'pause':
                 case 'fastforward':
                 case 'rewind':
+                case 'fastforwardBig':
+                case 'rewindBig':
                     showOsd();
                     break;
                 default:
@@ -403,6 +438,8 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             } else {
                 view.querySelector('.btnNextTrack').disabled = false;
             }
+
+            playlistPositionText.innerHTML = playbackManager.getPlaylistPositionText();
         }
 
         function updateTime(player) {
@@ -427,6 +464,9 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
                 updateTimeText(nowPlayingPositionText, playState.PositionTicks);
                 updateTimeText(nowPlayingDurationText, nowPlayingItem.RunTimeTicks, true);
+
+                var endTimeTextValue = getEndTime((nowPlayingItem.RunTimeTicks - playState.PositionTicks));
+                endTimeText.innerHTML = '&nbsp;&nbsp;Ends: ' + endTimeTextValue;
 
                 nowPlayingPositionSlider.disabled = !playState.CanSeek;
             }
@@ -613,6 +653,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         view.querySelector('.btnPreviousTrack').addEventListener('click', function () {
 
             playbackManager.previousTrack();
+            updatePlaylist();
         });
 
         view.querySelector('.btnPause').addEventListener('click', function () {
@@ -623,6 +664,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         view.querySelector('.btnNextTrack').addEventListener('click', function () {
 
             playbackManager.nextTrack();
+            updatePlaylist();
         });
 
         view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);

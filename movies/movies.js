@@ -39,31 +39,21 @@ define(['loading', 'alphapicker', './../components/horizontallist', './../compon
             {
                 Name: Globalize.translate('Movies'),
                 Id: "movies"
-            },
-            {
-                Name: Globalize.translate('Unwatched'),
-                Id: "unwatched"
-            },
-            {
-                Name: Globalize.translate('Collections'),
-                Id: "collections"
-            },
-            {
-                Name: Globalize.translate('Genres'),
-                Id: "genres"
-            },
-            {
-                Name: Globalize.translate('Years'),
-                Id: "years"
-            },
-            {
-                Name: Globalize.translate('TopRated'),
-                Id: "toprated"
-            },
-            {
-                Name: Globalize.translate('Favorites'),
-                Id: "favorites"
-            }];
+            }
+            //,
+            //{
+            //    Name: Globalize.translate('Upcoming'),
+            //    Id: "upcoming"
+            //},
+            //{
+            //    Name: Globalize.translate('Genres'),
+            //    Id: "genres"
+            //},
+            //{
+            //    Name: Globalize.translate('Favorites'),
+            //    Id: "favorites"
+            //}
+            ];
 
             var tabbedPageInstance = new tabbedPage(view, {
                 alphaPicker: self.alphaPicker
@@ -221,9 +211,9 @@ define(['loading', 'alphapicker', './../components/horizontallist', './../compon
                         StartIndex: startIndex,
                         Limit: limit,
                         ParentId: pageParams.parentid,
-                        IncludeItemTypes: "Movie",
-                        Recursive: true,
-                        SortBy: "SortName",
+                        IncludeItemTypes: "Folder,Movie",
+                        Recursive: false,
+                        SortBy: "IsFolder,SortName",
                         Fields: "SortName"
                     });
                 },

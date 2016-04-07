@@ -1,7 +1,7 @@
 define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', './../components/listview', 'mediaInfo', 'itemShortcuts', 'focusManager', './../skinsettings', './../cards/cardbuilder', 'indicators'],
     function (loading, skinInfo, datetime, playbackManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, itemShortcuts, focusManager, skinSettings, cardBuilder, indicators) {
 
-		function focusMainSection() {
+        function focusMainSection() {
 
             focusManager.autoFocus(this);
         }
@@ -1040,16 +1040,28 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                     });
 
                     if (!isRestored) {
+                    if (item.Type == "Series") {
+                        renderName(view, item);
+                        //renderImage(view, item);
+                        renderChildren(view, item);
+                        renderDetails(view, item);
+                        //renderMediaInfoIcons(view, item);
+                        //renderPeople(view, item);
+                        //renderScenes(view, item);
+                        //renderSimilar(view, item);
+                        createVerticalScroller(view, self);
+                    }
+                    else {
                         renderName(view, item);
                         renderImage(view, item);
                         renderChildren(view, item);
                         renderDetails(view, item);
                         renderMediaInfoIcons(view, item);
-                        renderPeople(view, item);
-                        renderScenes(view, item);
-                        renderExtras(view, item);
-                        renderSimilar(view, item);
+                        //renderPeople(view, item);
+                        //renderScenes(view, item);
+                        //renderSimilar(view, item);
                         createVerticalScroller(view, self);
+                    }
 
                         var mainSection = view.querySelector('.mainSection');
                         var itemScrollFrame = view.querySelector('.itemScrollFrame');
@@ -1079,7 +1091,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                     }
 
                     // Always refresh this
-                    renderNextUp(view, item);
+                    //renderNextUp(view, item);
 
                     if (playbackManager.canQueue(item)) {
                         view.querySelector('.itemPageFixedLeft .btnQueue').classList.remove('hide');

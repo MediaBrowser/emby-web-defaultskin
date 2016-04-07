@@ -75,6 +75,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphapicker', './../component
         return Emby.Models.children(item, {
             StartIndex: startIndex,
             Limit: limit,
+            SortBy: "IsFolder,SortName",
             Fields: 'SortName'
         });
     }

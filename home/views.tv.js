@@ -129,9 +129,9 @@ define(['./spotlight', 'focusManager', './../cards/cardbuilder', './../skininfo'
                 maxWidth: 600
             };
 
-            if (items.length > 0) {
-                element.querySelector('.tvFavoritesCard .cardImage').style.backgroundImage = "url('" + Emby.Models.backdropImageUrl(items[0], imgOptions) + "')";
-            }
+            //if (items.length > 0) {
+            //    element.querySelector('.tvFavoritesCard .cardImage').style.backgroundImage = "url('" + Emby.Models.backdropImageUrl(items[0], imgOptions) + "')";
+            //}
 
             if (items.length > 1) {
                 element.querySelector('.allSeriesCard .cardImage').style.backgroundImage = "url('" + Emby.Models.backdropImageUrl(items[1], imgOptions) + "')";
@@ -150,8 +150,8 @@ define(['./spotlight', 'focusManager', './../cards/cardbuilder', './../skininfo'
         self.loadData = function () {
 
             return Promise.all([
-            loadResume(element, parentId),
-            loadNextUp(element, parentId),
+            //loadResume(element, parentId),
+            //loadNextUp(element, parentId),
             loadLatest(element, parentId)
             ]);
         };
@@ -167,9 +167,9 @@ define(['./spotlight', 'focusManager', './../cards/cardbuilder', './../skininfo'
             Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=upcoming&parentid=' + parentId));
         });
 
-        element.querySelector('.tvFavoritesCard').addEventListener('click', function () {
-            Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=favorites&parentid=' + parentId));
-        });
+        //element.querySelector('.tvFavoritesCard').addEventListener('click', function () {
+        //    Emby.Page.show(Emby.PluginManager.mapRoute(skinInfo.id, 'tv/tv.html?tab=favorites&parentid=' + parentId));
+        //});
 
         self.destroy = function () {
 
@@ -177,9 +177,10 @@ define(['./spotlight', 'focusManager', './../cards/cardbuilder', './../skininfo'
 
         // Only use the flip animations if native support for WebAnimations is present
         if (browser.animate) {
-            bindFlipEvents(element.querySelector('.nextUpSection'));
-            bindFlipEvents(element.querySelector('.resumeSection'));
+            //bindFlipEvents(element.querySelector('.nextUpSection'));
+            //bindFlipEvents(element.querySelector('.resumeSection'));
         }
+
     }
 
     function bindFlipEvents(element) {

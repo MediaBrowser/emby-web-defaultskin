@@ -31,9 +31,9 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager'], fun
 
         var self = this;
 
-        self.name = 'Default Skin';
+        self.name = 'Kid Friendly Default Skin';
         self.type = 'skin';
-        self.id = 'defaultskin';
+        self.id = 'kidfriendlydefaultskin';
 
         var dependencyPrefix = self.id;
         var settingsObjectName = dependencyPrefix + '/skinsettings';
@@ -170,16 +170,16 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager'], fun
                 controller: self.id + '/tv/tv'
             });
 
-            routes.push({
-                path: 'search/search.html',
-                transition: 'slide',
-                controller: self.id + '/search/search',
-                dependencies: [
-                    'css!' + pluginManager.mapPath(self, 'search/search.css'),
-					'paper-input',
-                    icons
-                ]
-            });
+            //routes.push({
+            //    path: 'search/search.html',
+            //    transition: 'slide',
+            //    controller: self.id + '/search/search',
+            //    dependencies: [
+            //        'css!' + pluginManager.mapPath(self, 'search/search.css'),
+			//		'paper-input',
+            //        icons
+            //    ]
+            //});
 
             routes.push({
                 path: 'nowplaying/nowplaying.html',
@@ -329,17 +329,17 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager'], fun
 
         function bindEvents() {
 
-            document.querySelector('.headerSearchButton').addEventListener('click', function () {
-                self.search();
-            });
+            //document.querySelector('.headerSearchButton').addEventListener('click', function () {
+            //    self.search();
+            //});
 
             document.querySelector('.headerAudioPlayerButton').addEventListener('click', function () {
                 self.showNowPlaying();
             });
 
-            document.querySelector('.headerUserButton').addEventListener('click', function () {
-                self.showUserMenu();
-            });
+            //document.querySelector('.headerUserButton').addEventListener('click', function () {
+            //    self.showUserMenu();
+            //});
 
             Events.on(connectionManager, 'localusersignedin', onLocalUserSignedIn);
             Events.on(connectionManager, 'localusersignedout', onLocalUserSignedOut);
@@ -379,28 +379,29 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager'], fun
 
             document.querySelector('.headerLogo').classList.add('hide');
 
-            document.querySelector('.headerSearchButton').classList.remove('hide');
+            //document.querySelector('.headerSearchButton').classList.remove('hide');
 
-            var headerUserButton = document.querySelector('.headerUserButton');
+            //var headerUserButton = document.querySelector('.headerUserButton');
 
-            if (user.PrimaryImageTag) {
+            //if (user.PrimaryImageTag) {
 
-                headerUserButton.icon = null;
-                headerUserButton.src = Emby.Models.userImageUrl(user, {
-                    height: 44
-                });
+            //    headerUserButton.icon = null;
+            //    headerUserButton.src = Emby.Models.userImageUrl(user, {
+            //        height: 44
+            //    });
 
-            } else {
-                headerUserButton.src = null;
-                headerUserButton.icon = 'person';
-            }
+            //} else {
+            //    headerUserButton.src = null;
+            //    headerUserButton.icon = 'person';
+            //}
 
-            document.querySelector('.headerUserButton').classList.remove('hide');
+            //document.querySelector('.headerUserButton').classList.remove('hide');
 
             require([settingsObjectName], function (skinSettings) {
 
                 skinSettings.apply();
             });
+
         }
 
         function onLocalUserSignedOut(e) {
@@ -413,8 +414,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager'], fun
             // Put the logo back in the page title
             document.querySelector('.headerLogo').classList.remove('hide');
 
-            document.querySelector('.headerSearchButton').classList.add('hide');
-            document.querySelector('.headerUserButton').classList.add('hide');
+            //document.querySelector('.headerSearchButton').classList.add('hide');
+            //document.querySelector('.headerUserButton').classList.add('hide');
         }
 
         function onViewShow(e) {

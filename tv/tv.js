@@ -1,6 +1,6 @@
 define(['loading', './../skininfo', 'alphapicker', './../components/horizontallist', './../cards/cardbuilder', './../components/focushandler', './../components/tabbedpage', 'backdrop', 'focusManager'], function (loading, skinInfo, alphaPicker, horizontalList, cardBuilder, focusHandler, tabbedPage, backdrop, focusManager) {
 
-	return function(view, params) {
+    return function (view, params) {
 
         var self = this;
 
@@ -42,19 +42,21 @@ define(['loading', './../skininfo', 'alphapicker', './../components/horizontalli
             {
                 Name: Globalize.translate('Series'),
                 Id: "series"
-            },
-            {
-                Name: Globalize.translate('Upcoming'),
-                Id: "upcoming"
-            },
-            {
-                Name: Globalize.translate('Genres'),
-                Id: "genres"
-            },
-            {
-                Name: Globalize.translate('Favorites'),
-                Id: "favorites"
-            }];
+            }
+            //,
+            //{
+            //    Name: Globalize.translate('Upcoming'),
+            //    Id: "upcoming"
+            //},
+            //{
+            //    Name: Globalize.translate('Genres'),
+            //    Id: "genres"
+            //},
+            //{
+            //    Name: Globalize.translate('Favorites'),
+            //    Id: "favorites"
+            //}
+            ];
 
             var tabbedPageInstance = new tabbedPage(view, {
                 alphaPicker: self.alphaPicker
