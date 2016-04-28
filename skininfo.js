@@ -2,6 +2,6 @@ define([''], function () {
 
     return {
         id: 'defaultskin',
-        name: 'Default Skin'
+        name: 'Denny Skin'
     };
 });
