@@ -1,10 +1,10 @@
 {
-    "name": "emby.defaultskin",
-    "displayName": "Default Skin",
-    "version": "1.0.0",
-    "description": "The default Emby skin.",
+    "name": "emby.defaultskin2",
+    "displayName": "Denny Skin",
+    "version": "2.0.0",
+    "description": "The denny Emby skin.",
     "plugin": "plugin.js",
-    "homepage": "https://github.com/MediaBrowser/emby-web-defaultskin",
+    "homepage": "https://github.com/denz2/emby-web-defaultskin-denz",
     "thumb": "",
     "backdrop": ""
 }
