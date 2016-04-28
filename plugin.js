@@ -18,7 +18,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
         self.name = 'Default Skin';
         self.type = 'skin';
-        self.id = 'defaultskin';
+        self.id = 'defaultskin2';
 
         var dependencyPrefix = self.id;
         var settingsObjectName = dependencyPrefix + '/skinsettings';
