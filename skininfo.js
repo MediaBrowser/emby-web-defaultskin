@@ -1,7 +1,7 @@
 define([''], function () {
 
     return {
-        id: 'defaultskin',
+        id: 'defaultskin2',
         name: 'Denny Skin'
     };
 });
