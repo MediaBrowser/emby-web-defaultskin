@@ -19,7 +19,7 @@ This file is used to display information about your add-on in places such as the
 
 # Installation
 
-Install into the app by installing a plugin from a url. The url is: https://raw.githubusercontent.com/denz2/emby-web-defaultskin-denz/gh-pages/package.json
+Install into the app by installing a plugin from a url. The url is: http://denz2.github.io/emby-web-defaultskin-denz/package.json
 
 # Local Testing
 
