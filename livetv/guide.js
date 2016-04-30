@@ -45,7 +45,11 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop'], function (t
 
             if (item.IsHD) {
                 html += '<iron-icon icon="hd"></iron-icon>';
-            }
+           }
+if (item.IsMovie) {
+                html += 'Movie';
+           }
+
 
             if (item.SeriesTimerId) {
                 html += '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
