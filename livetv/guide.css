@@ -13,6 +13,7 @@
 }
 
     .guideSelectedInfo h2 {
+              background-color: red;
         margin: 0;
     }
 
@@ -31,7 +32,7 @@
     flex-shrink: 0;
     width: 3vh;
     height: 3vh;
-       background-color: red;
+ 
 }
 
 .guideImage {
