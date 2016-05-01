@@ -17,19 +17,19 @@
 
     .guideSelectedInfo h2 {
            margin: 0;
-            background-color:red;
+           
     }
 
     .guideItemDetails {
         max-width: 90%;
-           background-color:red;
+        
     }
 
 .guideOverview {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-       background-color:red;
+
 }
 
 .guideSelectedInfo iron-icon {
