@@ -47,7 +47,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop'], function (t
                 html += '<iron-icon icon="hd"></iron-icon>';
            }
             if (item.IsMovie) {
-                html += '<iron-icon icon="hd"></iron-icon>';
+                html += '<h2>' "Movie:" + item.Name + '</h2>';
            }
 
 
