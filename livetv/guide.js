@@ -48,6 +48,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop'], function (t
            }
             if (item.IsMovie) {
                  html += '<iron-icon class="timerIcon" icon="fiber-manual-record"></iron-icon>';
+                  html += '<h2>' + "Movie:" + '</h2>';
            }
 
 
