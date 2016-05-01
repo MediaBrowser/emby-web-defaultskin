@@ -41,4 +41,5 @@
     height: 15vh;
     width: 22vh;
     flex-shrink: 0;
+   background-color: red;
 }
