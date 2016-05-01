@@ -1,6 +1,8 @@
 .guidePageContainer {
     bottom: 20%;
     left: 3%;
+      background-color: red;
+      color: blue;
 }
 
 .guideSelectedInfo {
@@ -10,10 +12,12 @@
     max-width: 80%;
     display: flex;
     align-items: center;
+     background-color: red;
+      color: blue;
 }
 
     .guideSelectedInfo h2 {
-              background-color: red;
+            
         margin: 0;
     }
 
