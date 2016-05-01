@@ -31,6 +31,7 @@
     flex-shrink: 0;
     width: 3vh;
     height: 3vh;
+       background-color: red;
 }
 
 .guideImage {
@@ -41,5 +42,5 @@
     height: 15vh;
     width: 22vh;
     flex-shrink: 0;
-   background-color: red;
+
 }
