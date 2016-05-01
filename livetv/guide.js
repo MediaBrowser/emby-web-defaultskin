@@ -41,13 +41,13 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop'], function (t
             var html = '';
 
             html += '<div style="display:flex;align-items:center;">';
-            html += '<h2>'"Movie" + item.Name + '</h2>';
+            html += '<h2>' + item.Name + '</h2>';
 
             if (item.IsHD) {
                 html += '<iron-icon icon="hd"></iron-icon>';
            }
             if (item.IsMovie) {
-                 html += '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record">Movie</iron-icon>';
+                 html += '<iron-icon class="timerIcon" icon="fiber-manual-record"></iron-icon>';
            }
 
 
