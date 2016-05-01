@@ -48,7 +48,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop'], function (t
            }
             if (item.IsMovie) {
             
-                  html += '<iron-icon class="seriesTimerIcon">"Movie"</iron-icon>';
+                  html += '<iron-icon>Movie</iron-icon>';
            }
 
 
