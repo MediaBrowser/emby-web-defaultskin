@@ -55,7 +55,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 enableBackdrops: false
             });
         }
-function test () {
+function test() {
 var carName = "Volvo";
  document.getElementById('.itemName').innerHTML = carName; 
 }
