@@ -72,7 +72,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             }
         }
 
-    function renderName(view, item) {
+    function renderTitle(view, item) {
 
             var itemTitle = view.querySelector('.itemName');
             if (item.Type == 'BoxSet') {
