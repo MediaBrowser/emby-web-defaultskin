@@ -75,7 +75,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
     function renderTitle(view) { 
 
  
-            var itemName = view.querySelector('.itemName'); 
+            var itemName = document.querySelector('.itemName'); 
             itemName.innerHTML = "Test to see does it gets displayed at top overlay ";
          } 
 
