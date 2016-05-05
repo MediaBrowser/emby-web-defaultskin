@@ -57,12 +57,12 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
         }
 function test () {
 var carName = "Volvo";
- document.getElementById("itemName").innerHTML = carName; 
+ document.getElementById('.itemName').innerHTML = carName; 
 }
 
   function renderTitle(view, item) {
 
-            var itemName = view.querySelector('.itemName');
+            var itemName = view.querySelector('.itemTitle');
                 itemName.classList.remove('hide');
                 itemName.innerHTML = itemHelper.getDisplayName(item);
         }
