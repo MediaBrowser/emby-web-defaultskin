@@ -58,7 +58,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
         function renderName(view, item) {
 
-            var itemTitle = view.querySelector('.itemName');
+            var itemTitle = view.querySelector('.itemTitle');
             if (item.Type == 'BoxSet') {
                 itemTitle.classList.add('hide');
             } else {
@@ -77,11 +77,6 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
  
             var itemName = view.querySelector('.itemName'); 
             itemName.innerHTML = "Test to see does it gets displayed at top overlay ";
-            document.querySelector(".itemName").style.backgroundColor = "red";
-            if (item.IsHD) { 
-                 html += '<iron-icon icon="hd"></iron-icon>'; 
-            } 
-
          } 
 
 
