@@ -76,7 +76,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
  
             var itemName = view.querySelector('.itemName'); 
-        itemName.innerHTML = itemHelper.getDisplayName(item);
+        itemName.innerHTML = "Test to see does it gets displayed at top overlay ";
          } 
 
 
