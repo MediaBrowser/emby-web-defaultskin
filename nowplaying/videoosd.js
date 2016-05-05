@@ -43,7 +43,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         function setCurrentItem(item, player) {
 
-            currentItem = item;
+            currentItem = itemName;
             setPoster(item);
 
             scenePicker.innerHTML = '';
