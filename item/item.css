@@ -35,6 +35,7 @@
 .itemName {
     margin: .1em 0 1.3em;
     text-align: center;
+    color: red;
 }
 .albumTitle {
     text-align: left;
