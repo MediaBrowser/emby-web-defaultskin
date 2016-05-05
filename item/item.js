@@ -62,12 +62,9 @@ var carName = "Volvo";
   function renderName(view, item) {
 
             var itemTitle = view.querySelector('.itemName');
-            if (item.Type == 'BoxSet') {
-                itemTitle.classList.add('hide');
-            } else {
                 itemTitle.classList.remove('hide');
                 itemTitle.innerHTML = itemHelper.getDisplayName(item);
-            }
+         
           
         }
 
