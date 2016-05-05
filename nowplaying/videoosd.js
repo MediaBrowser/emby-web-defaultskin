@@ -57,7 +57,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                     runtime: true,
                     subtitles: false,
                     tomatoes: false,
-                    endsAt: false
+                    endsAt: true
                 });
 
                 nowPlayingVolumeSlider.disabled = false;
