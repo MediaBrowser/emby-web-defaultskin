@@ -72,7 +72,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             }
         }
 
-    function renderTitle(document) { 
+    function renderTitle { 
 
  
             var itemName = document.querySelector('.itemName'); 
