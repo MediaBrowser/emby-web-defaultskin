@@ -20,20 +20,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         function getHeaderElement() {
             return document.querySelector('.skinHeader');
         }
-           function renderName(view, item) { 
-           var itemTitle = view.querySelector('.osdHeader'); 
-            if (item.Type == 'BoxSet') { 
-                itemTitle.classList.add('hide'); 
-             } else { 
-                itemTitle.classList.remove('hide'); 
-               itemTitle.innerHTML = itemHelper.getDisplayName(item); 
-             } 
-            if (enableTrackList(item) || item.Type == 'MusicArtist') { 
-                 itemTitle.classList.add('albumTitle'); 
-            } else { 
-                itemTitle.classList.remove('albumTitle'); 
-             } 
-         } 
+  
 
         function getOsdBottom() {
             return view.querySelector('.videoOsdBottom');
