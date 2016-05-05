@@ -86,6 +86,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
                 view.querySelector('.osdTitle').innerHTML = '';
                 view.querySelector('.osdMediaInfo').innerHTML = '';
+                view.querySelector('.osdName').innerHTML = '';
             }
 
             updatePlaylist();
