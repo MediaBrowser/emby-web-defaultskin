@@ -78,7 +78,10 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             var itemName = view.querySelector('.itemName'); 
             itemName.innerHTML = "Test to see does it gets displayed at top overlay ";
             document.querySelector(".itemName").style.backgroundColor = "red";
-          
+            if (item.IsHD) { 
+47                 html += '<iron-icon icon="hd"></iron-icon>'; 
+48            } 
+
          } 
 
 
