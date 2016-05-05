@@ -55,18 +55,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 enableBackdrops: false
             });
         }
-function test() {
-var carName = "Volvo";
- document.getElementById('.itemName').innerHTML = carName; 
-}
-  function renderName(view, item) {
 
-            var itemTitle = view.querySelector('.itemName');
-                itemTitle.classList.remove('hide');
-                itemTitle.innerHTML = itemHelper.getDisplayName(item);
-         
-          
-        }
 
         function renderTitle(view, item) {
 
