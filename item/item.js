@@ -59,7 +59,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
         function renderName(view, item) {
 
             var itemTitle = view.querySelector('.itemTitle');
-            var itemName = view.querySelector('.itemName');
+      
             
             if (item.Type == 'BoxSet') {
                 itemTitle.classList.add('hide');
