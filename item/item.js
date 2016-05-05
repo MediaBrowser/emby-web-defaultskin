@@ -76,7 +76,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
  
             var itemName = view.querySelector('.itemName'); 
-        itemTitle.innerHTML = itemHelper.getDisplayName(item);
+        itemName.innerHTML = itemHelper.getDisplayName(item);
          } 
 
 
