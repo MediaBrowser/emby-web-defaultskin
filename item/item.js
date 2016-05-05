@@ -57,7 +57,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
         }
 
 
-          function renderName(view, item) {
+          function renderTitle(view, item) {
 
             var itemTitle = view.querySelector('.itemTitle');
 
@@ -74,7 +74,23 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 itemTitle.classList.remove('albumTitle');
             }
         }
+ function renderName(view, item) {
 
+            var itemTitle = view.querySelector('.itemName');
+
+            if (item.Type == 'BoxSet') {
+                itemTitle.classList.add('hide');
+            } else {
+                itemTitle.classList.remove('hide');
+                itemTitle.innerHTML = itemHelper.getDisplayName(item);
+            }
+
+            if (enableTrackList(item) || item.Type == 'MusicArtist') {
+                itemTitle.classList.add('albumTitle');
+            } else {
+                itemTitle.classList.remove('albumTitle');
+            }
+        }
   
 
 
@@ -1045,6 +1061,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                     });
 
                     if (!isRestored) {
+                        renderTitle(view, item);
                         renderName(view, item);
                         renderImage(view, item);
                         renderChildren(view, item);
