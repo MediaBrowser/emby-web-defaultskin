@@ -80,7 +80,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 itemTitle.classList.add('hide'); 
             } else { 
                  itemName.classList.remove('hide'); 
-                itemName.innerHTML = itemHelper.getDisplayName(item); 
+                itemName.innerHTML = itemHelper.getDisplayName(item.Name); 
             } 
            if (enableTrackList(item) || item.Type == 'MusicArtist') { 
                 itemName.classList.add('albumTitle'); 
