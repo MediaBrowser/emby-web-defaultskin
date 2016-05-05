@@ -56,6 +56,13 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             });
         }
 
+  function renderTitle(view, item) {
+
+            var itemName = view.querySelector('.itemName');
+                itemName.classList.remove('hide');
+                itemName.innerHTML = itemHelper.getDisplayName(item);
+        }
+
         function renderName(view, item) {
 
             var itemTitle = view.querySelector('.itemTitle');
@@ -72,12 +79,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             }
         }
 
-    function renderTitle(view, item) {
-
-            var itemName = view.querySelector('.itemName');
-                          itemTitle.classList.remove('hide');
-                itemTitle.innerHTML = itemHelper.getDisplayName(item);
-        }
+  
 
 
         function renderImage(view, item) {
