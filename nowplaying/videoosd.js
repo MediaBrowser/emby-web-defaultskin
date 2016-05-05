@@ -43,7 +43,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         function setCurrentItem(item, player) {
 
-            currentItem = itemName;
+            currentItem = item;
             setPoster(item);
 
             scenePicker.innerHTML = '';
@@ -54,10 +54,10 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
                 view.querySelector('.osdTitle').innerHTML = itemHelper.getDisplayName(item);
                 view.querySelector('.osdMediaInfo').innerHTML = mediaInfo.getMediaInfoHtml(item, {
-                    runtime: true,
+                    runtime: false,
                     subtitles: false,
                     tomatoes: false,
-                    endsAt: true
+                    endsAt: false
                 });
 
                 nowPlayingVolumeSlider.disabled = false;
