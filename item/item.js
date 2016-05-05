@@ -76,17 +76,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
  
             var itemName = view.querySelector('.itemName'); 
-            if (item.Type == 'BoxSet') { 
-                itemTitle.classList.add('hide'); 
-            } else { 
-                 itemName.classList.remove('hide'); 
-                itemName.innerHTML = itemHelper.getDisplayName(item); 
-            } 
-           if (enableTrackList(item) || item.Type == 'MusicArtist') { 
-                itemName.classList.add('albumTitle'); 
-            } else { 
-                 itemName.classList.remove('albumTitle'); 
-             } 
+        itemTitle.innerHTML = itemHelper.getDisplayName(item);
          } 
 
 
