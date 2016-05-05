@@ -59,12 +59,20 @@ function test() {
 var carName = "Volvo";
  document.getElementById('.itemName').innerHTML = carName; 
 }
-
   function renderTitle(view, item) {
 
-            var itemName = view.querySelector('.itemTitle');
-                itemName.classList.remove('hide');
-                itemName.innerHTML = itemHelper.getDisplayName(item);
+            var itemTitle = view.querySelector('.itemName');
+            if (item.Type == 'BoxSet') {
+                itemTitle.classList.add('hide');
+            } else {
+                itemTitle.classList.remove('hide');
+                itemTitle.innerHTML = itemHelper.getDisplayName(item);
+            }
+            if (enableTrackList(item) || item.Type == 'MusicArtist') {
+                itemTitle.classList.add('albumTitle');
+            } else {
+                itemTitle.classList.remove('albumTitle');
+            }
         }
 
         function renderName(view, item) {
