@@ -78,7 +78,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
             var itemTitle = view.querySelector('.itemName');
                 itemTitle.classList.remove('hide');
-                itemTitle.innerHTML = "Test";
+                itemTitle.innerHTML = item.Name;
           
         }
   
