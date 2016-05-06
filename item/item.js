@@ -74,13 +74,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 itemTitle.classList.remove('albumTitle');
             }
         }
- function renderName(view, item) {
 
-            var itemTitle = view.querySelector('.itemName');
-                itemTitle.classList.remove('hide');
-                itemTitle.innerHTML = item.Name;
-          
-        }
   
 
 
