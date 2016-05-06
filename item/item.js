@@ -1046,7 +1046,6 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
                     if (!isRestored) {
                         renderTitle(view, item);
-                        renderName(view, item);
                         renderImage(view, item);
                         renderChildren(view, item);
                         renderDetails(view, item);
