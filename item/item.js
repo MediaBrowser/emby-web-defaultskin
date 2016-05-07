@@ -74,6 +74,15 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             }
         }
 
+    function renderTitle(view, item) {
+
+            var itemTitle = view.querySelector('.itemName');
+
+                itemTitle.innerHTML = itemHelper.item.Name);
+           
+        }
+
+
         function renderImage(view, item) {
 
             require(['connectionManager'], function (connectionManager) {
@@ -1046,6 +1055,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
                     if (!isRestored) {
                         renderName(view, item);
+                        renderTitle(view, item);
                         renderImage(view, item);
                         renderChildren(view, item);
                         renderDetails(view, item);
