@@ -54,8 +54,6 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 setTitle(item);
             
                 view.querySelector('.osdTitle').innerHTML = itemHelper.getDisplayName(item);
-                  var itemTitle = view.querySelector('.osdName'); 
-                itemTitle.innerHTML = item.Name; 
                 view.querySelector('.osdMediaInfo').innerHTML = mediaInfo.getMediaInfoHtml(item, {
                     runtime: false,
                     subtitles: false,
@@ -100,8 +98,6 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
  
             var itemTitle = view.querySelector('.osdTitle'); 
- 
- 
                 itemTitle.innerHTML = "NotWorking"; 
             
         } 
