@@ -1,5 +1,5 @@
-define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', './../components/listview', 'mediaInfo', 'itemShortcuts', 'focusManager', './../skinsettings', './../cards/cardbuilder', 'indicators'],
-    function (loading, skinInfo, datetime, playbackManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, itemShortcuts, focusManager, skinSettings, cardBuilder, indicators) {
+define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', './../components/listview', 'mediaInfo', 'itemShortcuts', 'inputManager', 'focusManager', './../skinsettings', './../cards/cardbuilder', 'indicators'],
+    function (loading, skinInfo, datetime, playbackManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, itemShortcuts, inputManager, focusManager, skinSettings, cardBuilder, indicators) {
 
         function focusMainSection() {
 
@@ -56,8 +56,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             });
         }
 
-
-          function renderTitle(view, item) {
+        function renderName(view, item) {
 
             var itemTitle = view.querySelector('.itemTitle');
 
@@ -74,9 +73,6 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 itemTitle.classList.remove('albumTitle');
             }
         }
-
-  
-
 
         function renderImage(view, item) {
 
@@ -160,6 +156,22 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             }
         }
 
+        function getAudioStreamForDisplay(item) {
+
+            if (!item.MediaSources) {
+                return null;
+            }
+
+            var mediaSource = item.MediaSources[0];
+            if (!mediaSource) {
+                return null;
+            }
+
+            return (mediaSource.MediaStreams || []).filter(function (i) {
+                return i.Type == 'Audio' && (i.Index == mediaSource.DefaultAudioStreamIndex || mediaSource.DefaultAudioStreamIndex == null);
+            })[0];
+        }
+
         function renderDynamicMediaIcons(view, item) {
 
             var html = '';
@@ -176,9 +188,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             var videoStream = (mediaSource.MediaStreams || []).filter(function (i) {
                 return i.Type == 'Video';
             })[0] || {};
-            var audioStream = (mediaSource.MediaStreams || []).filter(function (i) {
-                return i.Type == 'Audio';
-            })[0] || {};
+            var audioStream = getAudioStreamForDisplay(item) || {};
 
             if (item.VideoType == 'Dvd') {
                 html += '<img class="mediaInfoIcon mediaInfoImageIcon" src="' + Emby.PluginManager.mapPath(skinInfo.id, 'css/mediaicons/S_Media_DVD_white.png') + '" />';
@@ -201,7 +211,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 html += '<div class="mediaInfoIcon mediaInfoText">' + videoStream.Codec + '</div>';
             }
 
-            var channels = getChannels(item);
+            var channels = audioStream.Channels;
             var channelText;
 
             if (channels == 8) {
@@ -250,7 +260,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
                 if (i.Height) {
 
-                    if (i.Width >= 4000) {
+                    if (i.Width >= 3800) {
                         return '4K';
                     }
                     if (i.Width >= 2500) {
@@ -269,32 +279,6 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 }
                 return null;
             })[0];
-
-        }
-
-        function getChannels(item) {
-
-            if (!item.MediaSources || !item.MediaSources.length) {
-                return 0;
-            }
-
-            return item.MediaSources[0].MediaStreams.filter(function (i) {
-
-                return i.Type == 'Audio';
-
-            }).map(function (i) {
-                return i.Channels;
-            })[0];
-
-        }
-
-        function hasCodec(mediaSource, streamType, codec) {
-
-            return (mediaSource.MediaStreams || []).filter(function (i) {
-
-                return i.Type == streamType && ((i.Codec || '').indexOf(codec) != -1 || (i.Profile || '').indexOf(codec) != -1);
-
-            }).length > 0;
 
         }
 
@@ -356,14 +340,16 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 view.querySelector('.mainSection .itemPageButtons').classList.remove('hide');
             }
 
-            var mediaInfoElem = view.querySelector('.mediaInfo');
-
+            var mediaInfoElem = view.querySelector('.mediaInfoPrimary');
             if (item.Type == 'Season' || item.Type == 'BoxSet') {
                 mediaInfoElem.classList.add('hide');
             } else {
                 mediaInfoElem.classList.remove('hide');
-                mediaInfo.fill(mediaInfoElem, item);
+                mediaInfo.fillPrimaryMediaInfo(mediaInfoElem, item);
             }
+
+            mediaInfoElem = view.querySelector('.mediaInfoSecondary');
+            mediaInfo.fillSecondaryMediaInfo(mediaInfoElem, item);
 
             var genres = item.Genres || [];
             var genresHtml = genres.map(function (i) {
@@ -1018,7 +1004,21 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             var self = this;
             var currentItem;
 
+            function onInputCommand(e) {
+
+                switch (e.detail.command) {
+
+                    case 'play':
+                        play();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
             view.addEventListener('viewshow', function (e) {
+
+                inputManager.on(view, onInputCommand);
 
                 var isRestored = e.detail.isRestored;
 
@@ -1045,7 +1045,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                     });
 
                     if (!isRestored) {
-                        renderTitle(view, item);
+                        renderName(view, item);
                         renderImage(view, item);
                         renderChildren(view, item);
                         renderDetails(view, item);
@@ -1108,6 +1108,11 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                     view.querySelector('.itemPageFixedLeft .btnShuffle').addEventListener('click', shuffle);
                     view.querySelector('.mainSection .btnShuffle').addEventListener('click', shuffle);
                 }
+            });
+
+            view.addEventListener('viewbeforehide', function () {
+
+                inputManager.off(view, onInputCommand);
             });
 
             view.addEventListener('viewdestroy', function () {
