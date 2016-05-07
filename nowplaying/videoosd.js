@@ -94,13 +94,16 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         }
 
      
-function renderName(view, item) {
+  function renderTitle(view, item) { 
 
-            var itemTitle = view.querySelector('.osdHeader');
-              
-                itemTitle.innerHTML = item;
-          
-        }
+ 
+            var itemTitle = view.querySelector('.osdHeader'); 
+ 
+ 
+                itemTitle.innerHTML = item.Name; 
+            
+        } 
+
         function setPoster(item) {
 
             var osdPoster = view.querySelector('.osdPoster');
