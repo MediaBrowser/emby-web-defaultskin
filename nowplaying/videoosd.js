@@ -94,7 +94,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         }
 
      
-  function renderTitle(view, item) { 
+  function renderName(view, item) { 
 
  
             var itemTitle = view.querySelector('.osdName'); 
