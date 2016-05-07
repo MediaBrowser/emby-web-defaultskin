@@ -97,10 +97,10 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
   function renderTitle(view, item) { 
 
  
-            var itemTitle = view.querySelector('.osdHeader'); 
+            var itemTitle = view.querySelector('.osdName'); 
  
  
-                itemTitle.innerHTML = item.Name; 
+                itemTitle.innerHTML = "test"; 
             
         } 
 
