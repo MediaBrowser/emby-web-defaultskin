@@ -115,6 +115,8 @@
 .osdName {
     margin: 0;
     padding-left: .4em;
+    color: blue;
+    background-color: red;
 }
 .osdMediaInfo {
     margin-left: 1em;
