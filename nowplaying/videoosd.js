@@ -54,6 +54,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 setTitle(item);
             
                 view.querySelector('.osdTitle').innerHTML = itemHelper.getDisplayName(item);
+                  view.querySelector('.osdName').innerHTML = item.Name;
                 view.querySelector('.osdMediaInfo').innerHTML = mediaInfo.getMediaInfoHtml(item, {
                     runtime: false,
                     subtitles: false,
