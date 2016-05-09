@@ -83,7 +83,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
         }
  function renderEpisode(view, item) {
 
-            var itemTitle = view.querySelector('.itemTitle');
+            var itemTitle = view.querySelector('.itemEpisode');
 
                 itemTitle.innerHTML = item;
            
