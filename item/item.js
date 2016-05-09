@@ -81,7 +81,13 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
                 itemTitle.innerHTML = item.Name;
            
         }
+ function renderEpisode(view, item) {
 
+            var itemTitle = view.querySelector('.itemTitle');
+
+                itemTitle.innerHTML = item;
+           
+        }
 
         function renderImage(view, item) {
 
@@ -1055,6 +1061,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
 
                     if (!isRestored) {
                         renderName(view, item);
+                        renderEpisode(view, item);
                         renderTitle(view, item);
                         renderImage(view, item);
                         renderChildren(view, item);
