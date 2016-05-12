@@ -99,7 +99,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
   
             var itemTitle = view.querySelector('.osdName'); 
-            return itemTitle.innerHTML = item.EpisodeTitle 
+            return "NotWorking";
             
         } 
 
