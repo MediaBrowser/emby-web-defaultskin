@@ -41,6 +41,22 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 Emby.Page.setTitle('');
             }
         }
+        
+         function renderTitle(view, item) {
+
+            var itemTitle = view.querySelector('.osdHeader');
+
+                itemTitle.innerHTML = item.Name;
+           
+        }
+ function renderEpisode(view, item) {
+
+            var itemTitle = view.querySelector('.osdName');
+
+                itemTitle.innerHTML = item.EpisodeTitle;
+           
+        }
+        
 
         function setCurrentItem(item, player) {
 
