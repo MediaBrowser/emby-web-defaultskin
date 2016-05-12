@@ -25,6 +25,22 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             }
         }
 
+ function renderTitle(view, item) {
+
+            var itemTitle = view.querySelector('.itemName');
+
+                itemTitle.innerHTML = item.Name;
+           
+        }
+ function renderEpisode(view, item) {
+
+            var itemTitle = view.querySelector('.itemEpisode');
+
+                itemTitle.innerHTML = item.EpisodeTitle;
+           
+        }
+
+
         function createVerticalScroller(view, pageInstance) {
 
             require(['scroller'], function (scroller) {
@@ -74,20 +90,7 @@ define(['loading', './../skininfo', 'datetime', 'playbackManager', 'imageLoader'
             }
         }
 
-    function renderTitle(view, item) {
-
-            var itemTitle = view.querySelector('.itemName');
-
-                itemTitle.innerHTML = item.Name;
-           
-        }
- function renderEpisode(view, item) {
-
-            var itemTitle = view.querySelector('.itemEpisode');
-
-                itemTitle.innerHTML = item.EpisodeTitle;
-           
-        }
+   
 
         function renderImage(view, item) {
 
