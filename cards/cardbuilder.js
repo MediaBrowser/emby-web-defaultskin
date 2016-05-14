@@ -734,11 +734,12 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     playedIndicator.parentNode.removeChild(playedIndicator);
                 }
             }
+            
              if (item.SeriesTimerId) {
 
                 var playedIndicator = card.querySelector('.recordIndicator');
 
-                if (playedIndicator) {
+                if (!playedIndicator) {
 
                     playedIndicator = document.createElement('div');
                     playedIndicator.classList.add('playedIndicator');
@@ -746,10 +747,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     cardImageContainer.appendChild(playedIndicator);
                 }
                 playedIndicator.innerHTML = '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
-            } 
-            else if (item.TimerId) { 
-             playedIndicator.innerHTML = '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
-                }
+          
             }
           
             
