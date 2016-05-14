@@ -226,7 +226,26 @@ button.card {
         width: 2.23vh;
         height: 2.23vh;
     }
+.recordIndicator {
+    right: .5vh;
+    top: .5vh;
+    position: absolute;
+    background: rgba(82,181,75,1);
+    border-radius: 500px;
+    width: 3.8vh;
+    height: 3.8vh;
+    display: -ms-flex;
+    display: -webkit-flex;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
 
+    .recordIndicator iron-icon {
+        width: 2.23vh;
+        height: 2.23vh;
+    }
 .emptyCardImageContainer {
     font-size: 90%;
 }
