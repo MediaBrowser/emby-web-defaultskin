@@ -746,12 +746,9 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     cardImageContainer.appendChild(playedIndicator);
                 }
                 playedIndicator.innerHTML = '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
-            } else {
-
-                var playedIndicator = card.querySelector('.playedIndicator');
-                if (playedIndicator) {
-
-                    playedIndicator.parentNode.removeChild(playedIndicator);
+            } 
+            else if (item.TimerId) { 
+             playedIndicator.innerHTML = '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
                 }
             }
           
