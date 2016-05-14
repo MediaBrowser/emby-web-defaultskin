@@ -738,7 +738,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
 
                 var playedIndicator = card.querySelector('.recordIndicator');
 
-                if (!playedIndicator) {
+                if (playedIndicator) {
 
                     playedIndicator = document.createElement('div');
                     playedIndicator.classList.add('playedIndicator');
