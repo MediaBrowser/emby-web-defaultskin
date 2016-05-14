@@ -708,7 +708,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
             }
         }
 
-        function updateUserData(card, userData) {
+        function updateUserData(card, userData, item) {
 
             var type = card.getAttribute('data-type');
             var enableCountIndicator = type == 'Series' || type == 'BoxSet' || type == 'Season';
@@ -734,9 +734,9 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     playedIndicator.parentNode.removeChild(playedIndicator);
                 }
             }
-             if (userData.Played) {
+             if (item.SeriesTimerId) {
 
-                var playedIndicator = card.querySelector('.playedIndicator');
+                var playedIndicator = card.querySelector('.recordIndicator');
 
                 if (!playedIndicator) {
 
@@ -745,7 +745,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     cardImageContainer = cardImageContainer || card.querySelector('.cardImageContainer');
                     cardImageContainer.appendChild(playedIndicator);
                 }
-                playedIndicator.innerHTML = '<iron-icon icon="check"></iron-icon>';
+                playedIndicator.innerHTML = '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
             } else {
 
                 var playedIndicator = card.querySelector('.playedIndicator');
