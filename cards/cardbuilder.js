@@ -746,13 +746,11 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     cardImageContainer = cardImageContainer || card.querySelector('.cardImageContainer');
                     cardImageContainer.appendChild(SeriesTimerId);
                 }
-              
+               recordIndicator.innerHTML = '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
 				
-				 html += '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
 				
-				html += '</div>'; 
             }
-			recordIndicatorElement.innerHTML = html;
+		
         }
             
             
