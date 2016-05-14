@@ -41,7 +41,21 @@ define(['focusManager', './../cards/cardbuilder', 'pluginManager', './../skininf
     }
 
     function loadUpcomingPrograms(section, options) {
+    var html = '';
 
+            html += '<div style="display:flex;align-items:center;">';
+    
+
+        
+
+            if (item.SeriesTimerId) {
+                html += '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
+            }
+            else if (item.TimerId) {
+                html += '<iron-icon class="timerIcon" icon="fiber-manual-record"></iron-icon>';
+            }
+
+            html += '</div>';
         return Emby.Models.liveTvRecommendedPrograms(options).then(function (result) {
 
             cardBuilder.buildCards(result.Items, {
