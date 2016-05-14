@@ -734,7 +734,26 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     playedIndicator.parentNode.removeChild(playedIndicator);
                 }
             }
-            
+             if (userData.Played) {
+
+                var playedIndicator = card.querySelector('.playedIndicator');
+
+                if (!playedIndicator) {
+
+                    playedIndicator = document.createElement('div');
+                    playedIndicator.classList.add('playedIndicator');
+                    cardImageContainer = cardImageContainer || card.querySelector('.cardImageContainer');
+                    cardImageContainer.appendChild(playedIndicator);
+                }
+                playedIndicator.innerHTML = '<iron-icon icon="check"></iron-icon>';
+            } else {
+
+                var playedIndicator = card.querySelector('.playedIndicator');
+                if (playedIndicator) {
+
+                    playedIndicator.parentNode.removeChild(playedIndicator);
+                }
+            }
           
             
             
@@ -797,6 +816,9 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                 }
             }
         }
+
+
+
 
         function onUserDataChanged(userData) {
 
