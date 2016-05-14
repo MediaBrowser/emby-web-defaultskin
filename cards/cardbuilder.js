@@ -734,6 +734,32 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     playedIndicator.parentNode.removeChild(playedIndicator);
                 }
             }
+            
+            if (item.SeriesTimerId) {
+
+                var recordIndicator = card.querySelector('.recordIndicator');
+
+                if (!SeriesTimerId) {
+
+                    SeriesTimerId = document.createElement('div');
+                    SeriesTimerId.classList.add('SeriesTimerId');
+                    cardImageContainer = cardImageContainer || card.querySelector('.cardImageContainer');
+                    cardImageContainer.appendChild(SeriesTimerId);
+                }
+              
+				
+				 html += '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
+				
+				html += '</div>'; 
+            }
+			recordIndicatorElement.innerHTML = html;
+        }
+            
+            
+            
+            
+            
+            
             if (userData.UnplayedItemCount) {
 
                 var countIndicator = card.querySelector('.countIndicator');
