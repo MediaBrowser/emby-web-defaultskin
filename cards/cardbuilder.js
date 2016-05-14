@@ -735,23 +735,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                 }
             }
             
-            if (item.SeriesTimerId) {
-
-                var recordIndicator = card.querySelector('.recordIndicator');
-
-                if (!SeriesTimerId) {
-
-                    SeriesTimerId = document.createElement('div');
-                    SeriesTimerId.classList.add('SeriesTimerId');
-                    cardImageContainer = cardImageContainer || card.querySelector('.cardImageContainer');
-                    cardImageContainer.appendChild(SeriesTimerId);
-                }
-               recordIndicator.innerHTML = '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
-				
-				
-            }
-		
-        }
+          
             
             
             
