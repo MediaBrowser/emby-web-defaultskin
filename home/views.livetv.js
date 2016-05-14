@@ -40,13 +40,19 @@ define(['focusManager', './../cards/cardbuilder', 'pluginManager', './../skininf
         });
     }
 
-    function loadUpcomingPrograms(section, options) {
-    var html = '';
+    function loadUpcomingPrograms(section, options, item) {
+    
+        return Emby.Models.liveTvRecommendedPrograms(options).then(function (result) {
+
+            cardBuilder.buildCards(result.Items, {
+                parentContainer: section,
+                itemsContainer: section.querySelector('.itemsContainer'),
+                shape: 'auto',
+                coverImage: true
+            });
+            var html = '';
 
             html += '<div style="display:flex;align-items:center;">';
-    
-
-        
 
             if (item.SeriesTimerId) {
                 html += '<iron-icon class="seriesTimerIcon" icon="fiber-smart-record"></iron-icon>';
@@ -56,14 +62,6 @@ define(['focusManager', './../cards/cardbuilder', 'pluginManager', './../skininf
             }
 
             html += '</div>';
-        return Emby.Models.liveTvRecommendedPrograms(options).then(function (result) {
-
-            cardBuilder.buildCards(result.Items, {
-                parentContainer: section,
-                itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'auto',
-                coverImage: true
-            });
         });
     }
 
