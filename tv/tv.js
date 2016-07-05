@@ -177,10 +177,9 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 },
                 autoFocus: autoFocus,
                 cardOptions: {
-                    shape: 'backdropCard',
+                    shape: 'bannerCard',
                     rows: 3,
                     preferThumb: true,
-                    indexBy: 'PremiereDate'
                 },
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
