@@ -132,7 +132,7 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.upcoming({
                         ImageTypeLimit: 1,
-                        EnableImageTypes: "Banner,Backdrop,Thumb",
+                        EnableImageTypes: "Banner",
                         StartIndex: startIndex,
                         Limit: Math.min(limit, 60),
                         ParentId: pageParams.parentid
