@@ -167,13 +167,13 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                     return Emby.Models.items({
                         StartIndex: startIndex,
                         Limit: limit,
-                        EnableImageTypes: "Primary,Backdrop,Thumb",
                         ParentId: pageParams.parentid,
                         IncludeItemTypes: "Series",
                         Recursive: true,
                         SortBy: "SortName",
                         Fields: "SortName"
                     });
+                },
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
                 autoFocus: autoFocus,
