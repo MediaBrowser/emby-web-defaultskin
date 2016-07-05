@@ -167,7 +167,7 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                     return Emby.Models.items({
                         StartIndex: startIndex,
                         Limit: limit,
-                        EnableImageTypes: "Primary,Banner,Thumb",
+                        EnableImageTypes: "Primary,Backdrop,Thumb",
                         ParentId: pageParams.parentid,
                         IncludeItemTypes: "Series",
                         Recursive: true,
