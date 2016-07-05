@@ -177,7 +177,10 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                     Emby.Models.item(id).then(function (item) {
 
                         if (options.enableBackdrops) {
-                            backdrop.setBackdrop(item);
+                            // too slow on tv browsers
+                            if (!browser.tv) {
+                                backdrop.setBackdrop(item);
+                            }
                         }
                         setSelectedInfo(card, item);
                     });

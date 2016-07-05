@@ -89,11 +89,11 @@
     width: 50%;
 }
 
-.mediaInfo, .osdMediaInfo, .osdTextContainer {
+.mediaInfo, .osdTextContainer {
     display: block !important;
 }
 
-    .mediaInfo > *, .osdMediaInfo > *, .osdTextContainer > * {
+    .mediaInfo > *, .osdMediaInfo > *, .osdTextContainer > *, .buttons > * {
         display: inline-block;
         vertical-align: middle;
     }
@@ -126,10 +126,6 @@
     height: 195px !important;
 }
 
-[is=emby-button] i {
-    display: none !important;
-}
-
 .largeIcon {
     width: 36px;
     height: 36px;
@@ -142,6 +138,13 @@ i.mediumSizeIcon, .mediumSizeIcon i {
 
 .actionSheetScroller, .actionSheetContent, button.actionSheetMenuItem {
     display: block !important;
+    text-align: center;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+.actionSheetScroller {
+    max-height: 600px !important;
 }
 
 @media all and (min-height: 720px) {
@@ -164,14 +167,27 @@ i.mediumSizeIcon, .mediumSizeIcon i {
         height: 295px !important;
     }
 
-    .largeIcon {
-        width: 42px;
-        height: 42px;
+    i.largeIcon {
+        height: 42px !important;
+        width: 42px !important;
+        font-size: 42px !important;
     }
 
-    i.mediumSizeIcon, .mediumSizeIcon i {
-        width: 36px;
-        height: 36px;
+    img.largeIcon {
+        height: 42px !important;
+        width: 42px !important;
+    }
+
+    i.mediumSizeIcon {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 36px !important;
+    }
+
+    .xlargePaperIconButton {
+        height: 48px !important;
+        width: 48px !important;
+        font-size: 48px !important;
     }
 }
 
@@ -195,13 +211,63 @@ i.mediumSizeIcon, .mediumSizeIcon i {
         height: 456px !important;
     }
 
-    .largeIcon {
-        width: 48px;
-        height: 48px;
+    i.largeIcon {
+        height: 48px !important;
+        width: 48px !important;
+        font-size: 48px !important;
     }
 
-    i.mediumSizeIcon, .mediumSizeIcon i {
-        width: 40px;
-        height: 40px;
+    img.largeIcon {
+        height: 48px !important;
+        width: 48px !important;
+    }
+
+    i.mediumSizeIcon {
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 40px !important;
+    }
+
+    .xlargePaperIconButton {
+        height: 64px !important;
+        width: 64px !important;
+        font-size: 64px !important;
     }
 }
+
+.nowPlayingPageContainer {
+    white-space: nowrap;
+}
+
+.nowPlayingCardContainer, .nowPlayingInfoContainer {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.nowPlayingProgressContainer .sliderContainer {
+    display: inline-block;
+    vertical-align: middle;
+    width: 70%;
+}
+
+.nowPlayingSecondaryButtons {
+    display: none;
+}
+
+.indicators {
+    top: 10px;
+    right: 35px;
+}
+
+.volumeButtons {
+    display: none;
+}
+
+.videoOsdBottom {
+    display: block;
+}
+
+    .videoOsdBottom > * {
+        display: inline-block;
+        vertical-align: bottom;
+    }

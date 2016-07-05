@@ -66,7 +66,7 @@ select[is="emby-select"], input[is="emby-input"] {
     color: #bbb !important;
 }
 
-.inputLabel {
+.inputLabel, .textareaLabel {
     color: #bbb;
 }
 
@@ -212,8 +212,8 @@ select[is="emby-select"], input[is="emby-input"] {
     color: #aaa;
 }
 
-.btnUserDataOn {
-    color: #cc3333;
+.btnUserDataOn, .btnUserDataOn i {
+    color: #cc3333 !important;
 }
 
 .tagline {

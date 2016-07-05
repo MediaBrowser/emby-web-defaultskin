@@ -68,13 +68,20 @@
     margin: 0;
 }
 
-.mainSection .itemPageButtons, .mainSection .itemPageUserDataIcons {
-    display: inline-flex;
-    justify-content: center;
-}
-
 .mainSection .itemPageButtons {
     margin-right: 1em;
+}
+
+.itemPageUserDataIcons i {
+    color: #fff;
+}
+
+.itemPageUserDataIcons .fab {
+    padding: .35em;
+}
+
+.itemPageUserDataIcons button + button {
+    margin-left: .25em !important;
 }
 
 .itemPageFixedLeft .itemPageUserDataIcons {

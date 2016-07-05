@@ -376,6 +376,11 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             mediaInfo.fillSecondaryMediaInfo(mediaInfoElem, item, {
                 interactive: true
             });
+            if (mediaInfoElem.innerHTML) {
+                mediaInfoElem.classList.remove('hide');
+            } else {
+                mediaInfoElem.classList.add('hide');
+            }
 
             var genres = item.Genres || [];
             var genresHtml = genres.map(function (i) {
@@ -443,11 +448,9 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var section = view.querySelector('.nextUpSection');
 
-            var userData = item.UserData || {};
-
             var focusedItemIsNextUp = parentWithClass(document.activeElement, 'nextUpSection') != null;
 
-            if (item.Type != 'Series' || !userData.PlayedPercentage) {
+            if (item.Type != 'Series') {
                 section.classList.add('hide');
 
                 if (focusedItemIsNextUp) {
@@ -1105,7 +1108,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     userdataButtons.fill({
                         element: view.querySelector(userDataIconsSelector),
                         buttonClass: 'mediumSizeIcon',
-                        item: item
+                        item: item,
+                        style: 'fab'
                     });
 
                     if (reloadAllData) {

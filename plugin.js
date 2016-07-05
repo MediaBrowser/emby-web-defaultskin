@@ -65,8 +65,6 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 list.push('css!' + pluginManager.mapPath(self, 'css/smarttv'));
             }
 
-            //list.push('css!' + pluginManager.mapPath(self, 'css/smarttv'));
-
             // Needed by the header
             list.push('paper-icon-button-light');
 
