@@ -132,7 +132,7 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.upcoming({
                         ImageTypeLimit: 1,
-                        EnableImageTypes: "Banner",
+                        EnableImageTypes: "Primary,Backdrop,Thumb",
                         StartIndex: startIndex,
                         Limit: Math.min(limit, 60),
                         ParentId: pageParams.parentid
@@ -140,8 +140,9 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 },
                 autoFocus: autoFocus,
                 cardOptions: {
-                    shape: 'banner1Card',
+                    shape: 'backdropCard',
                     rows: 3,
+                    preferThumb: true,
                     indexBy: 'PremiereDate'
                 },
                 selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
