@@ -167,7 +167,7 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                     return Emby.Models.items({
                         StartIndex: startIndex,
                         Limit: limit,
-                        EnableImageTypes: "Primary,Backdrop,Thumb",
+                        EnableImageTypes: "Primary,Banner,Thumb",
                         ParentId: pageParams.parentid,
                         IncludeItemTypes: "Series",
                         Recursive: true,
@@ -177,7 +177,7 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 },
                 cardOptions: {
                     shape: 'bannerCard',
-                    rows: 2,
+                    rows: 1,
                     preferBanner: true,
                 },
                 listCountElement: page.querySelector('.listCount'),
