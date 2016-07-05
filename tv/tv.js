@@ -140,7 +140,7 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 },
                 autoFocus: autoFocus,
                 cardOptions: {
-                    shape: 'bannerCard',
+                    shape: 'banner1Card',
                     rows: 3,
                     indexBy: 'PremiereDate'
                 },
