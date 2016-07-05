@@ -141,8 +141,8 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 autoFocus: autoFocus,
                 cardOptions: {
                     shape: 'bannerCard',
-                    rows: 1,
-                    preferThumb: true,
+                    rows: 2,
+                    preferBanner: true,
                     indexBy: 'PremiereDate'
                 },
                 selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
