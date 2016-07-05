@@ -84,7 +84,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                     options.width = 243;
                 }
                 else if (options.shape == 'banner1Card') {
-                    options.width = 500;
+                    options.width = 800;
                 }
                 else if (options.shape == 'squareCard') {
                     options.width = 242;
