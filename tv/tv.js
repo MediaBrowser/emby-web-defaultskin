@@ -167,12 +167,20 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                     return Emby.Models.items({
                         StartIndex: startIndex,
                         Limit: limit,
+                        EnableImageTypes: "Primary,Backdrop,Thumb",
                         ParentId: pageParams.parentid,
                         IncludeItemTypes: "Series",
                         Recursive: true,
                         SortBy: "SortName",
                         Fields: "SortName"
                     });
+                },
+                autoFocus: autoFocus,
+                cardOptions: {
+                    shape: 'backdropCard',
+                    rows: 3,
+                    preferThumb: true,
+                    indexBy: 'PremiereDate'
                 },
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
