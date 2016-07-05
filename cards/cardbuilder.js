@@ -20,7 +20,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                 }
             }
             else if (primaryImageAspectRatio && primaryImageAspectRatio > 1.75) {
-                options.shape = 'bannerCard';
+                options.shape = 'banner1Card';
 
                 if (options.rows !== 0) {
                     options.rows = 3;
@@ -49,7 +49,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                 options.shape = 'backdropCard';
             }
             else if (primaryImageAspectRatio && primaryImageAspectRatio > 1.75) {
-                options.shape = 'bannerCard';
+                options.shape = 'banner1Card';
             }
             else {
                 options.shape = 'squareCard';
@@ -69,7 +69,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                 else if (options.shape == 'portraitCard') {
                     options.width = options.portraitWidth;
                 }
-                 else if (options.shape == 'bannerCard') {
+                 else if (options.shape == 'banner1Card') {
                     options.width = options.portraitWidth;
                 }
                 else if (options.shape == 'squareCard') {
@@ -83,7 +83,7 @@ define(['datetime', './../skininfo', 'imageLoader', 'connectionManager', 'plugin
                 else if (options.shape == 'portraitCard') {
                     options.width = 243;
                 }
-                else if (options.shape == 'portraitCard') {
+                else if (options.shape == 'banner1Card') {
                     options.width = 500;
                 }
                 else if (options.shape == 'squareCard') {
