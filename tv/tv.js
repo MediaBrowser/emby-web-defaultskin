@@ -175,11 +175,10 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                         Fields: "SortName"
                     });
                 },
-                autoFocus: autoFocus,
                 cardOptions: {
                     shape: 'bannerCard',
-                    rows: 3,
-                    preferThumb: true,
+                    rows: 2,
+                    preferBanner: true,
                 },
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
