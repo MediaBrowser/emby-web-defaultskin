@@ -5,7 +5,7 @@ define(['./../cards/cardbuilder', 'pluginManager', './../skininfo'], function (c
         var options = {
 
             IncludeItemTypes: "Audio",
-            Limit: 9,
+            Limit: 12,
             Fields: "PrimaryImageAspectRatio",
             ParentId: parentId,
             ImageTypeLimit: 1,
@@ -58,7 +58,7 @@ define(['./../cards/cardbuilder', 'pluginManager', './../skininfo'], function (c
             SortBy: "DatePlayed",
             SortOrder: "Descending",
             IncludeItemTypes: "Audio",
-            Limit: 6,
+            Limit: 9,
             Recursive: true,
             Fields: "PrimaryImageAspectRatio",
             Filters: "IsPlayed",
@@ -87,7 +87,7 @@ define(['./../cards/cardbuilder', 'pluginManager', './../skininfo'], function (c
             SortBy: "PlayCount",
             SortOrder: "Descending",
             IncludeItemTypes: "Audio",
-            Limit: 6,
+            Limit: 9,
             Recursive: true,
             Fields: "PrimaryImageAspectRatio",
             Filters: "IsPlayed",
@@ -115,7 +115,7 @@ define(['./../cards/cardbuilder', 'pluginManager', './../skininfo'], function (c
 
             SortBy: "Random",
             IncludeItemTypes: "Audio",
-            Limit: 6,
+            Limit: 9,
             Recursive: true,
             Fields: "PrimaryImageAspectRatio",
             Filters: "IsFavorite",
@@ -143,7 +143,7 @@ define(['./../cards/cardbuilder', 'pluginManager', './../skininfo'], function (c
 
             SortBy: "Random",
             IncludeItemTypes: "MusicAlbum",
-            Limit: 6,
+            Limit: 9,
             Recursive: true,
             Fields: "PrimaryImageAspectRatio",
             Filters: "IsFavorite",
@@ -169,7 +169,7 @@ define(['./../cards/cardbuilder', 'pluginManager', './../skininfo'], function (c
         var options = {
 
             SortBy: "Random",
-            Limit: 6,
+            Limit: 9,
             Recursive: true,
             Fields: "PrimaryImageAspectRatio",
             Filters: "IsFavorite",
