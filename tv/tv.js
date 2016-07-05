@@ -142,7 +142,6 @@ define(['loading', './../skininfo', 'alphaPicker', './../components/horizontalli
                 cardOptions: {
                     shape: 'backdropCard',
                     rows: 3,
-                    preferBanner: true,
                     indexBy: 'PremiereDate'
                 },
                 selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
