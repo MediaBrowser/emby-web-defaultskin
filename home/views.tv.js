@@ -42,7 +42,7 @@ define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-ite
 
         var options = {
 
-            Limit: 18,
+            Limit: 9,
             ParentId: parentId
         };
 
@@ -66,7 +66,7 @@ define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-ite
         var options = {
 
             IncludeItemTypes: "Episode",
-            Limit: 12,
+            Limit: 9,
             Fields: "PrimaryImageAspectRatio",
             ParentId: parentId,
             ImageTypeLimit: 1,
@@ -93,9 +93,11 @@ define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-ite
 
         var options = {
 
-            SortBy: "Random",
+            SortBy: "DateCreated",
+            SortOrder: "Descending",
+            Filters: "isUnplayed"
             IncludeItemTypes: "Series",
-            Limit: 20,
+            Limit: 9,
             Recursive: true,
             ParentId: parentId,
             EnableImageTypes: "Backdrop",
