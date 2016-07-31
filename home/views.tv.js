@@ -95,7 +95,7 @@ define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-ite
 
             SortBy: "DateCreated",
             SortOrder: "Descending",
-            Filters: "isUnplayed"
+            Filters: "isUnplayed",
             IncludeItemTypes: "Series",
             Limit: 9,
             Recursive: true,
