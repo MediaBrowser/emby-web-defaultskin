@@ -942,32 +942,29 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var section = view.querySelector('.peopleSection');
 
-            Emby.Models.itemPeople(item, {
+            var people = item.People || [];
 
-                limit: 32,
-                images: [
-                {
-                    type: 'Primary',
+            people = people.filter(function (p) {
+                return p.PrimaryImageTag;
+            });
+
+            people.length = Math.min(people.length, 32);
+
+            if (!people.length) {
+                section.classList.add('hide');
+                return;
+            }
+
+            section.classList.remove('hide');
+
+            require(['peoplecardbuilder'], function (peoplecardbuilder) {
+
+                peoplecardbuilder.buildPeopleCards(people, {
+                    parentContainer: section,
+                    itemsContainer: section.querySelector('.itemsContainer'),
+                    coverImage: true,
+                    serverId: item.ServerId,
                     width: Math.round((section.offsetWidth / 7))
-                }]
-
-            }).then(function (people) {
-
-                if (!people.length) {
-                    section.classList.add('hide');
-                    return;
-                }
-
-                section.classList.remove('hide');
-
-                require(['peoplecardbuilder'], function (peoplecardbuilder) {
-
-                    peoplecardbuilder.buildPeopleCards(people, {
-                        parentContainer: section,
-                        itemsContainer: section.querySelector('.itemsContainer'),
-                        coverImage: true,
-                        serverId: item.ServerId
-                    });
                 });
             });
         }
@@ -1020,29 +1017,22 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 return;
             }
 
-            Emby.Models.chapters(item, {
-                images: [
-                {
-                    type: 'Primary',
+            var chapters = item.Chapters || [];
+
+            if (!chapters.length) {
+                section.classList.add('hide');
+                return;
+            }
+
+            section.classList.remove('hide');
+
+            require(['chaptercardbuilder'], function (chaptercardbuilder) {
+
+                chaptercardbuilder.buildChapterCards(item, chapters, {
+                    parentContainer: section,
+                    itemsContainer: section.querySelector('.itemsContainer'),
+                    coverImage: true,
                     width: Math.round((section.offsetWidth / 4))
-                }]
-
-            }).then(function (chapters) {
-
-                if (!chapters.length) {
-                    section.classList.add('hide');
-                    return;
-                }
-
-                section.classList.remove('hide');
-
-                require(['chaptercardbuilder'], function (chaptercardbuilder) {
-
-                    chaptercardbuilder.buildChapterCards(item, chapters, {
-                        parentContainer: section,
-                        itemsContainer: section.querySelector('.itemsContainer'),
-                        coverImage: true
-                    });
                 });
             });
         }

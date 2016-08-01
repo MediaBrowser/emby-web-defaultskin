@@ -1,4 +1,4 @@
-define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'scrollStyles'], function (playbackManager, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events) {
+define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'scrollStyles'], function (playbackManager, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager) {
 
     return function (view, params) {
 
@@ -654,22 +654,38 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
         view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
 
-        function getChapterHtml(item, chapter, index) {
+        function getChapterHtml(item, chapter, index, maxWidth, apiClient) {
 
             var html = '';
 
-            var src = chapter.images && chapter.images.primary ? (' src="' + chapter.images.primary + '"') : '';
+            var src = getImgUrl(item, chapter, index, maxWidth, apiClient);
 
-            if (chapter.images && chapter.images.primary) {
+            if (src) {
 
                 var pct = currentRuntimeTicks ? (chapter.StartPositionTicks / currentRuntimeTicks) : 0;
                 pct *= 100;
                 chapterPcts[index] = pct;
 
-                html += '<img data-index="' + index + '" class="chapterThumb"' + src + ' />';
+                html += '<img data-index="' + index + '" class="chapterThumb" src="' + src + '" />';
             }
 
             return html;
+        }
+
+        function getImgUrl(item, chapter, index, maxWidth, apiClient) {
+
+            if (chapter.ImageTag) {
+
+                return apiClient.getScaledImageUrl(item.Id, {
+
+                    maxWidth: maxWidth,
+                    tag: chapter.ImageTag,
+                    type: "Chapter",
+                    index: index
+                });
+            }
+
+            return null;
         }
 
         function renderScenePicker(progressPct) {
@@ -680,25 +696,19 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 return;
             }
 
-            var chapters = Emby.Models.chapters(item, {
-                images: [
-                {
-                    type: 'Primary',
-                    width: 400
-                }]
+            var chapters = item.Chapters || [];
 
-            }).then(function (chapters) {
+            var currentIndex = -1;
 
-                var currentIndex = -1;
+            var apiClient = connectionManager.getApiClient(item.ServerId);
 
-                scenePicker.innerHTML = chapters.map(function (chapter) {
-                    currentIndex++;
-                    return getChapterHtml(item, chapter, currentIndex);
-                }).join('');
+            scenePicker.innerHTML = chapters.map(function (chapter) {
+                currentIndex++;
+                return getChapterHtml(item, chapter, currentIndex, 400, apiClient);
+            }).join('');
 
-                imageLoader.lazyChildren(scenePicker);
-                fadeIn(scenePicker, progressPct);
-            });
+            imageLoader.lazyChildren(scenePicker);
+            fadeIn(scenePicker, progressPct);
         }
 
         var hideScenePickerTimeout;
