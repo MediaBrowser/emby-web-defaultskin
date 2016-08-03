@@ -180,10 +180,6 @@ a {
     margin-top: 0;
 }
 
-.horizontalPageContent {
-    width: 100%;
-}
-
 .scrollFrameY {
     overflow: hidden;
 }
@@ -332,7 +328,8 @@ i.mediaInfoItem {
     text-overflow: ellipsis;
 }
 
-.horizontalPageContent .squareCard .cardImageContainer {
+/* Need to use :not due to conflict with loginSquareCard */
+.horizontalPageContent .squareCard:not(.scalableCard) .cardImageContainer {
     width: 20.83vh;
     height: 20.83vh;
 }
@@ -347,7 +344,7 @@ i.mediaInfoItem {
     height: 31.57vh;
 }
 
-.homePageContent .squareCard .cardImageContainer {
+.homePageContent .squareCard:not(.scalableCard) .cardImageContainer {
     width: 21.85vh;
     height: 21.85vh;
 }
@@ -362,7 +359,7 @@ i.mediaInfoItem {
     height: 32.96vh;
 }
 
-.listPageContent .squareCard .cardImageContainer {
+.listPageContent .squareCard:not(.scalableCard) .cardImageContainer {
     width: 21.5vh;
     height: 21.5vh;
 }

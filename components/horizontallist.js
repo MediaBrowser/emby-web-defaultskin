@@ -41,8 +41,6 @@ define(['loading', './focushandler', 'focusManager', 'cardBuilder'], function (l
 
                 var cardOptions = options.cardOptions || {};
                 cardOptions.itemsContainer = options.itemsContainer;
-                cardOptions.shape = cardOptions.shape || 'auto';
-                cardOptions.rows = cardOptions.rows;
 
                 cardbuilder.buildCards(result.Items, cardOptions);
 

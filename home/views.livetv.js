@@ -1,11 +1,14 @@
 define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'emby-itemscontainer'], function (focusManager, cardBuilder, pluginManager, skinInfo) {
 
-    function loadLatestRecordings(element) {
+    function loadLatestRecordings(element, apiClient) {
 
-        return Emby.Models.liveTvRecordings({
+        return apiClient.getLiveTvRecordings({
 
-            limit: 6,
-            IsInProgress: false
+            Limit: 6,
+            IsInProgress: false,
+            UserId: apiClient.getCurrentUserId(),
+            ImageTypeLimit: 1,
+            Fields: "PrimaryImageAspectRatio"
 
         }).then(function (result) {
 
@@ -96,7 +99,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'emby-i
         self.loadData = function () {
 
             return Promise.all([
-                loadLatestRecordings(element),
+                loadLatestRecordings(element, apiClient),
                 loadNowPlaying(element, apiClient),
 
                 loadUpcomingPrograms(element.querySelector('.upcomingProgramsSection'), apiClient, {

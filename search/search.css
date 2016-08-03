@@ -6,10 +6,6 @@
     text-align: center;
 }
 
-    .searchFields .alphaPicker {
-        margin-top: .7em;
-    }
-
 .searchFieldsInner {
     display: flex;
     align-items: center;
@@ -21,16 +17,10 @@
 .iconSearch {
     vertical-align: bottom;
     opacity: .5;
+    margin-top: .5em;
+    margin-right: .5em;
 }
 
 .searchResults .backdropCard {
     width: 25%;
-}
-
-.searchResults .squareCard {
-    width: 16.66666666666666667%;
-}
-
-.searchResults .portraitCard {
-    width: 16.66666666666666667%;
 }

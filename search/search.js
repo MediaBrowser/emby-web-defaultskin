@@ -1,4 +1,4 @@
-define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'cardBuilder', 'emby-itemscontainer'], function (loading, alphaPicker, scroller, focusHandler, cardBuilder) {
+define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'cardBuilder', 'connectionManager', 'emby-itemscontainer'], function (loading, alphaPicker, scroller, focusHandler, cardBuilder, connectionManager) {
 
     function createVerticalScroller(view, pageInstance) {
 
@@ -149,11 +149,20 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
             });
         }
 
+        function getSearchResults(options) {
+
+            var apiClient = connectionManager.currentApiClient();
+
+            options.UserId = apiClient.getCurrentUserId();
+
+            return apiClient.getSearchHints(options);
+        }
+
         function searchType(value, query, section, cardOptions) {
 
             query.Limit = 6;
 
-            Emby.Models.search(query).then(function (result) {
+            getSearchResults(query).then(function (result) {
 
                 populateResults(result, section, cardOptions);
 
@@ -177,6 +186,7 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
             cardOptions.shape = 'autoVertical';
             cardOptions.sectionTitleTagName = 'h2';
             cardOptions.scalable = true;
+            cardOptions.overlayText = true;
 
             cardOptions.widths = {
                 portrait: 340,

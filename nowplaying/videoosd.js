@@ -412,16 +412,24 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
             var index = playbackManager.currentPlaylistIndex();
 
-            if (index == 0) {
-                view.querySelector('.btnPreviousTrack').disabled = true;
-            } else {
-                view.querySelector('.btnPreviousTrack').disabled = false;
-            }
+            var previousEnabled = index > 0;
+            var nextEnabled = (index < items.length - 1);
 
-            if (index >= items.length - 1) {
-                view.querySelector('.btnNextTrack').disabled = true;
+            var btnPreviousTrack = view.querySelector('.btnPreviousTrack');
+            var btnNextTrack = view.querySelector('.btnNextTrack');
+
+            if (!nextEnabled && !previousEnabled) {
+
+                btnPreviousTrack.classList.add('hide');
+                btnNextTrack.classList.add('hide');
+
             } else {
-                view.querySelector('.btnNextTrack').disabled = false;
+
+                btnPreviousTrack.classList.remove('hide');
+                btnNextTrack.classList.remove('hide');
+
+                btnNextTrack.disabled = !nextEnabled;
+                btnPreviousTrack.disabled = !previousEnabled;
             }
         }
 

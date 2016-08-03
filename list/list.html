@@ -1,36 +1,34 @@
-<div class="pageContainer flex">
-    <div class="horizontalPageContent listPageContent">
+<div class="pageContainer flex horizontalPageContent listPageContent" style="flex-direction:column;">
 
-        <div class="listPageButtons hide">
-            <button is="emby-button" class="btnPlay raised">
-                <i class="md-icon">&#xE037;</i>
-                <span>${PlayAll}</span>
-            </button>
-            <button is="emby-button" class="btnQueue raised">
-                <i class="md-icon">&#xE03C;</i>
-                <span>${Queue}</span>
-            </button>
-            <button is="emby-button" class="btnShuffle raised">
-                <i class="md-icon">&#xE043;</i>
-                <span>${Shuffle}</span>
-            </button>
-            <button is="emby-button" class="btnInstantMix raised ">
-                <i class="md-icon">&#xE043;</i>
-                <span>${InstantMix}</span>
-            </button>
+    <div class="listPageButtons hide">
+        <button is="emby-button" class="btnPlay raised">
+            <i class="md-icon">&#xE037;</i>
+            <span>${PlayAll}</span>
+        </button>
+        <button is="emby-button" class="btnQueue raised">
+            <i class="md-icon">&#xE03C;</i>
+            <span>${Queue}</span>
+        </button>
+        <button is="emby-button" class="btnShuffle raised">
+            <i class="md-icon">&#xE043;</i>
+            <span>${Shuffle}</span>
+        </button>
+        <button is="emby-button" class="btnInstantMix raised ">
+            <i class="md-icon">&#xE043;</i>
+            <span>${InstantMix}</span>
+        </button>
+    </div>
+    <div class="scrollFrame scrollFrameX itemScrollFrame" style="white-space: nowrap;">
+        <div is="emby-itemscontainer" class="scrollSlider focuscontainer-x" style="text-align: center;">
         </div>
-        <div class="scrollFrame scrollFrameX itemScrollFrame" style="white-space: nowrap;">
-            <div is="emby-itemscontainer" class="scrollSlider focuscontainer-x" style="text-align: center;">
-            </div>
-        </div>
-        <div class="alphaPicker"></div>
-        <div class="selectedItemInfo">
-            <div class="selectedItemInfoInner"></div>
-        </div>
-        <div class="listNumbers hide">
-            <span class="selectedIndex"></span>
-            <span class="listNumbersDivider">|</span>
-            <span class="listCount"></span>
-        </div>
+    </div>
+    <div class="alphaPicker"></div>
+    <div class="selectedItemInfo">
+        <div class="selectedItemInfoInner"></div>
+    </div>
+    <div class="listNumbers hide">
+        <span class="selectedIndex"></span>
+        <span class="listNumbersDivider">|</span>
+        <span class="listCount"></span>
     </div>
 </div>

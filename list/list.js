@@ -95,7 +95,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             cardOptions: {
                 coverImage: true,
                 rows: {
-                    portait: 2,
+                    portrait: 2,
                     square: 3,
                     backdrop: 3
                 },
