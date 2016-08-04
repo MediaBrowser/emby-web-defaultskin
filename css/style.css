@@ -473,10 +473,6 @@ i.mediaInfoItem {
     }
 
 
-.layout-tv paper-slider.noKnob #sliderKnob {
-    display: none;
-}
-
 .verticalSection {
     margin-bottom: 6.5vh;
 }
@@ -486,7 +482,7 @@ i.mediaInfoItem {
     }
 
 .mainSection .itemPageButtons button {
-    padding: .45em .8em .55em;
+    padding: .6em 1.2em .6em;
     text-transform: none;
     margin: 0 .15em 0 0;
 }

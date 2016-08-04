@@ -50,11 +50,11 @@ select[is="emby-select"], input[is="emby-input"] {
     border-bottom-color: rgb(115, 115, 115);
 }
 
-.checkboxLabel, paper-textarea label, .selectLabelUnfocused {
+.checkboxLabel, .selectLabelUnfocused {
     color: #bbb !important;
 }
 
-.inputLabel, .textareaLabel {
+.inputLabel, .textareaLabelUnfocused {
     color: #bbb;
 }
 
@@ -83,7 +83,7 @@ select[is="emby-select"], input[is="emby-input"] {
     background-color: #333;
 }
 
-.card[focused]:not(.round) .cardBox, .card:focus:not(.round) .cardBox {
+.card:focus:not(.round) .cardBox {
     border-color: #52B54B;
     /*border-color: rgba(0, 0, 0, .6);*/
 }
