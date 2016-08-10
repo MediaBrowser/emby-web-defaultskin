@@ -43,7 +43,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
                 userdataButtons.fill({
                     element: view.querySelector('.userDataIcons'),
-                    buttonClass: 'xlargePaperIconButton',
+                    iconCssClass: 'xlargePaperIconButton',
                     item: item,
                     includePlayed: false
                 });

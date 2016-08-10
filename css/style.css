@@ -482,7 +482,7 @@ i.mediaInfoItem {
     }
 
 .mainSection .itemPageButtons button {
-    padding: .6em 1.2em .6em;
+    padding: .5em 1.2em;
     text-transform: none;
     margin: 0 .15em 0 0;
 }
@@ -495,25 +495,6 @@ button.mini {
     display: flex;
 }
 
-i.mediumSizeIcon {
-    height: 3.7vh !important;
-    width: 3.7vh !important;
-    font-size: 3.7vh !important;
-}
-
-i.largeIcon {
-    height: 4.3vh !important;
-    width: 4.3vh !important;
-    font-size: 4.3vh !important;
-}
-
-img.largeIcon {
-    height: 4.3vh !important;
-    width: 4.3vh !important;
-}
-
 .xlargePaperIconButton {
-    height: 5.8vh !important;
-    width: 5.8vh !important;
-    font-size: 5.8vh !important;
+    font-size: 2.3em !important;
 }

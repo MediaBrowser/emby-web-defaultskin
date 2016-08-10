@@ -148,6 +148,10 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
             elem.classList.remove('hide');
 
+            if (!elem.animate) {
+                return;
+            }
+
             requestAnimationFrame(function () {
 
                 var keyframes = [
@@ -164,15 +168,22 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 return;
             }
 
+            var afterAnimation = function () {
+                elem.classList.add('hide');
+            };
+
+            if (!elem.animate) {
+                afterAnimation();
+                return;
+            }
+
             requestAnimationFrame(function () {
 
                 var keyframes = [
                   { transform: 'translate3d(0,0,0)', opacity: '1', offset: 0 },
                   { transform: 'translate3d(0,-100%,0)', opacity: '.3', offset: 1 }];
                 var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing).onfinish = function () {
-                    elem.classList.add('hide');
-                };
+                elem.animate(keyframes, timing).onfinish = afterAnimation;
             });
         }
 
@@ -185,15 +196,22 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             _osdOpen = true;
             elem.classList.remove('hide');
 
+            var afterAnimation = function () {
+                focusManager.focus(elem.querySelector('.btnPause'));
+            };
+
+            if (!elem.animate) {
+                afterAnimation();
+                return;
+            }
+
             requestAnimationFrame(function () {
 
                 var keyframes = [
                   { transform: 'translate3d(0,100%,0)', opacity: '.3', offset: 0 },
                   { transform: 'translate3d(0,0,0)', opacity: '1', offset: 1 }];
                 var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing).onfinish = function () {
-                    focusManager.focus(elem.querySelector('.btnPause'));
-                };
+                elem.animate(keyframes, timing).onfinish = afterAnimation;
             });
         }
 
@@ -203,16 +221,23 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 return;
             }
 
+            var afterAnimation = function () {
+                elem.classList.add('hide');
+                _osdOpen = false;
+            };
+
+            if (!elem.animate) {
+                afterAnimation();
+                return;
+            }
+
             requestAnimationFrame(function () {
 
                 var keyframes = [
                   { transform: 'translate3d(0,0,0)', opacity: '1', offset: 0 },
                   { transform: 'translate3d(0,100%,0)', opacity: '0', offset: 1 }];
                 var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing).onfinish = function () {
-                    elem.classList.add('hide');
-                    _osdOpen = false;
-                };
+                elem.animate(keyframes, timing).onfinish = afterAnimation;
             });
         }
 

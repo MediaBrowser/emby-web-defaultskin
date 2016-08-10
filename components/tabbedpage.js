@@ -79,24 +79,25 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
         self.bodyScroller.slideTo(0, true);
 
-        page.querySelector('.contentScrollSlider').innerHTML = '';
+        var contentScrollSlider = page.querySelector('.contentScrollSlider');
+        contentScrollSlider.innerHTML = '';
         var promise = self.loadViewContent.call(self, page, id, btn.getAttribute('data-type'));
 
         // Only enable the fade if native WebAnimations are supported
         if (promise && browser.animate) {
             promise.then(function () {
-                fadeInRight(page.querySelector('.contentScrollSlider'));
+                fadeInRight(contentScrollSlider);
             });
         }
     }
 
-    function fadeInRight(elem, iterations) {
+    function fadeInRight(elem) {
 
         var translateX = Math.round(window.innerWidth / 100);
         var keyframes = [
           { opacity: '0', transform: 'translate3d(' + translateX + 'px, 0, 0)', offset: 0 },
           { opacity: '1', transform: 'none', offset: 1 }];
-        var timing = { duration: 300, iterations: iterations };
+        var timing = { duration: 300, iterations: 1 };
         elem.animate(keyframes, timing);
     }
 

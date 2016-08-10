@@ -177,8 +177,7 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                     Emby.Models.item(id).then(function (item) {
 
                         if (options.enableBackdrops) {
-                            // too slow on tv browsers
-                            if (!browser.tv && !browser.xboxOne) {
+                            if (!browser.slow && !browser.xboxOne) {
                                 backdrop.setBackdrop(item);
                             }
                         }

@@ -404,12 +404,12 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             if (user.PrimaryImageTag) {
 
-                headerUserButton.innerHTML = '<img class="largeIcon" src="' + Emby.Models.userImageUrl(user, {
+                headerUserButton.innerHTML = '<img src="' + Emby.Models.userImageUrl(user, {
                     height: 38
                 }) + '" />';
 
             } else {
-                headerUserButton.innerHTML = '<i class="largeIcon md-icon">person</i>';
+                headerUserButton.innerHTML = '<i class="md-icon">person</i>';
             }
 
             document.querySelector('.headerUserButton').classList.remove('hide');

@@ -1177,9 +1177,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                     userdataButtons.fill({
                         element: view.querySelector(userDataIconsSelector),
-                        buttonClass: 'mediumSizeIcon',
                         item: item,
-                        style: 'fab'
+                        style: 'fab-mini'
                     });
 
                     var apiClient = connectionManager.getApiClient(item.ServerId);

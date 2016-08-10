@@ -42,12 +42,8 @@ a {
     color: #aaa;
 }
 
-.mdl-textfield__input {
+.emby-select, .emby-input {
     border-bottom-color: rgb(115, 115, 115) !important;
-}
-
-select[is="emby-select"], input[is="emby-input"] {
-    border-bottom-color: rgb(115, 115, 115);
 }
 
 .checkboxLabel, .selectLabelUnfocused {
@@ -58,23 +54,15 @@ select[is="emby-select"], input[is="emby-input"] {
     color: #bbb;
 }
 
-.mdl-textfield__label {
-    color: #bbb;
-}
-
-.mdl-textfield--floating-label.is-focused .mdl-textfield__label, .mdl-textfield--floating-label.is-dirty .mdl-textfield__label, .mdl-textfield--floating-label.has-placeholder .mdl-textfield__label {
-    color: #52B54B !important;
-}
-
 .checkboxOutline {
     border-color: #bbb;
 }
 
-[is="emby-button"].raised {
+.emby-button.raised {
     background: #404040;
 }
 
-[is="emby-button"]:focus:not(.btnUserViewHeader) {
+.emby-button:focus:not(.btnUserViewHeader) {
     background: #52B54B;
     color: #fff;
 }

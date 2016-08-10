@@ -130,28 +130,6 @@
     height: 195px !important;
 }
 
-i.largeIcon {
-    height: 36px !important;
-    width: 36px !important;
-    font-size: 36px !important;
-}
-
-img.largeIcon {
-    height: 36px !important;
-    width: 36px !important;
-}
-
-i.mediumSizeIcon, .mediumSizeIcon i {
-    width: 32px;
-    height: 32px;
-}
-
-.xlargePaperIconButton {
-    height: 40px !important;
-    width: 40px !important;
-    font-size: 40px !important;
-}
-
 .actionSheetScroller, .actionSheetContent, button.actionSheetMenuItem {
     display: block !important;
     text-align: center;
@@ -202,29 +180,6 @@ i.mediumSizeIcon, .mediumSizeIcon i {
 
     .wideSpotlightCard .cardImageContainer {
         height: 456px !important;
-    }
-
-    i.largeIcon {
-        height: 48px !important;
-        width: 48px !important;
-        font-size: 48px !important;
-    }
-
-    img.largeIcon {
-        height: 48px !important;
-        width: 48px !important;
-    }
-
-    i.mediumSizeIcon {
-        width: 40px !important;
-        height: 40px !important;
-        font-size: 40px !important;
-    }
-
-    .xlargePaperIconButton {
-        height: 64px !important;
-        width: 64px !important;
-        font-size: 64px !important;
     }
 }
 
