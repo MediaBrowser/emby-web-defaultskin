@@ -36,16 +36,8 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
             }
         };
 
-        // Only use the fade animation if native support for WebAnimations is present
-        if (browser.animate /*&& cardImageContainer.style.backgroundImage*/) {
-            var keyframes = [
-                    { opacity: '0', offset: 0 },
-                    { opacity: '1', offset: 1 }];
-            var timing = { duration: 900, iterations: 1 };
-            newCardImageContainer.animate(keyframes, timing).onfinish = onAnimationFinished;
-        } else {
-            onAnimationFinished();
-        }
+        newCardImageContainer.classList.add('spotlightFadeIn');
+        setTimeout(onAnimationFinished, 1000);
     }
 
     function startSpotlight(self, card, items, width) {
@@ -62,7 +54,7 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
 
         var index = 1;
         // Use a higher interval for browsers that don't perform as well
-        var intervalMs = browser.animate ? 10000 : 30000;
+        var intervalMs = browser.slow ? 30000 : 10000;
 
         self.interval = setInterval(function () {
 

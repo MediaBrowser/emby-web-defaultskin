@@ -297,6 +297,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             };
         }
 
+        function hasTrailer(item) {
+            return item.LocalTrailerCount || (item.RemoteTrailers || []).length;
+        }
+
         function renderDetails(view, item, user) {
 
             var mainSection = view.querySelector('.mainSection');
@@ -333,7 +337,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 overviewElem.classList.add('hide');
             }
 
-            if (Emby.Models.hasTrailer(item)) {
+            if (hasTrailer(item)) {
                 view.querySelector('.btnTrailer').classList.remove('hide');
             } else {
                 view.querySelector('.btnTrailer').classList.add('hide');

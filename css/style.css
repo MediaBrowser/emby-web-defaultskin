@@ -498,3 +498,19 @@ button.mini {
 .xlargePaperIconButton {
     font-size: 2.3em !important;
 }
+
+.spotlightFadeIn {
+    animation-duration: 900ms;
+    animation-name: spotlightFadeIn;
+    animation-timing-function: ease-out;
+}
+
+@keyframes spotlightFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

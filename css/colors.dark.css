@@ -67,11 +67,11 @@ a {
     color: #fff;
 }
 
-.card:not(.round) .cardFooter {
+.cardFooter:not(.cardFooter-round) {
     background-color: #333;
 }
 
-.card:focus:not(.round) .cardBox {
+.card:focus:not(.card-round) .cardBox {
     border-color: #52B54B;
     /*border-color: rgba(0, 0, 0, .6);*/
 }
