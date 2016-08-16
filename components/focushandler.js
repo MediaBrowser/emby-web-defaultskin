@@ -178,7 +178,7 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
 
                         if (options.enableBackdrops) {
                             if (!browser.slow && !browser.xboxOne) {
-                                backdrop.setBackdrop(item);
+                                //backdrop.setBackdrop(item);
                             }
                         }
                         setSelectedInfo(card, item);

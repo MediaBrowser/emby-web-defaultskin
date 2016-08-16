@@ -482,7 +482,7 @@ i.mediaInfoItem {
     }
 
 .mainSection .itemPageButtons button {
-    padding: .5em 1.2em;
+    padding: .5em 1em;
     text-transform: none;
     margin: 0 .15em 0 0;
 }
@@ -499,18 +499,14 @@ button.mini {
     font-size: 2.3em !important;
 }
 
-.spotlightFadeIn {
-    animation-duration: 900ms;
-    animation-name: spotlightFadeIn;
-    animation-timing-function: ease-out;
+.dimunselected .card .cardImageContainer {
+    -webkit-filter: brightness(50%);
+    filter: brightness(50%);
+    transition: filter, -webkit-filter 600ms ease-out !important;
 }
 
-@keyframes spotlightFadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+.dimunselected .card:focus .cardImageContainer {
+    -webkit-filter: initial;
+    filter: initial;
+    transition: filter, -webkit-filter 600ms ease-out !important;
 }

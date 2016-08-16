@@ -93,9 +93,8 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
     function fadeInRight(elem) {
 
-        var translateX = Math.round(window.innerWidth / 100);
         var keyframes = [
-          { opacity: '0', transform: 'translate3d(' + translateX + 'px, 0, 0)', offset: 0 },
+          { opacity: '0', transform: 'translate3d(1%, 0, 0)', offset: 0 },
           { opacity: '1', transform: 'none', offset: 1 }];
         var timing = { duration: 300, iterations: 1 };
         elem.animate(keyframes, timing);
@@ -239,7 +238,6 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
                 dragHandle: 1,
                 dynamicHandle: 1,
                 clickBar: 1,
-                //centerOffset: window.innerWidth * .05,
                 scrollWidth: 500000
             };
 
