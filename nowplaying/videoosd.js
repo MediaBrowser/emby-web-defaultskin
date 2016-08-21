@@ -1,5 +1,43 @@
 define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'scrollStyles'], function (playbackManager, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager) {
 
+    function seriesImageUrl(item, options) {
+
+        if (item.Type != 'Episode') {
+            return null;
+        }
+
+        options = options || {};
+        options.type = options.type || "Primary";
+
+        if (options.type == 'Primary') {
+
+            if (item.SeriesPrimaryImageTag) {
+
+                options.tag = item.SeriesPrimaryImageTag;
+
+                return connectionManager.getApiClient(item.ServerId).getScaledImageUrl(item.SeriesId, options);
+            }
+        }
+
+        if (options.type == 'Thumb') {
+
+            if (item.SeriesThumbImageTag) {
+
+                options.tag = item.SeriesThumbImageTag;
+
+                return connectionManager.getApiClient(item.ServerId).getScaledImageUrl(item.SeriesId, options);
+            }
+            if (item.ParentThumbImageTag) {
+
+                options.tag = item.ParentThumbImageTag;
+
+                return connectionManager.getApiClient(item.ServerId).getScaledImageUrl(item.ParentThumbItemId, options);
+            }
+        }
+
+        return null;
+    }
+
     return function (view, params) {
 
         var self = this;
@@ -97,8 +135,8 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
             if (item) {
 
-                var imgUrl = Emby.Models.seriesImageUrl(item, { type: 'Primary' }) ||
-                    Emby.Models.seriesImageUrl(item, { type: 'Thumb' }) ||
+                var imgUrl = seriesImageUrl(item, { type: 'Primary' }) ||
+                    seriesImageUrl(item, { type: 'Thumb' }) ||
                     Emby.Models.imageUrl(item, { type: 'Primary' });
 
                 if (imgUrl) {

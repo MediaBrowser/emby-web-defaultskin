@@ -84,9 +84,9 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
         });
     }
 
-    function gotoTvView(tab, parentId) {
+    function gotoTvView(tab, parentId, serverId) {
 
-        Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'livetv/livetv.html?tab=' + tab));
+        Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'livetv/livetv.html?tab=' + tab + '&serverId=' + serverId));
     }
 
     function view(element, apiClient, parentId, autoFocus) {
@@ -153,11 +153,11 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
         });
 
         element.querySelector('.recordingsCard').addEventListener('click', function () {
-            gotoTvView('recordings', parentId);
+            gotoTvView('recordings', parentId, apiClient.serverId());
         });
 
         element.querySelector('.scheduledLiveTvCard').addEventListener('click', function () {
-            gotoTvView('scheduled', parentId);
+            gotoTvView('scheduled', parentId, apiClient.serverId());
         });
 
         self.destroy = function () {

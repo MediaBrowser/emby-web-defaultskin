@@ -164,7 +164,9 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                     shape: 'auto',
                     rows: 3,
                     action: 'none',
-                    scalable: false
+                    scalable: false,
+                    showTitle: true,
+                    overlayText: true
                 },
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),

@@ -392,6 +392,20 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             }
         }
 
+        function userImageUrl(user, options) {
+
+            options = options || {};
+            options.type = "Primary";
+
+            if (user.PrimaryImageTag) {
+
+                options.tag = user.PrimaryImageTag;
+                return connectionManager.getApiClient(user.ServerId).getUserImageUrl(user.Id, options);
+            }
+
+            return null;
+        }
+
         function onLocalUserSignedIn(e, user) {
 
             document.querySelector('.headerLogo').classList.add('hide');
@@ -404,7 +418,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             if (user.PrimaryImageTag) {
 
-                headerUserButton.innerHTML = '<img src="' + Emby.Models.userImageUrl(user, {
+                headerUserButton.innerHTML = '<img src="' + userImageUrl(user, {
                     height: 38
                 }) + '" />';
 

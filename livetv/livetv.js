@@ -1,4 +1,4 @@
-define(['loading', 'alphaPicker', './../components/horizontallist', './../components/tabbedpage', 'backdrop', 'emby-itemscontainer'], function (loading, alphaPicker, horizontalList, tabbedPage, backdrop) {
+define(['loading', 'alphaPicker', './../components/horizontallist', './../components/tabbedpage', 'backdrop', 'connectionManager', 'emby-itemscontainer'], function (loading, alphaPicker, horizontalList, tabbedPage, backdrop, connectionManager) {
 
     function renderTabs(view, initialTabId, pageInstance, params) {
 
@@ -66,11 +66,16 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
 
             itemsContainer: page.querySelector('.contentScrollSlider'),
             getItemsMethod: function (startIndex, limit) {
-                return Emby.Models.liveTvChannels({
+
+                var apiClient = connectionManager.getApiClient(pageParams.serverId);
+                return apiClient.getLiveTvChannels({
                     StartIndex: startIndex,
                     Limit: limit,
                     SortBy: "DateCreated,SortName",
-                    SortOrder: "Descending"
+                    SortOrder: "Descending",
+                    UserId: apiClient.getCurrentUserId(),
+                    Fields: "PrimaryImageAspectRatio",
+                    ImageTypeLimit: 1
                 });
             },
             listCountElement: page.querySelector('.listCount'),
