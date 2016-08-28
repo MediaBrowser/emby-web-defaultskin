@@ -44,6 +44,7 @@
     "RecommendationDirectedBy": "R\u00e9alis\u00e9 par {0}",
     "RecommendationStarring": "Avec {0}",
     "SimilarTo": "Similaire \u00e0 {0}",
+    "MoreFrom": "More from {0}",
     "AlbumArtists": "Artistes sur l'album",
     "LiveTV": "TV en direct",
     "TrackCount": "{0} pistes",
@@ -86,5 +87,6 @@
     "SkinName": "Skin par d\u00e9faut",
     "DimUnselectedPosters": "Dim les affiches non s\u00e9lectionn\u00e9s",
     "Songs": "Chansons",
-    "Record": "Enregistrer"
+    "Record": "Enregistrer",
+    "Items": "Items"
 }

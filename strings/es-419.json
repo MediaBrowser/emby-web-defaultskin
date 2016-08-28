@@ -44,6 +44,7 @@
     "RecommendationDirectedBy": "Dirigido por {0}",
     "RecommendationStarring": "Protagonizada por {0}",
     "SimilarTo": "Similar a {0}",
+    "MoreFrom": "Mas de {0}",
     "AlbumArtists": "Artista del \u00c1lbum",
     "LiveTV": "TV en vivo",
     "TrackCount": "{0} pistas",
@@ -86,5 +87,6 @@
     "SkinName": "Tema por defecto",
     "DimUnselectedPosters": "Opacar posters no seleccionados",
     "Songs": "Canciones",
-    "Record": "Grabar"
+    "Record": "Grabar",
+    "Items": "Items"
 }

@@ -18,7 +18,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'auto',
-                showParentTitle: true,
+                showParentTitleOrTitle: true,
                 coverImage: true,
                 rows: {
                     portrait: 2,

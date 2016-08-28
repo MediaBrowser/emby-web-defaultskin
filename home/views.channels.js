@@ -1,6 +1,6 @@
 define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
 
-    function loadChannels(element, parentId, autoFocus) {
+    function loadChannels(element, parentId, apiClient, autoFocus) {
 
         return Emby.Models.channels().then(function (result) {
 
@@ -26,12 +26,12 @@ define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
             latestContainer.innerHTML = '';
 
             return Promise.all(result.Items.map(function (i) {
-                return loadLatest(latestContainer, i);
+                return loadLatest(latestContainer, i, apiClient);
             }));
         });
     }
 
-    function loadLatest(element, channel) {
+    function loadLatest(element, channel, apiClient) {
 
         var html = '\
 <div class="sectionTitle">'+ Globalize.translate('LatestFromValue', channel.Name) + '</div>\
@@ -46,12 +46,15 @@ define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
         element.appendChild(section);
 
         var options = {
-
             Limit: 6,
-            ChannelIds: channel.Id
+            ChannelIds: channel.Id,
+            UserId: apiClient.getCurrentUserId(),
+            Filters: "IsUnplayed",
+            Fields: "PrimaryImageAspectRatio",
+            ImageTypeLimit: 1
         };
 
-        return Emby.Models.latestChannelItems(options).then(function (result) {
+        return apiClient.getLatestChannelItems(options).then(function (result) {
 
             cardBuilder.buildCards(result.Items, {
                 parentContainer: section,
@@ -73,7 +76,7 @@ define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
         var self = this;
 
         self.loadData = function () {
-            return loadChannels(element, parentId, autoFocus);
+            return loadChannels(element, parentId, apiClient, autoFocus);
         };
 
         self.destroy = function () {

@@ -1,5 +1,5 @@
 {
-    "ButtonEditRecording": "Edit Recording",
+    "ButtonEditRecording": "Bearbeite Aufnahme",
     "Episodes": "Episoden",
     "OtherVideos": "Andere Videos",
     "ShowScenesOnDetailScreensFor": "Zeige Kapitel auf den Detailseiten von",
@@ -44,6 +44,7 @@
     "RecommendationDirectedBy": "Unter der Regie von {0}",
     "RecommendationStarring": "In der Hauptrolle {0}",
     "SimilarTo": "\u00c4hnlich zu {0}",
+    "MoreFrom": "Mehr von {0}",
     "AlbumArtists": "Album-Interpreten",
     "LiveTV": "Live TV",
     "TrackCount": "{0} Tracks",
@@ -86,5 +87,6 @@
     "SkinName": "Standard Skin",
     "DimUnselectedPosters": "Dimme nicht ausgew\u00e4lte Kacheln",
     "Songs": "Titel",
-    "Record": "Aufnahme"
+    "Record": "Aufnahme",
+    "Items": "Eintr\u00e4ge"
 }

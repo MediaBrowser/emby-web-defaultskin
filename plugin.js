@@ -75,7 +75,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             var files = [];
 
-            var languages = ['de', 'en-GB', 'en-US', 'fr', 'it', 'nl', 'pt-BR', 'pt-PT', 'ru', 'sv'];
+            var languages = ['de', 'en-GB', 'en-US', 'fr', 'it', 'nl', 'pl', 'pt-BR', 'pt-PT', 'ru', 'sv'];
 
             return languages.map(function (i) {
                 return {
@@ -210,19 +210,22 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 supportsThemeMedia: true
             });
 
-            routes.push({
-                path: 'settings/settings.html',
-                transition: 'slide',
-                controller: self.id + '/settings/settings',
-                dependencies: [
-                    'emby-select',
-                    'emby-checkbox'
-                ],
-                type: 'settings',
-                category: 'Display',
-                thumbImage: '',
-                title: 'Default Skin'
-            });
+            // enable later after app approvals
+            if (!browser.tv) {
+                routes.push({
+                    path: 'settings/settings.html',
+                    transition: 'slide',
+                    controller: self.id + '/settings/settings',
+                    dependencies: [
+                        'emby-select',
+                        'emby-checkbox'
+                    ],
+                    type: 'settings',
+                    category: 'Display',
+                    thumbImage: '',
+                    title: 'Default Skin'
+                });
+            }
 
             return routes;
         };

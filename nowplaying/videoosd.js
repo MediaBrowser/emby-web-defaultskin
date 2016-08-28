@@ -234,12 +234,9 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             _osdOpen = true;
             elem.classList.remove('hide');
 
-            var afterAnimation = function () {
-                focusManager.focus(elem.querySelector('.btnPause'));
-            };
+            focusManager.focus(elem.querySelector('.btnPause'));
 
             if (!elem.animate) {
-                afterAnimation();
                 return;
             }
 
@@ -249,7 +246,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                   { transform: 'translate3d(0,100%,0)', opacity: '.3', offset: 0 },
                   { transform: 'translate3d(0,0,0)', opacity: '1', offset: 1 }];
                 var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing).onfinish = afterAnimation;
+                elem.animate(keyframes, timing);
             });
         }
 
@@ -310,13 +307,17 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             switch (e.detail.command) {
 
                 case 'left':
-                    if (!isOsdOpen()) {
+                    if (isOsdOpen()) {
+                        showOsd();
+                    } else {
                         e.preventDefault();
                         playbackManager.previousChapter();
                     }
                     break;
                 case 'right':
-                    if (!isOsdOpen()) {
+                    if (isOsdOpen()) {
+                        showOsd();
+                    } else {
                         e.preventDefault();
                         playbackManager.nextChapter();
                     }
@@ -704,8 +705,27 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         nowPlayingPositionSlider.addEventListener('change', function () {
 
+            stopScenePickerTimer();
             playbackManager.seekPercent(parseFloat(this.value), currentPlayer);
         });
+
+        nowPlayingPositionSlider.getBubbleText = function (value) {
+
+            var state = playbackManager.getPlayerState(currentPlayer);
+            var playState = state.PlayState || {};
+            var nowPlayingItem = state.NowPlayingItem || {};
+
+            if (nowPlayingItem.RunTimeTicks) {
+
+                var ticks = nowPlayingItem.RunTimeTicks;
+                ticks /= 100;
+                ticks *= value;
+
+                return datetime.getDisplayRunningTime(ticks);
+            }
+
+            return '--:--';
+        };
 
         view.querySelector('.btnPreviousTrack').addEventListener('click', function () {
 
@@ -784,7 +804,9 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         var hideScenePickerTimeout;
         var chapterPcts = [];
-        function showScenePicker(progressPct) {
+        function showScenePicker() {
+
+            var progressPct = nowPlayingPositionSlider.value;
 
             if (!isScenePickerRendered) {
                 isScenePickerRendered = true;
@@ -803,9 +825,27 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             fadeOut(scenePicker);
         }
 
+        var showScenePickerTimeout;
+        function startScenePickerTimer() {
+            if (!showScenePickerTimeout) {
+                showScenePickerTimeout = setTimeout(showScenePicker, 100);
+            }
+        }
+
+        function stopScenePickerTimer() {
+            if (showScenePickerTimeout) {
+                clearTimeout(showScenePickerTimeout);
+                showScenePickerTimeout = null;
+            }
+        }
+
         nowPlayingPositionSlider.addEventListener('input', function () {
 
-            showScenePicker(this.value);
+            if (scenePicker.classList.contains('hide')) {
+                startScenePickerTimer();
+            } else {
+                showScenePicker();
+            }
         });
 
         function onViewHideStopPlayback() {
@@ -892,24 +932,6 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 }
             }
         }
-
-        nowPlayingPositionSlider.getBubbleText = function (value) {
-
-            var state = playbackManager.getPlayerState(currentPlayer);
-            var playState = state.PlayState || {};
-            var nowPlayingItem = state.NowPlayingItem || {};
-
-            if (nowPlayingItem.RunTimeTicks) {
-
-                var ticks = nowPlayingItem.RunTimeTicks;
-                ticks /= 100;
-                ticks *= value;
-
-                return datetime.getDisplayRunningTime(ticks);
-            }
-
-            return '--:--';
-        };
 
     }
 

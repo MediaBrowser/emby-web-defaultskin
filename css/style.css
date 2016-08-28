@@ -2,10 +2,6 @@ a {
     text-decoration: none;
 }
 
-.hide {
-    display: none !important;
-}
-
 .headerLogo {
     background-position: left center;
     background-repeat: no-repeat;
@@ -106,7 +102,7 @@ a {
     display: none !important;
 }
 
-.pageContainer, .externalPageContainer {
+.pageContainer {
     padding-top: 11vh;
     overflow: hidden;
     contain: layout style;

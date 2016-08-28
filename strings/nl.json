@@ -44,6 +44,7 @@
     "RecommendationDirectedBy": "Geregisseerd door {0}",
     "RecommendationStarring": "In de hoofdrol {0}",
     "SimilarTo": "Vergelijkbaar met {0}",
+    "MoreFrom": "More from {0}",
     "AlbumArtists": "Album Artiesten",
     "LiveTV": "Live TV",
     "TrackCount": "{0} nummers",
@@ -86,5 +87,6 @@
     "SkinName": "Default Skin",
     "DimUnselectedPosters": "Niet geselecteerde posters donkerder maken",
     "Songs": "Songs",
-    "Record": "Record"
+    "Record": "Record",
+    "Items": "Items"
 }

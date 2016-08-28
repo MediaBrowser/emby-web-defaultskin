@@ -288,7 +288,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 queue: false,
                 playAllFromHere: false,
                 queueAllFromHere: false,
-                sync: false,
                 positionTo: button
             };
         }

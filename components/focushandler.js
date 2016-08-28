@@ -15,15 +15,10 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
             var zoomOutEase = 'ease-in';
             var zoomDuration = 200;
             var lastFocus = 0;
-            var requireFocusForZoom = true;
 
             if (layoutManager.tv) {
                 parent.addEventListener('focus', onFocusIn, true);
                 parent.addEventListener('blur', onFocusOut, true);
-            } else if (layoutManager.desktop) {
-                parent.addEventListener('mouseenter', onFocusIn, true);
-                parent.addEventListener('mouseleave', onFocusOut, true);
-                //requireFocusForZoom = false;
             }
 
             var selectedItemInfoInner = options.selectedItemInfoInner;
@@ -97,20 +92,21 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 if (selectedMediaInfoTimeout) {
                     clearTimeout(selectedMediaInfoTimeout);
                 }
-                var delay = 1000;
-                selectedMediaInfoTimeout = setTimeout(onSelectedMediaInfoTimeout, delay);
+
+                //selectedMediaInfoTimeout = setTimeout(onSelectedMediaInfoTimeout, 500);
             }
 
             function onZoomTimeout() {
                 var focused = focusedElement
-                if (focused && (!requireFocusForZoom || document.activeElement == focused)) {
+                if (focused && document.activeElement == focused) {
                     zoomIn(focused);
+                    setSelectedItemInfo(focused);
                 }
             }
 
             function onSelectedMediaInfoTimeout() {
                 var focused = focusedElement
-                if (focused && (!requireFocusForZoom || document.activeElement == focused)) {
+                if (focused && document.activeElement == focused) {
                     setSelectedItemInfo(focused);
                 }
             }
@@ -126,10 +122,6 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 }
 
                 var card = elem;
-
-                if (requireFocusForZoom && document.activeElement != card) {
-                    return;
-                }
 
                 var cardBox = card.querySelector('.cardBox');
 
@@ -260,19 +252,17 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 }
             }
 
-            function fadeIn(elem, iterations) {
+            function fadeIn(elem) {
 
                 var keyframes = [
                   { opacity: '0', offset: 0 },
                   { opacity: '1', offset: 1 }];
-                var timing = { duration: 300, iterations: iterations };
+                var timing = { duration: 140, iterations: 1, easing: 'ease-out' };
                 return elem.animate(keyframes, timing);
             }
 
             self.destroy = function () {
 
-                parent.removeEventListener('mouseenter', onFocusIn, true);
-                parent.removeEventListener('mouseleave', onFocusOut, true);
                 parent.removeEventListener('focus', onFocusIn, true);
                 parent.removeEventListener('blur', onFocusOut, true);
             };

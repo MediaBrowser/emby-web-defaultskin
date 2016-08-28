@@ -100,7 +100,8 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
                 scalable: false,
                 overlayText: true,
                 showTitle: false,
-                cardLayout: false
+                cardLayout: false,
+                showCurrentProgram: false
             }
         });
 
@@ -138,7 +139,9 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
                     square: 3,
                     backdrop: 3
                 },
-                scalable: false
+                scalable: false,
+                showParentTitleOrTitle: true,
+                overlayText: true
             }
         });
 

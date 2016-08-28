@@ -44,6 +44,7 @@
     "RecommendationDirectedBy": "Regisserad av {0}",
     "RecommendationStarring": "I rollerna: {0}",
     "SimilarTo": "Liknar {0}",
+    "MoreFrom": "More from {0}",
     "AlbumArtists": "Albumartister",
     "LiveTV": "Live-TV",
     "TrackCount": "{0} sp\u00e5r",
@@ -86,5 +87,6 @@
     "SkinName": "Default Skin",
     "DimUnselectedPosters": "Dim unselected posters",
     "Songs": "Songs",
-    "Record": "Record"
+    "Record": "Record",
+    "Items": "Items"
 }

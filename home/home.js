@@ -161,8 +161,7 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
             apiClient.getUserViews({}, apiClient.getCurrentUserId()).then(function (result) {
 
                 var tabbedPageInstance = new tabbedPage(view, {
-                    handleFocus: true,
-                    immediateSpeed: 100
+                    handleFocus: true
                 });
                 tabbedPageInstance.loadViewContent = loadViewContent;
                 tabbedPageInstance.renderTabs(result.Items);

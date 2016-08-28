@@ -1,5 +1,5 @@
 {
-    "ButtonEditRecording": "Edit Recording",
+    "ButtonEditRecording": "Editar Grava\u00e7\u00e3o",
     "Episodes": "Epis\u00f3dios",
     "OtherVideos": "Outros v\u00eddeos",
     "ShowScenesOnDetailScreensFor": "Exibir as cenas nas telas de detalhes para",
@@ -44,6 +44,7 @@
     "RecommendationDirectedBy": "Dirigido por {0}",
     "RecommendationStarring": "Estrelando {0}",
     "SimilarTo": "Similar a {0}",
+    "MoreFrom": "Mais de {0}",
     "AlbumArtists": "Artistas do \u00c1lbum",
     "LiveTV": "TV ao Vivo",
     "TrackCount": "{0} faixas",
@@ -86,5 +87,6 @@
     "SkinName": "Skin Padr\u00e3o",
     "DimUnselectedPosters": "Escurecer capas n\u00e3o selecionadas",
     "Songs": "M\u00fasicas",
-    "Record": "Gravar"
+    "Record": "Gravar",
+    "Items": "Itens"
 }
