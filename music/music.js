@@ -171,7 +171,7 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
                 autoFocus: autoFocus,
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 selectedIndexElement: page.querySelector('.selectedIndex'),
                 scroller: scroller,
                 onRender: function () {
@@ -233,7 +233,7 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
                 autoFocus: autoFocus,
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 selectedIndexElement: page.querySelector('.selectedIndex'),
                 scroller: scroller,
                 onRender: function () {
@@ -277,7 +277,7 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                     rows: 3,
                     scalable: false
                 },
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 selectedIndexElement: page.querySelector('.selectedIndex'),
                 scroller: scroller,
                 onRender: function () {
@@ -314,7 +314,7 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                     rows: 3,
                     scalable: false
                 },
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 selectedIndexElement: page.querySelector('.selectedIndex'),
                 scroller: scroller,
                 onRender: function () {
@@ -352,7 +352,7 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                     rows: 3,
                     scalable: false
                 },
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 selectedIndexElement: page.querySelector('.selectedIndex'),
                 scroller: scroller,
                 onRender: function () {
@@ -390,7 +390,7 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                     rows: 3,
                     scalable: false
                 },
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 selectedIndexElement: page.querySelector('.selectedIndex'),
                 scroller: scroller,
                 onRender: function () {
@@ -416,7 +416,7 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
             self.focusHandler = new focusHandler({
                 parent: page.querySelector('.contentScrollSlider'),
                 scroller: scroller,
-                selectedItemInfoInner: page.querySelector('.selectedItemInfoInner')
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo')
             });
         }
 

@@ -89,7 +89,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             },
             listCountElement: view.querySelector('.listCount'),
             listNumbersElement: view.querySelector('.listNumbers'),
-            selectedItemInfoElement: view.querySelector('.selectedItemInfoInner'),
+            selectedItemInfoElement: view.querySelector('.selectedItemInfo'),
             selectedIndexElement: view.querySelector('.selectedIndex'),
             scroller: instance.scroller,
             cardOptions: {

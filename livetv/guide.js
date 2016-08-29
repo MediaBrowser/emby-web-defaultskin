@@ -37,10 +37,28 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
             }
         });
 
+        var focusTimeout;
+        var currentItemId;
+        function clearFocusTimeout() {
+            if (focusTimeout) {
+                clearTimeout(focusTimeout);
+            }
+        }
+
+        function onFocusTimeout() {
+            
+            Emby.Models.item(currentItemId).then(function (item) {
+
+                setSelectedInfo(item);
+                backdrop.setBackdrop(item);
+            });
+        }
+
         function onGuideFocus(e, detail) {
 
-            Emby.Models.item(detail.item.Id).then(setSelectedInfo);
-            backdrop.setBackdrop(detail.item);
+            clearFocusTimeout();
+            currentItemId = detail.item.Id;
+            focusTimeout = setTimeout(onFocusTimeout, 500);
         }
 
         function getTime(date) {

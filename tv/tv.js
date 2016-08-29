@@ -150,7 +150,7 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
                     indexBy: 'PremiereDate',
                     scalable: false
                 },
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 scroller: scroller,
                 onRender: function () {
                     if (resolve) {
@@ -183,7 +183,7 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
                 listCountElement: page.querySelector('.listCount'),
                 listNumbersElement: page.querySelector('.listNumbers'),
                 autoFocus: autoFocus,
-                selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
                 selectedIndexElement: page.querySelector('.selectedIndex'),
                 scroller: scroller,
                 onRender: function () {
@@ -262,7 +262,7 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
             self.focusHandler = new focusHandler({
                 parent: page.querySelector('.contentScrollSlider'),
                 scroller: scroller,
-                selectedItemInfoInner: page.querySelector('.selectedItemInfoInner')
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo')
             });
         }
 

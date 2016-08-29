@@ -268,13 +268,14 @@ i.mediaInfoItem {
 .selectedItemInfo {
     position: fixed;
     bottom: .5%;
-    left: 0;
+    left: 3.7vw;
     right: 10%;
     max-width: 60%;
     font-size: 84%;
     color: #ccc;
     /*position: relative;
     margin: auto;*/
+    display: flex;
 }
 
 .homePageContainer .selectedItemInfo {
@@ -302,19 +303,12 @@ i.mediaInfoItem {
         height: 2.96vh;
     }
 
-.selectedItemInfoInnerWithLogo {
-    padding-left: 18%;
-}
-
 .selectedItemInfoLogo {
-    position: absolute;
-    top: 12.5%;
     width: 16%;
-    bottom: 12.5%;
-    left: 0;
     background-repeat: no-repeat;
     background-position: right center;
     background-size: contain;
+    margin-right: 1em;
 }
 
 .selectedItemInfoInner > div {

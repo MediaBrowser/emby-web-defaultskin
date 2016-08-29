@@ -2,7 +2,13 @@ define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
 
     function loadChannels(element, parentId, apiClient, autoFocus) {
 
-        return Emby.Models.channels().then(function (result) {
+        return apiClient.getChannels({
+
+            UserId: apiClient.getCurrentUserId(),
+            Fields: "PrimaryImageAspectRatio",
+            ImageTypeLimit: 1
+
+        }).then(function (result) {
 
             var section = element.querySelector('.channelsSection');
 

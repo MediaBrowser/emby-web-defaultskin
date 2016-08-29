@@ -49,7 +49,7 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
         });
     }
 
-    function loadSpotlight(element, parentId) {
+    function loadSpotlight(instance, element, parentId) {
 
         var options = {
 
@@ -69,7 +69,7 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
 
             var card = element.querySelector('.wideSpotlightCard');
 
-            new spotlight(card, result.Items, 767);
+            instance.spotlight = new spotlight(card, result.Items, 767);
         });
     }
 
@@ -190,7 +190,7 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
 
             return Promise.all(promises);
         };
-        loadSpotlight(element, parentId);
+        loadSpotlight(self, element, parentId);
         loadImages(element, parentId);
 
         element.querySelector('.allMoviesCard').addEventListener('click', function () {
@@ -206,7 +206,10 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
         });
 
         self.destroy = function () {
-
+            if (self.spotlight) {
+                self.spotlight.destroy();
+                self.spotlight = null;
+            }
         };
     }
 

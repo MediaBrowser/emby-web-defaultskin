@@ -48,7 +48,25 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
         }
     }
 
-    function startSpotlight(self, card, items, width) {
+    function spotlight(card, items, width) {
+
+        var self = this;
+
+        itemShortcuts.on(card);
+
+        self.items = items;
+        self.card = card;
+        self.width = width;
+
+        self.start();
+    }
+
+    spotlight.prototype.start = function() {
+
+        var self = this;
+        var items = self.items;
+        var card = self.card;
+        var width = self.width;
 
         if (!items.length) {
             return;
@@ -60,41 +78,56 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
             return;
         }
 
-        var index = 1;
+        if (browser.slow) {
+            return;
+        }
+
+        self.index = 1;
         // Use a higher interval for browsers that don't perform as well
         var intervalMs = browser.animate ? 10000 : 30000;
 
-        self.interval = setInterval(function () {
+        self.interval = setInterval(self.onInterval.bind(self), intervalMs);
+    };
 
-            if (!document.body.contains(card)) {
-                clearInterval(self.interval);
-                return;
-            }
+    spotlight.prototype.onInterval = function () {
 
-            if (!visibleinviewport(card, false, 0)) {
-                // If it's not visible on screen, skip it
-                return;
-            }
+        var self = this;
+        var items = self.items;
+        var card = self.card;
+        var width = self.width;
 
-            if (index >= items.length) {
-                index = 0;
-            }
+        if (!document.body.contains(card)) {
+            clearInterval(self.interval);
+            return;
+        }
 
-            loadItemIntoSpotlight(card, items[index], width);
-            index++;
+        if (!visibleinviewport(card, false, 0)) {
+            // If it's not visible on screen, skip it
+            return;
+        }
 
-        }, intervalMs);
-    }
+        if (self.index >= items.length) {
+            self.index = 0;
+        }
 
-    function spotlight(card, items, width) {
+        loadItemIntoSpotlight(card, items[self.index], width);
+        self.index++;
+    };
+
+    spotlight.prototype.destroy = function () {
 
         var self = this;
 
-        itemShortcuts.off(card);
-        itemShortcuts.on(card);
+        itemShortcuts.off(self.card);
 
-        startSpotlight(self, card, items, width);
-    }
+        if (self.interval) {
+            clearInterval(self.interval);
+        }
+
+        self.interval = null;
+        self.items = null;
+        self.card = null;
+    };
 
     return spotlight;
 });

@@ -1,7 +1,34 @@
 define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 'scrollHelper', 'browser', 'layoutManager'],
     function (imageLoader, itemHelper, backdrop, mediaInfo, focusManager, scrollHelper, browser, layoutManager) {
 
-        return function (options) {
+        var enableAnimations = browser.animate || browser.edge;
+        var zoomInEase = 'ease-out';
+        var zoomOutEase = 'ease-in';
+        var zoomDuration = 200;
+
+        function zoomOut(elem, scaleSize) {
+
+            var keyframes = [
+            { transform: 'scale(' + scaleSize + ')  ', offset: 0 },
+            { transform: 'scale(1)', offset: 1 }
+            ];
+
+            if (elem.animate) {
+                var timing = { duration: zoomDuration, iterations: 1, fill: 'both', easing: zoomOutEase };
+                elem.animate(keyframes, timing);
+            }
+        }
+
+        function fadeIn(elem) {
+
+            var keyframes = [
+              { opacity: '0', offset: 0 },
+              { opacity: '1', offset: 1 }];
+            var timing = { duration: 140, iterations: 1, easing: 'ease-out' };
+            return elem.animate(keyframes, timing);
+        }
+
+        function focusHandler(options) {
 
             var self = this;
 
@@ -11,9 +38,6 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
             var currentAnimation;
             var isHorizontal = options.scroller ? options.scroller.options.horizontal : options.horizontal;
             var zoomScale = options.zoomScale || (isHorizontal ? '1.16' : '1.12');
-            var zoomInEase = 'ease-out';
-            var zoomOutEase = 'ease-in';
-            var zoomDuration = 200;
             var lastFocus = 0;
 
             if (layoutManager.tv) {
@@ -21,21 +45,13 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 parent.addEventListener('blur', onFocusOut, true);
             }
 
-            var selectedItemInfoInner = options.selectedItemInfoInner;
+            var selectedItemInfoElement = options.selectedItemInfoElement;
             var selectedIndexElement = options.selectedIndexElement;
             var selectedItemPanel;
 
-            var enableAnimations = function () {
-
-                if (browser.animate || browser.edge) {
-                    return true;
-                }
-
-                return false;
-            }();
-
             function onFocusIn(e) {
-                var focused = focusManager.focusableParent(e.target);
+
+                var focused = e.target;
                 focusedElement = focused;
 
                 if (focused) {
@@ -63,7 +79,13 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
             }
 
             function onFocusOut(e) {
-                clearSelectedItemInfo();
+
+                clearZoomTimer();
+                clearSelectedInfoTimer();
+
+                if (selectedItemInfoElement && selectedItemInfoElementHasContent) {
+                    requestAnimationFrame(clearSelectedItemInfo);
+                }
 
                 var focused = focusedElement;
                 focusedElement = null;
@@ -72,7 +94,7 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 zoomElement = null;
 
                 if (zoomed) {
-                    zoomOut(zoomed);
+                    zoomOut(zoomed, zoomScale);
                 }
 
                 if (currentAnimation) {
@@ -82,31 +104,38 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
             }
 
             var zoomTimeout;
-            var selectedMediaInfoTimeout;
-            function startZoomTimer() {
-
+            var selectedItemInfoTimeout;
+            function clearZoomTimer() {
                 if (zoomTimeout) {
                     clearTimeout(zoomTimeout);
                 }
-                zoomTimeout = setTimeout(onZoomTimeout, 50);
-                if (selectedMediaInfoTimeout) {
-                    clearTimeout(selectedMediaInfoTimeout);
+            }
+            function clearSelectedInfoTimer() {
+                if (selectedItemInfoTimeout) {
+                    clearTimeout(selectedItemInfoTimeout);
                 }
+            }
+            function startZoomTimer() {
 
-                //selectedMediaInfoTimeout = setTimeout(onSelectedMediaInfoTimeout, 500);
+                clearZoomTimer();
+                zoomTimeout = setTimeout(onZoomTimeout, 50);
+
+                if (selectedItemInfoElement) {
+                    clearSelectedInfoTimer();
+                    selectedItemInfoTimeout = setTimeout(onSelectedInfoTimeout, 500);
+                }
             }
 
             function onZoomTimeout() {
                 var focused = focusedElement
-                if (focused && document.activeElement == focused) {
+                if (focused) {
                     zoomIn(focused);
-                    setSelectedItemInfo(focused);
                 }
             }
 
-            function onSelectedMediaInfoTimeout() {
+            function onSelectedInfoTimeout() {
                 var focused = focusedElement
-                if (focused && document.activeElement == focused) {
+                if (focused) {
                     setSelectedItemInfo(focused);
                 }
             }
@@ -117,13 +146,9 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                     return;
                 }
 
-                if (elem.classList.contains('noScale')) {
-                    return;
-                }
-
                 var card = elem;
 
-                var cardBox = card.querySelector('.cardBox');
+                var cardBox = card.querySelector('.cardBox-focustransform');
 
                 if (!cardBox) {
                     return;
@@ -159,13 +184,14 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
 
             function setSelectedItemInfo(card) {
 
-                var id = card.getAttribute('data-id');
+                if (options.enableBackdrops !== false || selectedItemInfoElement) {
 
-                if (!id) {
-                    return;
-                }
+                    var id = card.getAttribute('data-id');
 
-                if (options.enableBackdrops !== false || selectedItemInfoInner) {
+                    if (!id) {
+                        return;
+                    }
+
                     Emby.Models.item(id).then(function (item) {
 
                         if (options.enableBackdrops) {
@@ -178,13 +204,22 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 }
             }
 
+            var selectedItemInfoElementHasContent;
             function setSelectedInfo(card, item) {
 
-                if (!selectedItemInfoInner) {
+                if (!selectedItemInfoElement) {
                     return;
                 }
 
                 var html = '';
+
+                var logoImageUrl = Emby.Models.logoImageUrl(item, {
+                });
+
+                if (logoImageUrl) {
+
+                    html += '<div class="selectedItemInfoLogo" style="background-image:url(\'' + logoImageUrl + '\');"></div>';
+                }
 
                 var mediaInfoHtml = mediaInfo.getPrimaryMediaInfoHtml(item);
 
@@ -210,61 +245,33 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                 //    html += '</div>';
                 //}
 
-                var logoImageUrl = Emby.Models.logoImageUrl(item, {
-                });
-
-                if (logoImageUrl) {
-                    selectedItemInfoInner.classList.add('selectedItemInfoInnerWithLogo');
-
-                    html += '<div class="selectedItemInfoLogo" style="background-image:url(\'' + logoImageUrl + '\');"></div>';
-
-                } else {
-                    selectedItemInfoInner.classList.remove('selectedItemInfoInnerWithLogo');
-                }
-
-                selectedItemInfoInner.innerHTML = html;
+                selectedItemInfoElement.innerHTML = html;
+                selectedItemInfoElementHasContent = true;
 
                 var rect = card.getBoundingClientRect();
-                selectedItemInfoInner.parentNode.style.left = (Math.max(rect.left, 70)) + 'px';
+                selectedItemInfoElement.style.left = (Math.max(rect.left, 70)) + 'px';
 
                 if (html && enableAnimations) {
-                    fadeIn(selectedItemInfoInner, 1);
+                    fadeIn(selectedItemInfoElement, 1);
                 }
             }
 
             function clearSelectedItemInfo() {
 
-                if (selectedItemInfoInner) {
-                    selectedItemInfoInner.innerHTML = '';
-                }
-            }
-
-            function zoomOut(elem) {
-
-                var keyframes = [
-                { transform: 'scale(' + zoomScale + ')  ', offset: 0 },
-                { transform: 'scale(1)', offset: 1 }
-                ];
-
-                if (elem.animate) {
-                    var timing = { duration: zoomDuration, iterations: 1, fill: 'both', easing: zoomOutEase };
-                    elem.animate(keyframes, timing);
-                }
-            }
-
-            function fadeIn(elem) {
-
-                var keyframes = [
-                  { opacity: '0', offset: 0 },
-                  { opacity: '1', offset: 1 }];
-                var timing = { duration: 140, iterations: 1, easing: 'ease-out' };
-                return elem.animate(keyframes, timing);
+                selectedItemInfoElement.innerHTML = '';
+                selectedItemInfoElementHasContent = false;
             }
 
             self.destroy = function () {
 
                 parent.removeEventListener('focus', onFocusIn, true);
                 parent.removeEventListener('blur', onFocusOut, true);
+
+                if (selectedItemInfoElement) {
+                    selectedItemInfoElement.innerHTML = '';
+                }
             };
         }
+
+        return focusHandler;
     });

@@ -109,7 +109,7 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
         var contentScrollSlider = page.querySelector('.contentScrollSlider');
         contentScrollSlider.classList.add('focuscontainer-x');
 
-        var selectedItemInfoInner = page.querySelector('.selectedItemInfoInner');
+        var selectedItemInfoElement = page.querySelector('.selectedItemInfo');
         var selectedIndexElement = page.querySelector('.selectedIndex');
 
         var tagName = 'button';
@@ -254,7 +254,7 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
                 self.focusHandler = new focusHandler({
                     parent: scrollSlider,
-                    selectedItemInfoInner: selectedItemInfoInner,
+                    selectedItemInfoElement: selectedItemInfoElement,
                     selectedIndexElement: selectedIndexElement,
                     animateFocus: pageOptions.animateFocus,
                     scroller: self.bodyScroller,

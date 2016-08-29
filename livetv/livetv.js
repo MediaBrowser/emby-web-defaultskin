@@ -81,7 +81,7 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
             listCountElement: page.querySelector('.listCount'),
             listNumbersElement: page.querySelector('.listNumbers'),
             autoFocus: autoFocus,
-            selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+            selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
             selectedIndexElement: page.querySelector('.selectedIndex'),
             scroller: scroller,
             onRender: function () {
@@ -124,7 +124,7 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
             listCountElement: page.querySelector('.listCount'),
             listNumbersElement: page.querySelector('.listNumbers'),
             autoFocus: autoFocus,
-            selectedItemInfoElement: page.querySelector('.selectedItemInfoInner'),
+            selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
             selectedIndexElement: page.querySelector('.selectedIndex'),
             scroller: scroller,
             onRender: function () {
