@@ -162,7 +162,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 },
                 cardOptions: {
                     shape: 'auto',
-                    rows: 3,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     action: 'none',
                     scalable: false,
                     showTitle: true,
@@ -245,7 +249,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 cardOptions: {
                     overlayText: true,
                     showTitle: true,
-                    rows: 3,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     scalable: false
                 }
             });
@@ -274,7 +282,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 autoFocus: autoFocus,
                 cardOptions: {
                     coverImage: true,
-                    rows: 3,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     scalable: false
                 },
                 selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
@@ -311,7 +323,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 autoFocus: autoFocus,
                 cardOptions: {
                     coverImage: true,
-                    rows: 3,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     scalable: false
                 },
                 selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
@@ -349,7 +365,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                     coverImage: true,
                     overlayText: true,
                     showTitle: true,
-                    rows: 3,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     scalable: false
                 },
                 selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
@@ -387,7 +407,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                     coverImage: true,
                     overlayText: true,
                     showTitle: true,
-                    rows: 3,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     scalable: false
                 },
                 selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
@@ -441,7 +465,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 cardBuilder.buildCards(result.Items, {
                     itemsContainer: section.querySelector('.itemsContainer'),
                     shape: 'auto',
-                    rows: 2,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     scalable: false
                 });
 
@@ -479,7 +507,11 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 cardBuilder.buildCards(result.Items, {
                     itemsContainer: section.querySelector('.itemsContainer'),
                     shape: 'auto',
-                    rows: 3,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
                     scalable: false
                 });
             });

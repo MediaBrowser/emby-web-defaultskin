@@ -54,6 +54,8 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         var scenePicker = view.querySelector('.scenePicker');
         var isScenePickerRendered;
+        var btnRewind = view.querySelector('.btnRewind');
+        var btnFastForward = view.querySelector('.btnFastForward');
 
         function getHeaderElement() {
             return document.querySelector('.skinHeader');
@@ -100,7 +102,9 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
                 nowPlayingVolumeSlider.disabled = false;
                 nowPlayingPositionSlider.disabled = false;
-
+                btnFastForward.disabled = false;
+                btnRewind.disabled = false;
+                
                 if (playbackManager.subtitleTracks(player).length) {
                     view.querySelector('.btnSubtitles').classList.remove('hide');
                 } else {
@@ -118,6 +122,8 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 Emby.Page.setTitle('');
                 nowPlayingVolumeSlider.disabled = true;
                 nowPlayingPositionSlider.disabled = true;
+                btnFastForward.disabled = true;
+                btnRewind.disabled = true;
 
                 view.querySelector('.btnSubtitles').classList.add('hide');
                 view.querySelector('.btnAudio').classList.add('hide');
@@ -311,7 +317,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                         showOsd();
                     } else {
                         e.preventDefault();
-                        playbackManager.previousChapter();
+                        playbackManager.rewind();
                     }
                     break;
                 case 'right':
@@ -319,7 +325,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                         showOsd();
                     } else {
                         e.preventDefault();
-                        playbackManager.nextChapter();
+                        playbackManager.fastForward();
                     }
                     break;
                 case 'up':
@@ -523,6 +529,8 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 updateTimeText(nowPlayingDurationText, nowPlayingItem.RunTimeTicks, true);
 
                 nowPlayingPositionSlider.disabled = !playState.CanSeek;
+                btnFastForward.disabled = !playState.CanSeek;
+                btnRewind.disabled = !playState.CanSeek;
 
                 if (nowPlayingItem.RunTimeTicks && playState.PositionTicks != null) {
                     endsAtText.innerHTML = '&nbsp;&nbsp;-&nbsp;&nbsp;' + mediaInfo.getEndsAtFromPosition(nowPlayingItem.RunTimeTicks, playState.PositionTicks, true);
@@ -729,7 +737,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         view.querySelector('.btnPreviousTrack').addEventListener('click', function () {
 
-            playbackManager.previousTrack();
+            playbackManager.previousChapter();
         });
 
         view.querySelector('.btnPause').addEventListener('click', function () {
@@ -739,7 +747,17 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         view.querySelector('.btnNextTrack').addEventListener('click', function () {
 
-            playbackManager.nextTrack();
+            playbackManager.nextChapter();
+        });
+
+        btnRewind.addEventListener('click', function () {
+
+            playbackManager.rewind();
+        });
+        
+        btnFastForward.addEventListener('click', function () {
+
+            playbackManager.fastForward();
         });
 
         view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);

@@ -1,17 +1,17 @@
 <div class="pageContainer smoothScrollY vertical centered">
 
-    <div class="selectContainer">
-        <select is="emby-select" class="selectEnableEpisodeAntiSpoliers" label="${EnableEpisodeSpoilerProtection}">
-            <option value="true">${Yes}</option>
-            <option value="false">${No}</option>
-        </select>
-        <div class="fieldDescription">${EnableEpisodeSpoilerProtectionHelp}</div>
+    <div class="checkboxContainer checkboxContainer-withDescription">
+        <label>
+            <input is="emby-checkbox" type="checkbox" class="chkEnableEpisodeAntiSpoliers" />
+            <span>${EnableEpisodeSpoilerProtection}</span>
+        </label>
+        <div class="fieldDescription checkboxFieldDescription">${EnableEpisodeSpoilerProtectionHelp}</div>
     </div>
 
-    <select is="emby-select" class="selectDimPosters" label="${DimUnselectedPosters}">
-        <option value="true">${Yes}</option>
-        <option value="false">${No}</option>
-    </select>
+    <label class="checkboxContainer">
+        <input is="emby-checkbox" type="checkbox" class="chkDimPosters" />
+        <span>${DimUnselectedPosters}</span>
+    </label>
 
     <div class="checkboxList mediaTypeField" data-mediatype="Video">
         <h3>${ShowScenesOnDetailScreensFor}</h3>

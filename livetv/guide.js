@@ -74,7 +74,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
             html += '<h2>' + item.Name + '</h2>';
 
             if (item.IsHD) {
-                html += '<i class="md-icon">hd</i>';
+                html += '<i class="md-icon" style="font-size:1.3em;margin:0 .5em 0 1em;">hd</i>';
             }
 
             if (item.SeriesTimerId) {
@@ -86,7 +86,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
 
             html += '</div>';
 
-            var secondaryMediaInfoHtml = mediaInfo.getSecondaryMediaInfoHtml(item);
+            var secondaryMediaInfoHtml = mediaInfo.getPrimaryMediaInfoHtml(item);
             if (secondaryMediaInfoHtml) {
                 html += '<div class="dim" style="margin-top:.15em;display:flex;align-items:center;">';
                 html += secondaryMediaInfoHtml;

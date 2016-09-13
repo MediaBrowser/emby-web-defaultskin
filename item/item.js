@@ -1,5 +1,5 @@
-define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'emby-itemscontainer'],
-    function (itemContextMenu, loading, skinInfo, datetime, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser) {
+define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'emby-itemscontainer'],
+    function (itemContextMenu, loading, skinInfo, datetime, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events) {
 
         function focusMainSection() {
 
@@ -74,6 +74,12 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             }
         }
 
+        function getDetailImageContainer(view, item) {
+
+            var detailImage = enableTrackList(item) || item.Type == 'MusicArtist' ? view.querySelector('.leftFixedDetailImageContainer') : view.querySelector('.detailImageContainer');
+            return detailImage;
+        }
+
         function renderImage(view, item) {
 
             var apiClient = connectionManager.getApiClient(item.ServerId);
@@ -123,7 +129,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 });
             }
 
-            var detailImage = enableTrackList(item) || item.Type == 'MusicArtist' ? view.querySelector('.leftFixedDetailImageContainer') : view.querySelector('.detailImageContainer');
+            var detailImage = getDetailImageContainer(view, item);
 
             if (url && item.Type != "Season") {
                 detailImage.classList.remove('hide');
@@ -1117,6 +1123,32 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             var currentItem;
             var dataPromises;
 
+            function onUserDataChanged(e, apiClient, userData) {
+
+                var item = currentItem;
+                if (!item || item.Id != userData.ItemId) {
+                    return;
+                }
+
+                console.log('updating progress bar');
+                if (currentItem.MediaType == 'Video') {
+                    var detailImageContainer = getDetailImageContainer(view, item);
+
+                    var itemProgressBar = detailImageContainer.querySelector('.itemProgressBar');
+                    if (itemProgressBar) {
+                        itemProgressBar.parentNode.removeChild(itemProgressBar);
+                    }
+
+                    var progressBarHtml = indicators.getProgressBarHtml(item, {
+                        userData: userData
+                    });
+                    if (progressBarHtml) {
+                        console.log(progressBarHtml);
+                        detailImageContainer.insertAdjacentHTML('beforeend', progressBarHtml);
+                    }
+                }
+            }
+
             function onRecordClicked() {
 
                 var btn;
@@ -1264,6 +1296,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                     view.querySelector('.itemPageFixedLeft .btnShuffle').addEventListener('click', shuffle);
                     view.querySelector('.mainSection .btnShuffle').addEventListener('click', shuffle);
+
+                    events.on(serverNotifications, 'UserDataChanged', onUserDataChanged);
                 }
             });
 
@@ -1281,6 +1315,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             });
 
             view.addEventListener('viewdestroy', function () {
+
+                events.off(serverNotifications, 'UserDataChanged', onUserDataChanged);
 
                 if (self.focusHandler) {
                     self.focusHandler.destroy();

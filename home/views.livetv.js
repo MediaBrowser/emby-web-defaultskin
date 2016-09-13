@@ -49,7 +49,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
             cardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'auto',
+                shape: 'backdrop',
                 coverImage: true,
                 rows: {
                     portrait: 2,
@@ -61,7 +61,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
         });
     }
 
-    function loadUpcomingPrograms(section, apiClient, options) {
+    function loadUpcomingPrograms(section, apiClient, options, shape) {
 
         options.ImageTypeLimit = 1;
         options.Fields = "PrimaryImageAspectRatio";
@@ -72,7 +72,7 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
             cardBuilder.buildCards(result.Items, {
                 parentContainer: section,
                 itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'auto',
+                shape: shape || 'backdrop',
                 coverImage: true,
                 rows: {
                     portrait: 2,
@@ -123,10 +123,10 @@ define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browse
 
                     IsAiring: false,
                     HasAired: false,
-                    limit: 9,
+                    limit: 10,
                     IsMovie: true
 
-                }),
+                }, 'portrait'),
 
                 loadUpcomingPrograms(element.querySelector('.upcomingSportsSection'), apiClient, {
 

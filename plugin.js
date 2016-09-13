@@ -45,9 +45,6 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 // Designed to use system default fonts
                 console.log("Using system fonts");
                 list.push('css!' + pluginManager.mapPath(self, 'css/fonts.device'));
-            } else if (browser.xboxOne) {
-                // Xbox defines good default font sizes, so load a stylesheet that only applies the font family
-                list.push('css!' + pluginManager.mapPath(self, 'css/fonts.xbox'));
             } else if (browser.edge) {
                 list.push('css!' + pluginManager.mapPath(self, 'css/fonts.segoe'));
             } else {
@@ -217,7 +214,6 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                     transition: 'slide',
                     controller: self.id + '/settings/settings',
                     dependencies: [
-                        'emby-select',
                         'emby-checkbox'
                     ],
                     type: 'settings',
@@ -230,23 +226,12 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             return routes;
         };
 
-        function onUserDataChanged(e, apiClient, userData) {
-            require(['cardBuilder'], function (cardBuilder) {
-                cardBuilder.onUserDataChanged(userData);
-            });
-        }
-
         var clockInterval;
         self.load = function () {
 
             updateClock();
             setInterval(updateClock, 50000);
             bindEvents();
-
-            require(['serverNotifications'], function (serverNotifications) {
-
-                events.on(serverNotifications, 'UserDataChanged', onUserDataChanged);
-            });
         };
 
         self.unload = function () {
@@ -260,9 +245,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                     clockInterval = null;
                 }
 
-                require([settingsObjectName, 'serverNotifications'], function (skinSettings, serverNotifications) {
+                require([settingsObjectName], function (skinSettings) {
 
-                    events.off(serverNotifications, 'UserDataChanged', onUserDataChanged);
                     skinSettings.unload();
                     resolve();
                 });
