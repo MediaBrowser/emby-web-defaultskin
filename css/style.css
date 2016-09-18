@@ -38,10 +38,6 @@ a {
     padding: 0 4px;
 }
 
-.mouseIdle .headerBackButton {
-    display: none;
-}
-
 .headerButton {
     vertical-align: middle;
     margin: 0 .5em;
@@ -472,7 +468,7 @@ i.mediaInfoItem {
     }
 
 .mainSection .itemPageButtons button {
-    padding: .5em 1em;
+    padding: .6em 1em;
     text-transform: none;
     margin: 0 .35em 0 0;
 }

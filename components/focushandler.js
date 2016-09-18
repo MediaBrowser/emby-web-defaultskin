@@ -231,7 +231,11 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
                     html += item.AlbumArtist + " - ";
                 }
 
-                html += itemHelper.getDisplayName(item);
+                if (item.EpisodeTitle) {
+                    html += item.Name;
+                } else {
+                    html += itemHelper.getDisplayName(item);
+                }
                 html += '</div>';
                 if (mediaInfoHtml) {
                     html += '<div class="selectedItemMediaInfo">';

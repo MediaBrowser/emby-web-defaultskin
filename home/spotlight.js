@@ -6,7 +6,10 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
             return;
         }
 
-        card.dispatchEvent(new CustomEvent("focus"));
+        if (document.activeElement == card) {
+            card.dispatchEvent(new CustomEvent("focus"));
+        }
+
         var imgUrl = Emby.Models.backdropImageUrl(item, {
             maxWidth: width
         });

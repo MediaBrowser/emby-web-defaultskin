@@ -166,7 +166,8 @@
     margin-top: 0;
     margin-bottom: 0;
     color: #000;
-    background: #ddd;
+    background: rgba(231,231,231,.8);
+    backdrop-filter: blur(5px);
     border-radius: .2em;
     font-weight: normal;
     margin-right: .8em;

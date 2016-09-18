@@ -1,4 +1,4 @@
-define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime) {
+define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime, mouseManager) {
 
     function updateClock() {
 
@@ -72,7 +72,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             var files = [];
 
-            var languages = ['de', 'en-GB', 'en-US', 'fr', 'it', 'nl', 'pl', 'pt-BR', 'pt-PT', 'ru', 'sv'];
+            var languages = ['de', 'en-GB', 'en-US', 'fr', 'hr', 'it', 'nl', 'pl', 'pt-BR', 'pt-PT', 'ru', 'sv'];
 
             return languages.map(function (i) {
                 return {
@@ -271,7 +271,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             }
         };
 
-        self.showGenre = function(options) {
+        self.showGenre = function (options) {
             Emby.Page.show(pluginManager.mapRoute(self.id, 'list/list.html') + '?parentid=' + options.ParentId + '&genreId=' + options.Id);
         };
 
@@ -331,7 +331,28 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             });
         }
 
+        var headerBackButton;
+        function getBackButton() {
+
+            if (!headerBackButton) {
+                headerBackButton = document.querySelector('.headerBackButton');
+            }
+            return headerBackButton;
+        }
+
+        function onMouseActive() {
+
+            getBackButton().classList.remove('hide-mouse-idle');
+        }
+        function onMouseIdle() {
+            getBackButton().classList.add('hide-mouse-idle');
+        }
+
         function bindEvents() {
+
+            document.querySelector('.headerBackButton').addEventListener('click', function () {
+                Emby.Page.back();
+            });
 
             document.querySelector('.headerSearchButton').addEventListener('click', function () {
                 self.search();
@@ -351,6 +372,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             events.on(playbackManager, 'playbackstart', onPlaybackStart);
             events.on(playbackManager, 'playbackstop', onPlaybackStop);
+            events.on(mouseManager, 'mouseactive', onMouseActive);
+            events.on(mouseManager, 'mouseidle', onMouseIdle);
         }
 
         function unbindEvents() {
@@ -359,6 +382,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             events.off(connectionManager, 'localusersignedout', onLocalUserSignedOut);
             document.removeEventListener('viewshow', onViewShow);
 
+            events.off(mouseManager, 'mouseactive', onMouseActive);
+            events.off(mouseManager, 'mouseidle', onMouseIdle);
             events.off(playbackManager, 'playbackstart', onPlaybackStart);
             events.off(playbackManager, 'playbackstop', onPlaybackStop);
         }
@@ -438,9 +463,9 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
         function onViewShow(e) {
 
             if (Emby.Page.canGoBack()) {
-                document.querySelector('.headerBackButton').classList.remove('hide');
+                getBackButton().classList.remove('hide');
             } else {
-                document.querySelector('.headerBackButton').classList.add('hide');
+                getBackButton().classList.add('hide');
             }
             var path = e.detail.state.path;
 

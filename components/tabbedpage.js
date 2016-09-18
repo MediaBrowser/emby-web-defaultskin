@@ -118,7 +118,7 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
             page.querySelector('.userViewNames').innerHTML = tabs.map(function (i) {
 
-                return '<' + tagName + ' is="emby-button" class="flat btnUserViewHeader" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h3 class="userViewButtonText">' + i.Name + '</h3></' + tagName + '>';
+                return '<' + tagName + ' is="emby-button" class="flat btnUserViewHeader button-flat" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h3 class="userViewButtonText">' + i.Name + '</h3></' + tagName + '>';
 
             }).join('');
 
