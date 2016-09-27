@@ -34,11 +34,7 @@ a {
     background-image: url(images/logowhite.png);
 }
 
-.fieldDescription, .dimText {
-    color: #aaa;
-}
-
-.dim {
+.fieldDescription, .secondaryText {
     color: #aaa;
 }
 

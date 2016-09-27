@@ -302,7 +302,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             return item.LocalTrailerCount || (item.RemoteTrailers || []).length;
         }
 
-        function renderDetails(view, item, user) {
+        function renderDetails(instance, view, item, user) {
 
             var mainSection = view.querySelector('.mainSection');
 
@@ -360,16 +360,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 view.querySelector('.mainSection .itemPageButtons').classList.remove('hide');
             }
 
-            if (item.Type == 'Program' && !item.TimerId && user.Policy.EnableLiveTvManagement) {
-                view.querySelector('.mainSection .btnRecord').classList.remove('hide');
+            if (item.Type == 'Program' && user.Policy.EnableLiveTvManagement) {
+                renderRecordingFields(instance, view.querySelector('.recordingFields'), item);
             } else {
-                view.querySelector('.mainSection .btnRecord').classList.add('hide');
-            }
-
-            if (item.Type == 'Program' && item.TimerId && user.Policy.EnableLiveTvManagement) {
-                view.querySelector('.mainSection .btnEditRecording').classList.remove('hide');
-            } else {
-                view.querySelector('.mainSection .btnEditRecording').classList.add('hide');
+                view.querySelector('.recordingFields').classList.add('hide');
             }
 
             itemContextMenu.getCommands(getContextMenuOptions(item)).then(function (commands) {
@@ -453,6 +447,24 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             } else {
                 birthPlaceElem.classList.add('hide');
             }
+        }
+
+        function renderRecordingFields(instance, recordingFieldsElement, item) {
+            
+            if (instance.currentRecordingFields) {
+                instance.currentRecordingFields.refresh();
+                return;
+            }
+
+            require(['recordingFields'], function (recordingFields) {
+
+                instance.currentRecordingFields = new recordingFields({
+                    parent: recordingFieldsElement,
+                    programId: item.Id,
+                    serverId: item.ServerId
+                });
+                recordingFieldsElement.classList.remove('hide');
+            });
         }
 
         function extendVerticalCardOptions(options) {
@@ -1121,6 +1133,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var self = this;
             var currentItem;
+            var currentRecordingFields;
             var dataPromises;
 
             function onUserDataChanged(e, apiClient, userData) {
@@ -1149,18 +1162,24 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 }
             }
 
-            function onRecordClicked() {
+            function onRecordCommand() {
 
-                var btn;
+                var item = currentItem;
+                var type = item.Type;
+                var id = item.Id;
+                var timerId = item.TimerId;
+                var seriesTimerId = item.SeriesTimerId;
 
-                if (currentItem.TimerId) {
-                    btn = view.querySelector('.btnEditRecording');
-                } else {
-                    btn = view.querySelector('.btnRecord');
-                }
+                if (type == 'Program' || timerId || seriesTimerId) {
 
-                if (!btn.classList.contains('hide')) {
-                    btn.click();
+                    require(['recordingHelper'], function (recordingHelper) {
+                        var programId = type == 'Program' ? id : null;
+                        recordingHelper.toggle(serverId, programId, timerId, seriesTimerId).then(function() {
+                            if (self.currentRecordingFields) {
+                                self.currentRecordingFields.refresh();
+                            }
+                        });
+                    });
                 }
             }
 
@@ -1172,7 +1191,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                         play();
                         break;
                     case 'record':
-                        onRecordClicked();
+                        onRecordCommand();
                         break;
                     default:
                         break;
@@ -1219,7 +1238,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                         renderName(view, item);
                         renderImage(view, item);
                         renderChildren(view, item);
-                        renderDetails(view, item, user);
+                        renderDetails(self, view, item, user);
                         renderMediaInfoIcons(view, item);
                         renderPeople(view, item);
                         renderScenes(view, item);
@@ -1285,8 +1304,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                     view.querySelector('.itemPageFixedLeft .btnPlay').addEventListener('click', play);
                     view.querySelector('.mainSection .btnPlay').addEventListener('click', play);
-                    view.querySelector('.mainSection .btnRecord').addEventListener('click', record);
-                    view.querySelector('.mainSection .btnEditRecording').addEventListener('click', editRecording);
                     view.querySelector('.mainSection .btnMore').addEventListener('click', showMoreMenu);
 
                     view.querySelector('.itemPageFixedLeft .btnQueue').addEventListener('click', queue);
@@ -1318,6 +1335,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                 events.off(serverNotifications, 'UserDataChanged', onUserDataChanged);
 
+                if (self.currentRecordingFields) {
+                    self.currentRecordingFields.destroy();
+                    self.currentRecordingFields = null
+                }
                 if (self.focusHandler) {
                     self.focusHandler.destroy();
                     self.focusHandler = null
@@ -1350,26 +1371,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                         });
                     });
                 }
-            }
-
-            function editRecording() {
-
-                require(['recordingEditor'], function (recordingEditor) {
-                    recordingEditor.show(currentItem.TimerId, currentItem.ServerId).then(function () {
-                        startDataLoad();
-                        reloadItem(true);
-                    });
-                });
-            }
-
-            function record() {
-
-                require(['recordingCreator'], function (recordingCreator) {
-                    recordingCreator.show(currentItem.Id, currentItem.ServerId).then(function () {
-                        startDataLoad();
-                        reloadItem(true);
-                    });
-                });
             }
 
             function showMoreMenu() {
