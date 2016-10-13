@@ -450,7 +450,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
         }
 
         function renderRecordingFields(instance, recordingFieldsElement, item) {
-            
+
             if (instance.currentRecordingFields) {
                 instance.currentRecordingFields.refresh();
                 return;
@@ -478,9 +478,9 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
         function renderNextUp(view, item) {
 
-            var section = view.querySelector('.nextUpSection');
+            var section = view.querySelector('.itemNextUpSection');
 
-            var focusedItemIsNextUp = parentWithClass(document.activeElement, 'nextUpSection') != null;
+            var focusedItemIsNextUp = parentWithClass(document.activeElement, 'itemNextUpSection') != null;
 
             if (item.Type != 'Series') {
                 section.classList.add('hide');
@@ -551,7 +551,9 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     action: 'playallfromhere',
                     showParentTitle: true,
                     dragHandle: item.Type == 'Playlist' && !layoutManager.tv,
-                    playlistId: item.Type == 'Playlist' ? item.Id : null
+                    playlistId: item.Type == 'Playlist' ? item.Id : null,
+                    image: item.Type == 'Playlist',
+                    artist: item.Type == 'Playlist'
                 });
 
                 imageLoader.lazyChildren(section);
@@ -982,7 +984,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     itemsContainer: section.querySelector('.itemsContainer'),
                     coverImage: true,
                     serverId: item.ServerId,
-                    width: Math.round((section.offsetWidth / 7))
+                    width: Math.round((section.offsetWidth / 7)),
+                    shape: 'portrait'
                 });
             });
         }
@@ -1116,8 +1119,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                 section.classList.remove('hide');
 
-                section.querySelector('h2').innerHTML = Globalize.translate('SimilarTo', item.Name);
-
                 cardBuilder.buildCards(result.Items, extendVerticalCardOptions({
                     parentContainer: section,
                     itemsContainer: section.querySelector('.itemsContainer'),
@@ -1174,7 +1175,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                     require(['recordingHelper'], function (recordingHelper) {
                         var programId = type == 'Program' ? id : null;
-                        recordingHelper.toggle(serverId, programId, timerId, seriesTimerId).then(function() {
+                        recordingHelper.toggle(serverId, programId, timerId, seriesTimerId).then(function () {
                             if (self.currentRecordingFields) {
                                 self.currentRecordingFields.refresh();
                             }
@@ -1194,8 +1195,11 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                         onRecordCommand();
                         break;
                     default:
-                        break;
+                        return;
                 }
+
+                e.preventDefault();
+                e.stopPropagation();
             }
 
             function startDataLoad() {

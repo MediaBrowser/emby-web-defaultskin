@@ -1,6 +1,5 @@
 html {
-    /* Check if certain android or iOS fonts are natively available, otherwise load Open Sans */
-    font-family: San Francisco, Helvetica Neue, 'Open Sans';
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", 'Open Sans', sans-serif;
 }
 
 html {

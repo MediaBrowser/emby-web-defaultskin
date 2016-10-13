@@ -37,7 +37,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             if (browser.android) {
                 // on android we can't just use Roboto by name, it has to be sans-serif, which we don't want on other platforms
-                list.push('css!' + pluginManager.mapPath(self, 'css/fonts.android'));
+                list.push('css!' + pluginManager.mapPath(self, 'css/fonts'));
             } else if (browser.tv && !browser.chrome) {
                 console.log("Using system fonts with explicit sizes");
                 list.push('css!' + pluginManager.mapPath(self, 'css/fonts.sized'));
@@ -45,11 +45,9 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 // Designed to use system default fonts
                 console.log("Using system fonts");
                 list.push('css!' + pluginManager.mapPath(self, 'css/fonts.device'));
-            } else if (browser.edge) {
-                list.push('css!' + pluginManager.mapPath(self, 'css/fonts.segoe'));
             } else {
                 console.log("Using default fonts");
-                list.push('opensansFont');
+                //list.push('opensansFont');
                 list.push('css!' + pluginManager.mapPath(self, 'css/fonts'));
             }
 

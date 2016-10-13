@@ -1,4 +1,5 @@
 {
+    "HeaderMoreLikeThis": "More Like This",
     "ButtonEditRecording": "Edit Recording",
     "Episodes": "Episodes",
     "OtherVideos": "Other videos",
@@ -35,7 +36,7 @@
     "LatestMusic": "Latest Music",
     "LatestRecordings": "Latest Recordings",
     "NowPlaying": "Now Playing",
-    "UpcomingPrograms": "Upcoming Programs",
+    "UpcomingPrograms": "Upcoming Programmes",
     "UpcomingMovies": "Upcoming Movies",
     "UpcomingSports": "Upcoming Sports",
     "UpcomingForKids": "Upcoming for Kids",

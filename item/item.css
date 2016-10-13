@@ -1,3 +1,7 @@
+.layout-tv .personCard {
+    width: 14.285714285714285714285714285714%;
+}
+
 .itemFloatClear {
     clear: both;
 }
@@ -176,7 +180,7 @@
     text-transform: uppercase;
 }
 
-.nextUpSection .backdropCard {
+.itemNextUpSection .backdropCard {
     width: 35% !important;
 }
 

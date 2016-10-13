@@ -38,10 +38,6 @@ a {
     color: #aaa;
 }
 
-.emby-select, .emby-input {
-    border-bottom-color: rgb(115, 115, 115) !important;
-}
-
 .checkboxLabel, .selectLabelUnfocused {
     color: #bbb !important;
 }
@@ -84,7 +80,6 @@ a {
 .userViewNames button {
     opacity: .25;
 }
-
 
 .userViewButtonText {
     border-bottom: 2px solid transparent;

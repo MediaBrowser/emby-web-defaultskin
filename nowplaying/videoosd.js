@@ -186,100 +186,35 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         function slideDownToShow(elem) {
 
-            if (!elem.classList.contains('hide')) {
-                return;
-            }
-
-            elem.classList.remove('hide');
-
-            if (!elem.animate) {
-                return;
-            }
-
-            requestAnimationFrame(function () {
-
-                var keyframes = [
-                  { transform: 'translate3d(0,-100%,0)', opacity: '.3', offset: 0 },
-                  { transform: 'translate3d(0,0,0)', opacity: '1', offset: 1 }];
-                var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing);
-            });
+            elem.classList.remove('osdHeader-hidden');
         }
 
         function slideUpToHide(elem) {
 
-            if (elem.classList.contains('hide')) {
-                return;
-            }
-
-            var afterAnimation = function () {
-                elem.classList.add('hide');
-            };
-
-            if (!elem.animate) {
-                afterAnimation();
-                return;
-            }
-
-            requestAnimationFrame(function () {
-
-                var keyframes = [
-                  { transform: 'translate3d(0,0,0)', opacity: '1', offset: 0 },
-                  { transform: 'translate3d(0,-100%,0)', opacity: '.3', offset: 1 }];
-                var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing).onfinish = afterAnimation;
-            });
+            elem.classList.add('osdHeader-hidden');
         }
 
         function slideUpToShow(elem) {
-
-            if (!elem.classList.contains('hide')) {
+            
+            if (_osdOpen) {
                 return;
             }
 
             _osdOpen = true;
-            elem.classList.remove('hide');
+
+            elem.classList.remove('videoOsdBottom-hidden');
 
             focusManager.focus(elem.querySelector('.btnPause'));
-
-            if (!elem.animate) {
-                return;
-            }
-
-            requestAnimationFrame(function () {
-
-                var keyframes = [
-                  { transform: 'translate3d(0,100%,0)', opacity: '.3', offset: 0 },
-                  { transform: 'translate3d(0,0,0)', opacity: '1', offset: 1 }];
-                var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing);
-            });
         }
 
         function slideDownToHide(elem) {
 
-            if (elem.classList.contains('hide')) {
+            if (!_osdOpen) {
                 return;
             }
 
-            var afterAnimation = function () {
-                elem.classList.add('hide');
-                _osdOpen = false;
-            };
-
-            if (!elem.animate) {
-                afterAnimation();
-                return;
-            }
-
-            requestAnimationFrame(function () {
-
-                var keyframes = [
-                  { transform: 'translate3d(0,0,0)', opacity: '1', offset: 0 },
-                  { transform: 'translate3d(0,100%,0)', opacity: '0', offset: 1 }];
-                var timing = { duration: 300, iterations: 1, easing: 'ease-out' };
-                elem.animate(keyframes, timing).onfinish = afterAnimation;
-            });
+            elem.classList.add('videoOsdBottom-hidden');
+            _osdOpen = false;
         }
 
         var lastMouseMoveData;
@@ -400,6 +335,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         view.addEventListener('viewbeforehide', function () {
             stopHideTimer();
             getHeaderElement().classList.remove('osdHeader');
+            getHeaderElement().classList.remove('osdHeader-hidden');
             document.removeEventListener('mousemove', onMouseMove);
             events.off(playbackManager, 'playbackstart', onPlaybackStart);
             events.off(playbackManager, 'playbackstop', onPlaybackStop);
