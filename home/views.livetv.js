@@ -1,4 +1,5 @@
 define(['focusManager', 'cardBuilder', 'pluginManager', './../skininfo', 'browser', 'emby-itemscontainer'], function (focusManager, cardBuilder, pluginManager, skinInfo,  browser) {
+    'use strict';
 
     function loadLatestRecordings(element, apiClient) {
 

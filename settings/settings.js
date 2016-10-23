@@ -1,4 +1,5 @@
 define(['loading', './../skinsettings', 'focusManager'], function (loading, skinSettings, focusManager) {
+    'use strict';
 
     return function (view, params) {
 
@@ -39,6 +40,6 @@ define(['loading', './../skinsettings', 'focusManager'], function (loading, skin
             view.querySelector('.chkEpisodeScenes').checked = skinSettings.enableEpisodeDetailScenes();
             view.querySelector('.chkOtherScenes').checked = skinSettings.enableOtherDetailScenes();
         }
-    }
+    };
 
 });

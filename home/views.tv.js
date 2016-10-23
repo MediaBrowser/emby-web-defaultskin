@@ -1,4 +1,5 @@
 define(['./spotlight', 'focusManager', 'cardBuilder', './../skininfo', 'emby-itemscontainer'], function (spotlight, focusManager, cardBuilder, skinInfo) {
+    'use strict';
 
     function loadResume(element, parentId) {
 

@@ -1,15 +1,16 @@
-define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'scrollStyles'], function (playbackManager, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager) {
+define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'scrollStyles', 'cssAnimations'], function (playbackManager, dom, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager) {
+    'use strict';
 
     function seriesImageUrl(item, options) {
 
-        if (item.Type != 'Episode') {
+        if (item.Type !== 'Episode') {
             return null;
         }
 
         options = options || {};
         options.type = options.type || "Primary";
 
-        if (options.type == 'Primary') {
+        if (options.type === 'Primary') {
 
             if (item.SeriesPrimaryImageTag) {
 
@@ -19,7 +20,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             }
         }
 
-        if (options.type == 'Thumb') {
+        if (options.type === 'Thumb') {
 
             if (item.SeriesThumbImageTag) {
 
@@ -104,7 +105,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 nowPlayingPositionSlider.disabled = false;
                 btnFastForward.disabled = false;
                 btnRewind.disabled = false;
-                
+
                 if (playbackManager.subtitleTracks(player).length) {
                     view.querySelector('.btnSubtitles').classList.remove('hide');
                 } else {
@@ -155,6 +156,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         }
 
         var _osdOpen = true;
+
         function isOsdOpen() {
             return _osdOpen;
         }
@@ -173,10 +175,12 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         }
 
         var hideTimeout;
+
         function startHideTimer() {
             stopHideTimer();
             hideTimeout = setTimeout(hideOsd, 4000);
         }
+
         function stopHideTimer() {
             if (hideTimeout) {
                 clearTimeout(hideTimeout);
@@ -194,17 +198,43 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             elem.classList.add('osdHeader-hidden');
         }
 
+        function onSlideUpComplete(e) {
+
+            var elem = e.target;
+
+            dom.removeEventListener(elem, 'animationend', onSlideUpComplete, {
+                once: true
+            });
+        }
+
         function slideUpToShow(elem) {
-            
+
             if (_osdOpen) {
                 return;
             }
 
             _osdOpen = true;
 
-            elem.classList.remove('videoOsdBottom-hidden');
+            elem.classList.remove('hide');
+
+            elem.style.animation = 'slideupfadeshow 300ms ease-out normal both';
+
+            dom.addEventListener(elem, 'animationend', onSlideUpComplete, {
+                once: true
+            });
 
             focusManager.focus(elem.querySelector('.btnPause'));
+        }
+
+        function onSlideDownComplete(e) {
+
+            var elem = e.target;
+
+            elem.classList.add('hide');
+
+            dom.removeEventListener(elem, 'animationend', onSlideDownComplete, {
+                once: true
+            });
         }
 
         function slideDownToHide(elem) {
@@ -213,11 +243,19 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 return;
             }
 
-            elem.classList.add('videoOsdBottom-hidden');
+            // trigger a reflow to force it to animate again
+            void elem.offsetWidth;
+
+            elem.style.animation = 'slidedownfadehide 300ms ease-out normal both';
+
+            dom.addEventListener(elem, 'animationend', onSlideDownComplete, {
+                once: true
+            });
             _osdOpen = false;
         }
 
         var lastMouseMoveData;
+
         function onMouseMove(e) {
 
             var eventX = e.screenX || 0;
@@ -299,7 +337,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             releasePlayer();
             setCurrentItem(null);
 
-            if (stopInfo.nextMediaType != 'Video') {
+            if (stopInfo.nextMediaType !== 'Video') {
 
                 view.removeEventListener('viewbeforehide', onViewHideStopPlayback);
 
@@ -347,7 +385,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         function bindToPlayer(player) {
 
-            if (player != currentPlayer) {
+            if (player !== currentPlayer) {
 
                 releasePlayer();
 
@@ -532,7 +570,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                     id: stream.Index
                 };
 
-                if (stream.Index == currentIndex) {
+                if (stream.Index === currentIndex) {
                     opt.selected = true;
                 }
 
@@ -546,7 +584,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                     title: Globalize.translate('Audio')
                 }).then(function (id) {
                     var index = parseInt(id);
-                    if (index != currentIndex) {
+                    if (index !== currentIndex) {
                         playbackManager.setAudioStreamIndex(index);
                     }
                 });
@@ -596,7 +634,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                     id: stream.Index
                 };
 
-                if (stream.Index == currentIndex) {
+                if (stream.Index === currentIndex) {
                     opt.selected = true;
                 }
 
@@ -610,7 +648,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                     items: menuItems
                 }).then(function (id) {
                     var index = parseInt(id);
-                    if (index != currentIndex) {
+                    if (index !== currentIndex) {
                         playbackManager.setSubtitleStreamIndex(index);
                     }
                 });
@@ -623,12 +661,14 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             getHeaderElement().classList.remove('hide');
         });
 
-        window.addEventListener('keydown', function (e) {
+        dom.addEventListener(window, 'keydown', function (e) {
 
-            if (e.keyCode == 32 && !isOsdOpen()) {
+            if (e.keyCode === 32 && !isOsdOpen()) {
                 playbackManager.playPause();
                 showOsd();
             }
+        }, {
+            passive: true
         });
 
         view.querySelector('.pageContainer').addEventListener('click', function () {
@@ -690,7 +730,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
             playbackManager.rewind();
         });
-        
+
         btnFastForward.addEventListener('click', function () {
 
             playbackManager.fastForward();
@@ -722,7 +762,6 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             if (chapter.ImageTag) {
 
                 return apiClient.getScaledImageUrl(item.Id, {
-
                     maxWidth: maxWidth,
                     tag: chapter.ImageTag,
                     type: "Chapter",
@@ -758,6 +797,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
 
         var hideScenePickerTimeout;
         var chapterPcts = [];
+
         function showScenePicker() {
 
             var progressPct = nowPlayingPositionSlider.value;
@@ -780,6 +820,7 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
         }
 
         var showScenePickerTimeout;
+
         function startScenePickerTimer() {
             if (!showScenePickerTimeout) {
                 showScenePickerTimeout = setTimeout(showScenePicker, 100);
@@ -793,13 +834,15 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             }
         }
 
-        nowPlayingPositionSlider.addEventListener('input', function () {
+        dom.addEventListener(nowPlayingPositionSlider, 'input', function () {
 
             if (scenePicker.classList.contains('hide')) {
                 startScenePickerTimer();
             } else {
                 showScenePicker();
             }
+        }, {
+            passive: true
         });
 
         function onViewHideStopPlayback() {
@@ -827,8 +870,9 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             elem.classList.remove('hide');
 
             var keyframes = [
-              { opacity: '0', offset: 0 },
-              { opacity: '1', offset: 1 }];
+                { opacity: '0', offset: 0 },
+                { opacity: '1', offset: 1 }
+            ];
             var timing = { duration: 300, iterations: 1 };
             elem.animate(keyframes, timing).onfinish = function () {
                 selectChapterThumb(elem, pct);
@@ -844,14 +888,14 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
                 }
             }
 
-            if (index == -1) {
+            if (index === -1) {
                 index = 0;
             }
 
             var selected = elem.querySelector('.selectedChapterThumb');
             var newSelected = elem.querySelector('.chapterThumb[data-index="' + index + '"]');
 
-            if (selected != newSelected) {
+            if (selected !== newSelected) {
                 if (selected) {
                     selected.classList.remove('selectedChapterThumb');
                 }
@@ -868,8 +912,9 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             }
 
             var keyframes = [
-              { opacity: '1', offset: 0 },
-              { opacity: '0', offset: 1 }];
+                { opacity: '1', offset: 0 },
+                { opacity: '0', offset: 1 }
+            ];
             var timing = { duration: 300, iterations: 1 };
             elem.animate(keyframes, timing).onfinish = function () {
                 elem.classList.add('hide');
@@ -887,6 +932,6 @@ define(['playbackManager', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo'
             }
         }
 
-    }
+    };
 
 });

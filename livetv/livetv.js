@@ -1,4 +1,5 @@
 define(['loading', 'alphaPicker', './../components/horizontallist', './../components/tabbedpage', 'backdrop', 'connectionManager', 'emby-itemscontainer'], function (loading, alphaPicker, horizontalList, tabbedPage, backdrop, connectionManager) {
+    'use strict';
 
     function renderTabs(view, initialTabId, pageInstance, params) {
 
@@ -172,6 +173,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
                 self.tabbedPage.destroy();
             }
         });
-    }
+    };
 
 });

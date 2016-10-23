@@ -1,4 +1,5 @@
 define(['cardBuilder', 'pluginManager', './../skininfo', 'emby-itemscontainer'], function (cardBuilder, pluginManager, skinInfo) {
+    'use strict';
 
 	function loadLatest(element, parentId) {
 

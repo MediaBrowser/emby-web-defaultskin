@@ -1,4 +1,5 @@
 define(['loading', 'alphaPicker', './../components/horizontallist', './../components/tabbedpage', 'backdrop', 'emby-itemscontainer'], function (loading, alphaPicker, horizontalList, tabbedPage, backdrop) {
+    'use strict';
 
     return function (view, params) {
 
@@ -36,34 +37,35 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
             });
 
             var tabs = [
-            {
-                Name: Globalize.translate('Movies'),
-                Id: "movies"
-            },
-            {
-                Name: Globalize.translate('Unwatched'),
-                Id: "unwatched"
-            },
-            {
-                Name: Globalize.translate('Collections'),
-                Id: "collections"
-            },
-            {
-                Name: Globalize.translate('Genres'),
-                Id: "genres"
-            },
-            {
-                Name: Globalize.translate('Years'),
-                Id: "years"
-            },
-            {
-                Name: Globalize.translate('TopRated'),
-                Id: "toprated"
-            },
-            {
-                Name: Globalize.translate('Favorites'),
-                Id: "favorites"
-            }];
+                {
+                    Name: Globalize.translate('Movies'),
+                    Id: "movies"
+                },
+                {
+                    Name: Globalize.translate('Unwatched'),
+                    Id: "unwatched"
+                },
+                {
+                    Name: Globalize.translate('Collections'),
+                    Id: "collections"
+                },
+                {
+                    Name: Globalize.translate('Genres'),
+                    Id: "genres"
+                },
+                {
+                    Name: Globalize.translate('Years'),
+                    Id: "years"
+                },
+                {
+                    Name: Globalize.translate('TopRated'),
+                    Id: "toprated"
+                },
+                {
+                    Name: Globalize.translate('Favorites'),
+                    Id: "favorites"
+                }
+            ];
 
             var tabbedPageInstance = new tabbedPage(view, {
                 alphaPicker: self.alphaPicker
@@ -141,7 +143,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
             }).then(function (genresResult) {
 
                 self.listController = new horizontalList({
-
                     itemsContainer: page.querySelector('.contentScrollSlider'),
                     getItemsMethod: function (startIndex, limit) {
                         return Emby.Models.items({
@@ -187,7 +188,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
         function renderFavorites(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.items({
@@ -228,7 +228,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
         function renderMovies(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.items({
@@ -269,7 +268,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
         function renderUnwatchedMovies(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.items({
@@ -311,7 +309,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
         function renderCollections(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.collections({
@@ -348,7 +345,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
         function renderYears(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.items({
@@ -390,7 +386,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
         function renderTopRated(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.items({
@@ -428,6 +423,6 @@ define(['loading', 'alphaPicker', './../components/horizontallist', './../compon
 
             self.listController.render();
         }
-    }
+    };
 
 });

@@ -1,4 +1,5 @@
 define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinviewport, itemShortcuts, browser) {
+    'use strict';
 
     function loadItemIntoSpotlight(card, item, width) {
 
@@ -6,7 +7,7 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
             return;
         }
 
-        if (document.activeElement == card) {
+        if (document.activeElement === card) {
             card.dispatchEvent(new CustomEvent("focus"));
         }
 
@@ -77,7 +78,7 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
 
         loadItemIntoSpotlight(card, items[0], width);
 
-        if (items.length == 1) {
+        if (items.length === 1) {
             return;
         }
 

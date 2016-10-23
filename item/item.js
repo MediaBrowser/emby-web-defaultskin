@@ -1,5 +1,6 @@
-define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'emby-itemscontainer'],
-    function (itemContextMenu, loading, skinInfo, datetime, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events) {
+define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'emby-itemscontainer'],
+    function (itemContextMenu, loading, skinInfo, datetime, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listview, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom) {
+        'use strict';
 
         function focusMainSection() {
 
@@ -10,7 +11,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var url = Emby.Models.logoImageUrl(item, {});
 
-            if (item.Type == 'BoxSet') {
+            if (item.Type === 'BoxSet') {
                 Emby.Page.setTitle(item.Name);
             }
             else if (url) {
@@ -67,7 +68,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             itemTitle.classList.remove('hide');
             itemTitle.innerHTML = itemHelper.getDisplayName(item);
 
-            if (enableTrackList(item) || item.Type == 'MusicArtist') {
+            if (enableTrackList(item) || item.Type === 'MusicArtist') {
                 itemTitle.classList.add('albumTitle');
             } else {
                 itemTitle.classList.remove('albumTitle');
@@ -76,7 +77,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
         function getDetailImageContainer(view, item) {
 
-            var detailImage = enableTrackList(item) || item.Type == 'MusicArtist' ? view.querySelector('.leftFixedDetailImageContainer') : view.querySelector('.detailImageContainer');
+            var detailImage = enableTrackList(item) || item.Type === 'MusicArtist' ? view.querySelector('.leftFixedDetailImageContainer') : view.querySelector('.detailImageContainer');
             return detailImage;
         }
 
@@ -131,7 +132,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var detailImage = getDetailImageContainer(view, item);
 
-            if (url && item.Type != "Season") {
+            if (url && item.Type !== "Season") {
                 detailImage.classList.remove('hide');
                 detailImage.innerHTML = '<img class="detailImage" src="' + url + '" />' + indicators.getProgressBarHtml(item);
             } else {
@@ -141,7 +142,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
         }
 
         function enableTrackList(item) {
-            return item.Type == "MusicAlbum" || item.Type == "Playlist";
+            return item.Type === "MusicAlbum" || item.Type === "Playlist";
         }
 
         function renderMediaInfoIcons(view, item) {
@@ -171,7 +172,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             }
 
             return (mediaSource.MediaStreams || []).filter(function (i) {
-                return i.Type == 'Audio' && (i.Index == mediaSource.DefaultAudioStreamIndex || mediaSource.DefaultAudioStreamIndex == null);
+                return i.Type === 'Audio' && (i.Index === mediaSource.DefaultAudioStreamIndex || mediaSource.DefaultAudioStreamIndex == null);
             })[0];
         }
 
@@ -189,15 +190,15 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             }
 
             var videoStream = (mediaSource.MediaStreams || []).filter(function (i) {
-                return i.Type == 'Video';
+                return i.Type === 'Video';
             })[0] || {};
             var audioStream = getAudioStreamForDisplay(item) || {};
 
-            if (item.VideoType == 'Dvd') {
+            if (item.VideoType === 'Dvd') {
                 html += '<img class="mediaInfoIcon mediaInfoImageIcon" src="' + Emby.PluginManager.mapPath(skinInfo.id, 'css/mediaicons/S_Media_DVD_white.png') + '" />';
             }
 
-            if (item.VideoType == 'BluRay') {
+            if (item.VideoType === 'BluRay') {
                 html += '<img class="mediaInfoIcon mediaInfoImageIcon" src="' + Emby.PluginManager.mapPath(skinInfo.id, 'css/mediaicons/S_Media_BlueRay_white.png') + '" />';
             }
 
@@ -217,19 +218,19 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             var channels = audioStream.Channels;
             var channelText;
 
-            if (channels == 8) {
+            if (channels === 8) {
 
                 channelText = '7.1';
 
-            } else if (channels == 7) {
+            } else if (channels === 7) {
 
                 channelText = '6.1';
 
-            } else if (channels == 6) {
+            } else if (channels === 6) {
 
                 channelText = '5.1';
 
-            } else if (channels == 2) {
+            } else if (channels === 2) {
 
                 channelText = '2.0';
             }
@@ -238,7 +239,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 html += '<div class="mediaInfoIcon mediaInfoText">' + channelText + '</div>';
             }
 
-            if (audioStream.Codec == 'dca' && audioStream.Profile) {
+            if (audioStream.Codec === 'dca' && audioStream.Profile) {
                 html += '<div class="mediaInfoIcon mediaInfoText">' + audioStream.Profile + '</div>';
             } else if (audioStream.Codec) {
                 html += '<div class="mediaInfoIcon mediaInfoText">' + audioStream.Codec + '</div>';
@@ -257,7 +258,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             return item.MediaSources[0].MediaStreams.filter(function (i) {
 
-                return i.Type == 'Video';
+                return i.Type === 'Video';
 
             }).map(function (i) {
 
@@ -306,23 +307,23 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var mainSection = view.querySelector('.mainSection');
 
-            if (item.Type == "Person") {
+            if (item.Type === "Person") {
                 mainSection.classList.add('smallBottomMargin');
             }
-            else if (item.Type != "Season" && item.Type != "MusicArtist" && item.Type != "MusicAlbum" && item.Type != "Playlist") {
+            else if (item.Type !== "Season" && item.Type !== "MusicArtist" && item.Type !== "MusicAlbum" && item.Type !== "Playlist") {
                 mainSection.classList.remove('smallBottomMargin');
             } else {
                 mainSection.classList.remove('smallBottomMargin');
             }
 
-            if (item.Type == "Season") {
+            if (item.Type === "Season") {
                 mainSection.classList.add('seasonMainSection');
             }
-            else if (item.Type == "MusicArtist" || enableTrackList(item)) {
+            else if (item.Type === "MusicArtist" || enableTrackList(item)) {
                 mainSection.classList.add('albumMainSection');
             }
 
-            var taglineElem = view.querySelector('.tagline')
+            var taglineElem = view.querySelector('.tagline');
             if (item.Taglines && item.Taglines.length) {
                 taglineElem.classList.remove('hide');
                 taglineElem.innerHTML = item.Taglines[0];
@@ -330,8 +331,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 taglineElem.classList.add('hide');
             }
 
-            var overviewElem = view.querySelector('.overview')
-            if (item.Overview && item.Type != 'MusicArtist' && item.Type != 'MusicAlbum' && item.Type != 'Season') {
+            var overviewElem = view.querySelector('.overview');
+            if (item.Overview && item.Type !== 'MusicArtist' && item.Type !== 'MusicAlbum' && item.Type !== 'Season') {
                 overviewElem.classList.remove('hide');
                 overviewElem.innerHTML = item.Overview;
             } else {
@@ -352,7 +353,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 view.querySelector('.mainSection .btnPlay').classList.add('hide');
             }
 
-            if (enableTrackList(item) || item.Type == 'MusicArtist') {
+            if (enableTrackList(item) || item.Type === 'MusicArtist') {
                 view.querySelector('.itemPageFixedLeft .itemPageButtons').classList.remove('hide');
                 view.querySelector('.mainSection .itemPageButtons').classList.add('hide');
             } else {
@@ -360,7 +361,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 view.querySelector('.mainSection .itemPageButtons').classList.remove('hide');
             }
 
-            if (item.Type == 'Program' && user.Policy.EnableLiveTvManagement) {
+            if (item.Type === 'Program' && user.Policy.EnableLiveTvManagement) {
                 renderRecordingFields(instance, view.querySelector('.recordingFields'), item);
             } else {
                 view.querySelector('.recordingFields').classList.add('hide');
@@ -375,7 +376,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             });
 
             var mediaInfoElem = view.querySelector('.mediaInfoPrimary');
-            if (item.Type == 'Season') {
+            if (item.Type === 'Season') {
                 mediaInfoElem.classList.add('hide');
             } else {
                 mediaInfoElem.classList.remove('hide');
@@ -401,7 +402,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             }).join('<span class="bulletSeparator"> &bull; </span>');
 
-            var genresElem = view.querySelector('.genres')
+            var genresElem = view.querySelector('.genres');
 
             if (!genresHtml) {
                 genresElem.classList.add('hide');
@@ -424,14 +425,14 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 view.querySelector('.mainSection .btnShuffle').classList.add('hide');
             }
 
-            if (item.Type == "MusicArtist" || item.Type == "MusicAlbum" || item.Type == "MusicGenre" || item.Type == "Playlist" || item.MediaType == "Audio") {
+            if (item.Type === "MusicArtist" || item.Type === "MusicAlbum" || item.Type === "MusicGenre" || item.Type === "Playlist" || item.MediaType === "Audio") {
                 view.querySelector('.btnInstantMix').classList.remove('hide');
             } else {
                 view.querySelector('.btnInstantMix').classList.add('hide');
             }
 
             var birthDateElem = view.querySelector('.birthDate');
-            if (item.PremiereDate && item.Type == 'Person') {
+            if (item.PremiereDate && item.Type === 'Person') {
                 birthDateElem.classList.remove('hide');
 
                 var dateString = datetime.parseISO8601Date(item.PremiereDate).toDateString();
@@ -441,7 +442,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             }
 
             var birthPlaceElem = view.querySelector('.birthPlace');
-            if (item.Type == "Person" && item.ProductionLocations && item.ProductionLocations.length) {
+            if (item.Type === "Person" && item.ProductionLocations && item.ProductionLocations.length) {
                 birthPlaceElem.classList.remove('hide');
                 birthPlaceElem.innerHTML = Globalize.translate('BirthPlaceValue').replace('{0}', item.ProductionLocations[0]);
             } else {
@@ -480,9 +481,9 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var section = view.querySelector('.itemNextUpSection');
 
-            var focusedItemIsNextUp = parentWithClass(document.activeElement, 'itemNextUpSection') != null;
+            var focusedItemIsNextUp = dom.parentWithClass(document.activeElement, 'itemNextUpSection') != null;
 
-            if (item.Type != 'Series') {
+            if (item.Type !== 'Series') {
                 section.classList.add('hide');
 
                 if (focusedItemIsNextUp) {
@@ -538,7 +539,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                 section.classList.remove('hide');
 
-                if (item.Type == 'Playlist') {
+                if (item.Type === 'Playlist') {
 
                     if (!layoutManager.tv) {
                         section.enableDragReordering(true);
@@ -547,19 +548,19 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                 section.innerHTML = listview.getListViewHtml({
                     items: result.Items,
-                    showIndexNumber: item.Type == 'MusicAlbum',
+                    showIndexNumber: item.Type === 'MusicAlbum',
                     action: 'playallfromhere',
                     showParentTitle: true,
-                    dragHandle: item.Type == 'Playlist' && !layoutManager.tv,
-                    playlistId: item.Type == 'Playlist' ? item.Id : null,
-                    image: item.Type == 'Playlist',
-                    artist: item.Type == 'Playlist'
+                    dragHandle: item.Type === 'Playlist' && !layoutManager.tv,
+                    playlistId: item.Type === 'Playlist' ? item.Id : null,
+                    image: item.Type === 'Playlist',
+                    artist: item.Type === 'Playlist'
                 });
 
                 imageLoader.lazyChildren(section);
             };
 
-            if (item.Type == 'MusicAlbum' || item.Type == 'Playlist') {
+            if (item.Type === 'MusicAlbum' || item.Type === 'Playlist') {
 
                 // Songs by album
                 Emby.Models.children(item, {
@@ -583,7 +584,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var section = view.querySelector('.peopleItems');
 
-            if (item.Type != "Person") {
+            if (item.Type !== "Person") {
                 section.classList.add('hide');
                 return;
             }
@@ -805,7 +806,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var section = view.querySelector('.episodes');
 
-            if (item.Type != "Season") {
+            if (item.Type !== "Season") {
                 section.classList.add('hide');
                 return;
             }
@@ -840,7 +841,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                 section.innerHTML = listview.getListViewHtml({
                     items: result.Items,
-                    showIndexNumber: item.Type == 'MusicAlbum',
+                    showIndexNumber: item.Type === 'MusicAlbum',
                     enableOverview: true,
                     imageSize: 'large',
                     enableSideMediaInfo: false
@@ -853,19 +854,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     focusFirstUnWatched(result.Items, section);
                 }, 100);
             });
-        }
-
-        function parentWithClass(elem, className) {
-
-            while (!elem.classList || !elem.classList.contains(className)) {
-                elem = elem.parentNode;
-
-                if (!elem) {
-                    return null;
-                }
-            }
-
-            return elem;
         }
 
         function focusFirstUnWatched(items, element) {
@@ -897,7 +885,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var section = view.querySelector('.childrenSection');
 
-            if (item.Type != 'MusicArtist') {
+            if (item.Type !== 'MusicArtist') {
                 if (!item.ChildCount || enableTrackList(item)) {
                     section.classList.add('hide');
                     return;
@@ -907,18 +895,18 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             var headerText = section.querySelector('h2');
             var showTitle = false;
 
-            if (item.Type == "Series") {
+            if (item.Type === "Series") {
                 headerText.innerHTML = Globalize.translate('Seasons');
                 headerText.classList.remove('hide');
 
-            } else if (item.Type == "MusicArtist") {
+            } else if (item.Type === "MusicArtist") {
                 headerText.innerHTML = Globalize.translate('Albums');
                 headerText.classList.remove('hide');
 
-            } else if (item.Type == "MusicAlbum") {
+            } else if (item.Type === "MusicAlbum") {
                 headerText.classList.add('hide');
 
-            } else if (item.Type == "BoxSet") {
+            } else if (item.Type === "BoxSet") {
                 headerText.innerHTML = Globalize.translate('Items');
                 headerText.classList.remove('hide');
 
@@ -927,7 +915,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 return;
             }
 
-            var promise = item.Type == 'MusicArtist' ?
+            var promise = item.Type === 'MusicArtist' ?
                 Emby.Models.items({
                     IncludeItemTypes: 'MusicAlbum',
                     Recursive: true,
@@ -953,7 +941,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     sectionTitleTagName: 'h2',
                     showTitle: showTitle,
                     scalable: true,
-                    collectionId: item.Type == 'BoxSet' ? item.Id : null
+                    collectionId: item.Type === 'BoxSet' ? item.Id : null
                 }));
             });
         }
@@ -1026,10 +1014,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
             var method = 'enableOtherDetailScenes';
 
-            if (item.Type == 'Movie') {
+            if (item.Type === 'Movie') {
                 method = 'enableMovieDetailScenes';
             }
-            else if (item.Type == 'Episode') {
+            else if (item.Type === 'Episode') {
                 method = 'enableEpisodeDetailScenes';
             }
 
@@ -1061,7 +1049,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
         function renderMoreFrom(view, item, apiClient) {
 
             var section = view.querySelector('.moreFromSection');
-            if (item.Type != 'MusicAlbum' || !item.AlbumArtists || !item.AlbumArtists.length) {
+            if (item.Type !== 'MusicAlbum' || !item.AlbumArtists || !item.AlbumArtists.length) {
                 section.classList.add('hide');
                 return;
             }
@@ -1090,7 +1078,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     shape: 'autoVertical',
                     sectionTitleTagName: 'h2',
                     scalable: true,
-                    coverImage: item.Type == 'MusicArtist' || item.Type == 'MusicAlbum'
+                    coverImage: item.Type === 'MusicArtist' || item.Type === 'MusicAlbum'
                 }));
             });
         }
@@ -1104,7 +1092,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 Fields: "PrimaryImageAspectRatio"
             };
 
-            if (item.Type == 'MusicAlbum' && item.AlbumArtists && item.AlbumArtists.length) {
+            if (item.Type === 'MusicAlbum' && item.AlbumArtists && item.AlbumArtists.length) {
                 options.ExcludeArtistIds = item.AlbumArtists[0].Id;
             }
 
@@ -1125,7 +1113,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     shape: 'autoVertical',
                     sectionTitleTagName: 'h2',
                     scalable: true,
-                    coverImage: item.Type == 'MusicArtist' || item.Type == 'MusicAlbum'
+                    coverImage: item.Type === 'MusicArtist' || item.Type === 'MusicAlbum'
                 }));
             });
         }
@@ -1140,12 +1128,12 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             function onUserDataChanged(e, apiClient, userData) {
 
                 var item = currentItem;
-                if (!item || item.Id != userData.ItemId) {
+                if (!item || item.Id !== userData.ItemId) {
                     return;
                 }
 
                 console.log('updating progress bar');
-                if (currentItem.MediaType == 'Video') {
+                if (currentItem.MediaType === 'Video') {
                     var detailImageContainer = getDetailImageContainer(view, item);
 
                     var itemProgressBar = detailImageContainer.querySelector('.itemProgressBar');
@@ -1171,10 +1159,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                 var timerId = item.TimerId;
                 var seriesTimerId = item.SeriesTimerId;
 
-                if (type == 'Program' || timerId || seriesTimerId) {
+                if (type === 'Program' || timerId || seriesTimerId) {
 
                     require(['recordingHelper'], function (recordingHelper) {
-                        var programId = type == 'Program' ? id : null;
+                        var programId = type === 'Program' ? id : null;
                         recordingHelper.toggle(serverId, programId, timerId, seriesTimerId).then(function () {
                             if (self.currentRecordingFields) {
                                 self.currentRecordingFields.refresh();
@@ -1223,18 +1211,10 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                     currentItem = item;
 
                     // If it's a person, leave the backdrop image from wherever we came from
-                    if (item.Type != 'Person') {
+                    if (item.Type !== 'Person') {
                         backdrop.setBackdrops([item]);
                         setTitle(item);
                     }
-
-                    var userDataIconsSelector = enableTrackList(item) || item.Type == 'MusicArtist' ? '.itemPageFixedLeft .itemPageUserDataIcons' : '.mainSection .itemPageUserDataIcons';
-
-                    userdataButtons.fill({
-                        element: view.querySelector(userDataIconsSelector),
-                        item: item,
-                        style: 'fab-mini'
-                    });
 
                     var apiClient = connectionManager.getApiClient(item.ServerId);
 
@@ -1254,7 +1234,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                         var mainSection = view.querySelector('.mainSection');
                         var itemScrollFrame = view.querySelector('.itemScrollFrame');
 
-                        if (enableTrackList(item) || item.Type == 'MusicArtist') {
+                        if (enableTrackList(item) || item.Type === 'MusicArtist') {
                             mainSection.classList.remove('focusable');
                             itemScrollFrame.classList.add('clippedLeft');
                             view.querySelector('.itemPageFixedLeft').classList.remove('hide');
@@ -1265,18 +1245,26 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
                             mainSection.focus = focusMainSection;
                         }
 
-                        if (item.Type == 'Person') {
+                        if (item.Type === 'Person') {
                             mainSection.classList.add('miniMainSection');
                         } else {
                             mainSection.classList.remove('miniMainSection');
                         }
 
-                        if (enableTrackList(item) || item.Type == 'MusicArtist') {
+                        if (enableTrackList(item) || item.Type === 'MusicArtist') {
                             focusManager.autoFocus(view, true);
                         } else {
                             focusMainSection.call(mainSection);
                         }
                     }
+
+                    var userDataIconsSelector = enableTrackList(item) || item.Type === 'MusicArtist' ? '.itemPageFixedLeft .itemPageUserDataIcons' : '.mainSection .itemPageUserDataIcons';
+
+                    userdataButtons.fill({
+                        element: view.querySelector(userDataIconsSelector),
+                        item: item,
+                        style: 'fab-mini'
+                    });
 
                     // Always refresh this
                     renderNextUp(view, item);
@@ -1341,11 +1329,11 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
 
                 if (self.currentRecordingFields) {
                     self.currentRecordingFields.destroy();
-                    self.currentRecordingFields = null
+                    self.currentRecordingFields = null;
                 }
                 if (self.focusHandler) {
                     self.focusHandler.destroy();
-                    self.focusHandler = null
+                    self.focusHandler = null;
                 }
                 if (self.verticalScroller) {
                     self.verticalScroller.destroy();
@@ -1407,5 +1395,5 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'playbackMana
             function shuffle() {
                 playbackManager.shuffle(currentItem);
             }
-        }
+        };
     });

@@ -1,4 +1,5 @@
 define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../components/horizontallist', 'cardBuilder', './../components/focushandler', './../components/tabbedpage', 'backdrop', 'focusManager', 'emby-itemscontainer'], function (connectionManager, loading, skinInfo, alphaPicker, horizontalList, cardBuilder, focusHandler, tabbedPage, backdrop, focusManager) {
+    'use strict';
 
     return function (view, params) {
 
@@ -41,22 +42,23 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
             });
 
             var tabs = [
-            {
-                Name: Globalize.translate('Series'),
-                Id: "series"
-            },
-            {
-                Name: Globalize.translate('Upcoming'),
-                Id: "upcoming"
-            },
-            {
-                Name: Globalize.translate('Genres'),
-                Id: "genres"
-            },
-            {
-                Name: Globalize.translate('Favorites'),
-                Id: "favorites"
-            }];
+                {
+                    Name: Globalize.translate('Series'),
+                    Id: "series"
+                },
+                {
+                    Name: Globalize.translate('Upcoming'),
+                    Id: "upcoming"
+                },
+                {
+                    Name: Globalize.translate('Genres'),
+                    Id: "genres"
+                },
+                {
+                    Name: Globalize.translate('Favorites'),
+                    Id: "favorites"
+                }
+            ];
 
             var tabbedPageInstance = new tabbedPage(view, {
                 alphaPicker: self.alphaPicker
@@ -129,7 +131,6 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
         function renderUpcoming(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return apiClient.getUpcomingEpisodes({
@@ -166,7 +167,6 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
         function renderSeries(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return apiClient.getItems(apiClient.getCurrentUserId(), {
@@ -204,7 +204,6 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
         function renderGenres(page, pageParams, autoFocus, scroller, resolve) {
 
             apiClient.getGenres(apiClient.getCurrentUserId(), {
-
                 ParentId: pageParams.parentid,
                 SortBy: "SortName",
                 Recursive: true,
@@ -214,7 +213,6 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
             }).then(function (genresResult) {
 
                 self.listController = new horizontalList({
-
                     itemsContainer: page.querySelector('.contentScrollSlider'),
                     getItemsMethod: function (startIndex, limit) {
                         return apiClient.getItems(apiClient.getCurrentUserId(), {
@@ -338,6 +336,6 @@ define(['connectionManager', 'loading', './../skininfo', 'alphaPicker', './../co
                 });
             });
         }
-    }
+    };
 
 });

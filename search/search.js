@@ -1,4 +1,5 @@
 define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'cardBuilder', 'connectionManager', 'emby-itemscontainer'], function (loading, alphaPicker, scroller, focusHandler, cardBuilder, connectionManager) {
+    'use strict';
 
     function createVerticalScroller(view, pageInstance) {
 
@@ -42,7 +43,7 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
         }
     }
 
-    return function (view, params) {
+    return function(view, params) {
 
         var self = this;
 
@@ -52,7 +53,7 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
 
             var txtSearch = view.querySelector('.txtSearch');
 
-            if (value == 'backspace') {
+            if (value === 'backspace') {
 
                 var val = txtSearch.value;
                 txtSearch.value = val.length ? val.substring(0, val.length - 1) : '';
@@ -79,7 +80,6 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
             }
 
             searchType(value, {
-
                 searchTerm: value,
                 IncludePeople: false,
                 IncludeMedia: true,
@@ -91,7 +91,6 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
             }, '.movieResults');
 
             searchType(value, {
-
                 searchTerm: value,
                 IncludePeople: true,
                 IncludeMedia: false,
@@ -100,14 +99,12 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
                 IncludeArtists: false
 
             }, '.peopleResults', {
-
                 coverImage: true,
                 showTitle: true,
                 overlayTitle: false
             });
 
             searchType(value, {
-
                 searchTerm: value,
                 IncludePeople: false,
                 IncludeMedia: false,
@@ -116,14 +113,12 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
                 IncludeArtists: true
 
             }, '.artistResults', {
-
                 coverImage: true,
                 showTitle: true,
                 overlayTitle: false
             });
 
             searchType(value, {
-
                 searchTerm: value,
                 IncludePeople: false,
                 IncludeMedia: true,
@@ -135,7 +130,6 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
             }, '.albumResults');
 
             searchType(value, {
-
                 searchTerm: value,
                 IncludePeople: false,
                 IncludeMedia: true,
@@ -162,7 +156,7 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
 
             query.Limit = 6;
 
-            getSearchResults(query).then(function (result) {
+            getSearchResults(query).then(function(result) {
 
                 populateResults(result, section, cardOptions);
 
@@ -211,6 +205,7 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
         }
 
         var searchTimeout;
+
         function searchOnTimeout() {
 
             if (searchTimeout) {
@@ -226,11 +221,12 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
         }
 
         var lastKeyDownValue = '';
+
         function onSearchKeyPress(e) {
 
             var value = e.target.value;
 
-            if (value != lastKeyDownValue) {
+            if (value !== lastKeyDownValue) {
                 lastKeyDownValue = value;
                 searchOnTimeout();
             }
@@ -240,7 +236,7 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
             return document.querySelector('.skinHeader');
         }
 
-        view.addEventListener('viewshow', function (e) {
+        view.addEventListener('viewshow', function(e) {
 
             getHeaderElement().classList.add('searchHeader');
 
@@ -258,18 +254,18 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
             }
         });
 
-        view.addEventListener('viewhide', function () {
+        view.addEventListener('viewhide', function() {
 
             getHeaderElement().classList.remove('searchHeader');
 
             document.querySelector('.headerSearchButton').classList.remove('hide');
         });
 
-        view.addEventListener('viewdestroy', function () {
+        view.addEventListener('viewdestroy', function() {
 
             if (self.focusHandler) {
                 self.focusHandler.destroy();
-                self.focusHandler = null
+                self.focusHandler = null;
             }
             if (self.alphaPicker) {
                 self.alphaPicker.destroy();
@@ -278,6 +274,6 @@ define(['loading', 'alphaPicker', 'scroller', './../components/focushandler', 'c
                 self.verticalScroller.destroy();
             }
         });
-    }
+    };
 
 });

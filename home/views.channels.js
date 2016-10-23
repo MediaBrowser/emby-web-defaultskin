@@ -1,4 +1,5 @@
 define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
+    'use strict';
 
     function loadChannels(element, parentId, apiClient, autoFocus) {
 
@@ -39,10 +40,7 @@ define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
 
     function loadLatest(element, channel, apiClient) {
 
-        var html = '\
-<div class="sectionTitle">'+ Globalize.translate('LatestFromValue', channel.Name) + '</div>\
-<div is="emby-itemscontainer" class="itemsContainer">\
-</div>';
+        var html = '<div class="sectionTitle">'+ Globalize.translate('LatestFromValue', channel.Name) + '</div><div is="emby-itemscontainer" class="itemsContainer"></div>';
 
         var section = document.createElement('div');
         section.classList.add('hide');

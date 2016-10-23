@@ -110,6 +110,7 @@
 .detailImage {
     min-width: 50%;
     max-width: 100%;
+    min-height: 30vh;
     max-height: 67vh;
     box-shadow: 0 0 1.85vh #000;
     border: 1px solid #222;

@@ -1,4 +1,5 @@
 define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'listView', 'focusManager', 'itemShortcuts', 'emby-itemscontainer'], function (playbackManager, scroller, loading, imageLoader, backdrop, listview, focusManager, itemShortcuts) {
+    'use strict';
 
     function createVerticalScroller(view, pageInstance) {
 
@@ -93,7 +94,7 @@ define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'li
                 current.classList.remove('playlistIndexIndicatorImage');
             }
 
-            if (index != -1) {
+            if (index !== -1) {
 
                 var item = view.querySelectorAll('.trackList .listItem')[index];
                 if (item) {
@@ -135,6 +136,6 @@ define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'li
                 self.verticalScroller.destroy();
             }
         });
-    }
+    };
 
 });

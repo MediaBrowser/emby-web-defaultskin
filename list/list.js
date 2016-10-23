@@ -1,4 +1,5 @@
 define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../components/horizontallist', 'emby-itemscontainer'], function (loading, scroller, playbackManager, alphaPicker, horizontalList) {
+    'use strict';
 
     function createHorizontalScroller(instance, view, item, loading) {
 
@@ -33,7 +34,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
 
     function getItems(params, item, startIndex, limit) {
 
-        if (params.type == 'collections') {
+        if (params.type === 'collections') {
 
             return Emby.Models.collections({
                 ParentId: item.Id,
@@ -44,7 +45,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             });
         }
 
-        if (params.type == 'favoritemovies') {
+        if (params.type === 'favoritemovies') {
 
             return Emby.Models.items({
                 ParentId: item.Id,
@@ -67,7 +68,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 Recursive: true,
                 GenreIds: params.genreId,
                 ParentId: item.Id,
-                IncludeItemTypes: item.CollectionType == 'tvshows' ? 'Series' : (item.CollectionType == 'movies' ? 'Movie' : 'MusicAlbum')
+                IncludeItemTypes: item.CollectionType === 'tvshows' ? 'Series' : (item.CollectionType === 'movies' ? 'Movie' : 'MusicAlbum')
             });
 
         }
@@ -132,7 +133,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 if (!isRestored) {
                     createHorizontalScroller(self, view, item, loading);
 
-                    if (item.Type != 'PhotoAlbum') {
+                    if (item.Type !== 'PhotoAlbum') {
                         initAlphaPicker();
                     }
                 }
@@ -148,7 +149,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                     currentItem = item;
                     Emby.Page.setTitle(item.Name);
 
-                    if (item.Type == 'MusicGenre') {
+                    if (item.Type === 'MusicGenre') {
                         view.querySelector('.listPageButtons').classList.remove('hide');
                     } else {
                         view.querySelector('.listPageButtons').classList.add('hide');
@@ -193,7 +194,7 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
             var card;
 
             // If it's the symbol just pick the first card
-            if (value == '#') {
+            if (value === '#') {
 
                 card = contentScrollSlider.querySelector('.card');
 
@@ -228,9 +229,9 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
 
         function setTitle(item) {
 
-            if (params.type == 'collections') {
+            if (params.type === 'collections') {
                 Emby.Page.setTitle(Globalize.translate('Collections'));
-            } else if (params.type == 'favoritemovies') {
+            } else if (params.type === 'favoritemovies') {
                 Emby.Page.setTitle(Globalize.translate('FavoriteMovies'));
             } else {
                 Emby.Page.setTitle(item.Name);
@@ -272,6 +273,6 @@ define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../component
                 self.alphaPicker.destroy();
             }
         });
-    }
+    };
 
 });

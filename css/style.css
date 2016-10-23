@@ -35,7 +35,6 @@ a {
 
 .headerBackButton {
     margin-left: -1.6vw;
-    padding: 0 4px;
 }
 
 .headerButton {
@@ -468,7 +467,7 @@ i.mediaInfoItem {
     }
 
 .mainSection .itemPageButtons button {
-    padding: .6em 1em;
+    padding: .6em 1.3em;
     text-transform: none;
     margin: 0 .35em 0 0;
 }

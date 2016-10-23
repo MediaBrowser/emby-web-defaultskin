@@ -1,4 +1,5 @@
 define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
+    'use strict';
 
     function loadAll(element, parentId, autoFocus) {
 

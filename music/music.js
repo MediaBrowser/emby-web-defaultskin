@@ -1,4 +1,5 @@
 define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../components/horizontallist', './../components/focushandler', './../components/tabbedpage', 'backdrop', 'focusManager', 'emby-itemscontainer'], function (loading, skinInfo, alphaPicker, cardBuilder, horizontalList, focusHandler, tabbedPage, backdrop, focusManager) {
+    'use strict';
 
     return function (view, params) {
 
@@ -149,7 +150,6 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
         function renderGenres(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.genres({
@@ -223,7 +223,6 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
         function renderPlaylists(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.playlists({
@@ -264,7 +263,6 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
         function renderAlbums(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.items({
@@ -306,7 +304,6 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
         function renderSongs(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.items({
@@ -347,7 +344,6 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
         function renderArtists(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.artists({
@@ -389,7 +385,6 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
         function renderAlbumArtists(page, pageParams, autoFocus, scroller, resolve) {
 
             self.listController = new horizontalList({
-
                 itemsContainer: page.querySelector('.contentScrollSlider'),
                 getItemsMethod: function (startIndex, limit) {
                     return Emby.Models.albumArtists({
@@ -516,6 +511,6 @@ define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../componen
                 });
             });
         }
-    }
+    };
 
 });

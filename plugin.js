@@ -1,4 +1,5 @@
 define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'events', 'datetime', 'mouseManager'], function (playbackManager, pluginManager, browser, connectionManager, events, datetime, mouseManager) {
+    'use strict';
 
     function updateClock() {
 
@@ -117,7 +118,8 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 dependencies: [
                     'cardStyle',
                     'emby-button',
-                    icons]
+                    icons
+                ]
             });
 
             routes.push({
@@ -163,7 +165,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 controller: self.id + '/search/search',
                 dependencies: [
                     'css!' + pluginManager.mapPath(self, 'search/search.css'),
-					'emby-input',
+                    'emby-input',
                     icons
                 ]
             });
@@ -257,7 +259,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             if (item.IsFolder) {
 
-                if (item.Type != 'Series' && item.Type != 'Season' && item.Type != 'MusicAlbum' && item.Type != 'MusicArtist' && item.Type != 'Playlist' && item.Type != 'BoxSet') {
+                if (item.Type !== 'Series' && item.Type !== 'Season' && item.Type !== 'MusicAlbum' && item.Type !== 'MusicArtist' && item.Type !== 'Playlist' && item.Type !== 'BoxSet') {
                     showList = true;
                 }
             }
@@ -330,6 +332,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
         }
 
         var headerBackButton;
+
         function getBackButton() {
 
             if (!headerBackButton) {
@@ -342,6 +345,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
             getBackButton().classList.remove('hide-mouse-idle');
         }
+
         function onMouseIdle() {
             getBackButton().classList.add('hide-mouse-idle');
         }
@@ -397,7 +401,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
         function onPlaybackStop(e, stopInfo) {
 
-            if (stopInfo.nextMediaType != 'Audio') {
+            if (stopInfo.nextMediaType !== 'Audio') {
                 document.querySelector('.headerAudioPlayerButton').classList.add('hide');
             }
         }
@@ -467,12 +471,13 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
             }
             var path = e.detail.state.path;
 
-            var isDetailBackdrop = path.indexOf('item.html') != -1 || -1 && path.indexOf('guide.html') != -1 || path.indexOf('nowplaying') != -1;
-            var isStaticBackdrop = !isDetailBackdrop && (path.indexOf('login.html') != -1 || path.indexOf('selectserver.html') != -1);
+            var isDetailBackdrop = path.indexOf('item.html') !== -1 || -1 && path.indexOf('guide.html') !== -1 || path.indexOf('nowplaying') !== -1;
+            var isStaticBackdrop = !isDetailBackdrop && (path.indexOf('login.html') !== -1 || path.indexOf('selectserver.html') !== -1);
             setBackdropStyle(isDetailBackdrop, isStaticBackdrop);
         }
 
         var backgroundContainer;
+
         function setBackdropStyle(isDetailBackdrop, isStaticBackdrop) {
 
             backgroundContainer = backgroundContainer || document.querySelector('.backgroundContainer');
@@ -493,5 +498,10 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
                 backgroundContainer.classList.remove('staticBackdrop');
             }
         }
+<<<<<<< HEAD
     }
 });
+=======
+    };
+});
+>>>>>>> 7046d8edfaea40a945ff07f60ade2fe0cce6b30a

@@ -1,4 +1,5 @@
 define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper', 'browser', 'emby-button', 'scrollStyles'], function (loading, scroller, focusHandler, focusManager, scrollHelper, browser) {
+    'use strict';
 
     function focusViewSlider() {
 
@@ -139,7 +140,7 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
             var card;
 
             // If it's the symbol just pick the first card
-            if (value == '#') {
+            if (value === '#') {
 
                 card = contentScrollSlider.querySelector('.card');
 
@@ -186,7 +187,7 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
             if (btn) {
 
-                if (viewId == btn.getAttribute('data-id')) {
+                if (viewId === btn.getAttribute('data-id')) {
                     return;
                 }
             }
@@ -271,11 +272,11 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
             if (self.focusHandler) {
                 self.focusHandler.destroy();
-                self.focusHandler = null
+                self.focusHandler = null;
             }
             if (self.bodyScroller) {
                 self.bodyScroller.destroy();
-                self.bodyScroller = null
+                self.bodyScroller = null;
             }
         };
     }

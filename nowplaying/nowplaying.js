@@ -1,6 +1,7 @@
 define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuilder', 'pluginManager', './../skininfo'], function (playbackManager, datetime, backdrop, userdataButtons, cardBuilder, pluginManager, skinInfo) {
+    'use strict';
 
-	return function (view, params) {
+    return function (view, params) {
 
         var self = this;
         var currentPlayer;
@@ -93,7 +94,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
             releasePlayer();
 
-            if (stopInfo.nextMediaType != 'Audio') {
+            if (stopInfo.nextMediaType !== 'Audio') {
                 setCurrentItem(null);
                 Emby.Page.back();
             }
@@ -101,7 +102,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
         function bindToPlayer(player) {
 
-            if (player != currentPlayer) {
+            if (player !== currentPlayer) {
 
                 releasePlayer();
 
@@ -154,11 +155,10 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
             var repeatMode = playbackManager.getRepeatMode();
 
-            if (repeatMode == 'RepeatAll') {
+            if (repeatMode === 'RepeatAll') {
                 btnRepeat.querySelector('i').innerHTML = '&#xE040;';
                 btnRepeat.classList.add('repeatActive');
-            }
-            else if (repeatMode == 'RepeatOne') {
+            } else if (repeatMode === 'RepeatOne') {
                 btnRepeat.querySelector('i').innerHTML = '&#xE041;';
                 btnRepeat.classList.add('repeatActive');
             } else {
@@ -196,7 +196,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
             var index = playbackManager.currentPlaylistIndex();
 
-            if (index == 0) {
+            if (index === 0) {
                 view.querySelector('.btnPreviousTrack').disabled = true;
             } else {
                 view.querySelector('.btnPreviousTrack').disabled = false;
@@ -350,6 +350,6 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
 
             return '--:--';
         };
-    }
+    };
 
 });

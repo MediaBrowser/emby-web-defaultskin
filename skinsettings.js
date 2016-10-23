@@ -1,4 +1,5 @@
 define(['userSettings', './skininfo'], function (userSettings, skininfo) {
+    'use strict';
 
     var settingsPrefix = skininfo.id + '-';
     var obj = function () {
@@ -21,7 +22,7 @@ define(['userSettings', './skininfo'], function (userSettings, skininfo) {
                 self.set('antispoilers', val.toString());
             }
 
-            return self.get('antispoilers') != 'false';
+            return self.get('antispoilers') !== 'false';
         };
 
         self.dimUnselectedPosters = function (val) {
@@ -30,7 +31,7 @@ define(['userSettings', './skininfo'], function (userSettings, skininfo) {
                 self.set('dimunselectedposters', val.toString());
             }
 
-            return self.get('dimunselectedposters') == 'true';
+            return self.get('dimunselectedposters') === 'true';
         };
 
         self.enableMovieDetailScenes = function (val) {
@@ -39,7 +40,7 @@ define(['userSettings', './skininfo'], function (userSettings, skininfo) {
                 self.set('moviedetailscenes', val.toString());
             }
 
-            return self.get('moviedetailscenes') == 'true';
+            return self.get('moviedetailscenes') === 'true';
         };
 
         self.enableEpisodeDetailScenes = function (val) {
@@ -48,7 +49,7 @@ define(['userSettings', './skininfo'], function (userSettings, skininfo) {
                 self.set('episodedetailscenes', val.toString());
             }
 
-            return self.get('episodedetailscenes') == 'true';
+            return self.get('episodedetailscenes') === 'true';
         };
 
         self.enableOtherDetailScenes = function (val) {
@@ -57,7 +58,7 @@ define(['userSettings', './skininfo'], function (userSettings, skininfo) {
                 self.set('otherdetailscenes', val.toString());
             }
 
-            return self.get('otherdetailscenes') == 'true';
+            return self.get('otherdetailscenes') === 'true';
         };
 
         self.apply = function () {

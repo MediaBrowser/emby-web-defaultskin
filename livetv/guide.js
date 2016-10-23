@@ -1,4 +1,5 @@
 define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo'], function (tvguide, events, datetime, imageLoader, backdrop, mediaInfo) {
+    'use strict';
 
     return function (view, params) {
 
@@ -39,6 +40,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
 
         var focusTimeout;
         var currentItemId;
+
         function clearFocusTimeout() {
             if (focusTimeout) {
                 clearTimeout(focusTimeout);
@@ -46,7 +48,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
         }
 
         function onFocusTimeout() {
-            
+
             Emby.Models.item(currentItemId).then(function (item) {
 
                 setSelectedInfo(item);
@@ -79,8 +81,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
 
             if (item.SeriesTimerId) {
                 html += '<i class="seriesTimerIcon md-icon">fiber_smart_record</i>';
-            }
-            else if (item.TimerId) {
+            } else if (item.TimerId) {
                 html += '<i class="timerIcon md-icon">fiber_manual_record</i>';
             }
 
@@ -106,8 +107,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
 
                 try {
                     date += getTime(datetime.parseISO8601Date(item.StartDate));
-                }
-                catch (e) {
+                } catch (e) {
                     console.log("Error parsing date: " + item.PremiereDate);
                 }
             }
@@ -115,8 +115,7 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
 
                 try {
                     date += ' - ' + getTime(datetime.parseISO8601Date(item.EndDate));
-                }
-                catch (e) {
+                } catch (e) {
                     console.log("Error parsing date: " + item.EndDate);
                 }
             }
@@ -145,6 +144,6 @@ define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo']
 
             events.on(guideInstance, 'focus', onGuideFocus);
         }
-    }
+    };
 
 });

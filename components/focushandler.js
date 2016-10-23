@@ -1,5 +1,6 @@
 define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 'scrollHelper', 'browser', 'layoutManager'],
     function (imageLoader, itemHelper, backdrop, mediaInfo, focusManager, scrollHelper, browser, layoutManager) {
+        'use strict';
 
         var enableAnimations = browser.animate || browser.edge;
         var zoomInEase = 'ease-out';
@@ -127,14 +128,14 @@ define(['imageLoader', 'itemHelper', 'backdrop', 'mediaInfo', 'focusManager', 's
             }
 
             function onZoomTimeout() {
-                var focused = focusedElement
+                var focused = focusedElement;
                 if (focused) {
                     zoomIn(focused);
                 }
             }
 
             function onSelectedInfoTimeout() {
-                var focused = focusedElement
+                var focused = focusedElement;
                 if (focused) {
                     setSelectedItemInfo(focused);
                 }

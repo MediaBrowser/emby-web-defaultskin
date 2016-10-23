@@ -1,4 +1,5 @@
 define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop', 'focusManager', 'playbackManager', './../skininfo', 'events'], function (connectionManager, loading, tabbedPage, backdrop, focusManager, playbackManager, skinInfo, events) {
+    'use strict';
 
     function loadViewHtml(page, parentId, html, viewName, autoFocus, self) {
 
@@ -72,8 +73,7 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
             if (activeElement && document.body.contains(activeElement) && focusManager.isCurrentlyFocusable(activeElement)) {
                 console.log('re-focusing activeElement');
                 focusManager.focus(activeElement);
-            }
-            else {
+            } else {
 
                 // need to re-focus
                 // see if there's a card with the same library item
@@ -210,7 +210,7 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
 
                     if (!autoFocusTabContent) {
                         var activeElement = document.activeElement;
-                        if (!activeElement || activeElement.tagName == 'BODY' || !document.body.contains(activeElement)) {
+                        if (!activeElement || activeElement.tagName === 'BODY' || !document.body.contains(activeElement)) {
                             autoFocusTabContent = true;
                         }
                     }
@@ -221,6 +221,6 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
                 });
             });
         }
-    }
+    };
 
 });
