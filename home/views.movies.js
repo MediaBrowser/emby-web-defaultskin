@@ -54,14 +54,16 @@ define(['./spotlight', 'imageLoader', 'focusManager', 'cardBuilder', './../skini
 
         var options = {
 
-            SortBy: "Random",
+            SortBy: "DateCreated",
+            SortOrder: "Descending",
+            Filters: "isUnplayed",
             IncludeItemTypes: "Movie",
             Limit: 20,
             Recursive: true,
             ParentId: parentId,
             EnableImageTypes: "Backdrop",
             ImageTypes: "Backdrop",
-            Fields: "Taglines"
+            Fields: "name"
         };
 
         return Emby.Models.items(options).then(function (result) {
