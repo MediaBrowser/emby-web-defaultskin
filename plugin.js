@@ -468,7 +468,7 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
         self.setTitle = function (title) {
 
-            if (title == null) {
+            if (title !== null) {
                 document.querySelector('.headerLogo').classList.remove('hide');
             } else {
                 document.querySelector('.headerLogo').classList.add('hide');
