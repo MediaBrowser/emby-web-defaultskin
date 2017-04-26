@@ -1,8 +1,8 @@
 {
-    "name": "emby.defaultskin",
-    "displayName": "Default Skin",
+    "name": "emby.madtv",
+    "displayName": "MAD TV",
     "version": "1.0.0",
-    "description": "The default Emby skin.",
+    "description": "The MAD TV Emby skin.",
     "plugin": "plugin.js",
     "homepage": "https://github.com/MediaBrowser/emby-web-defaultskin",
     "thumb": "",
