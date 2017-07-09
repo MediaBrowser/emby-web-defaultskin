@@ -1,8 +1,8 @@
-<div class="horizontalSection">
+<!-- <div class="verticalSection">
     <div class="sectionTitle">&nbsp;</div>
     <div>
-        <button type="button" class="card block wideSpotlightCard card-static">
-            <div class="cardImageContainer cardBox card-focuscontent">
+        <button type="button" class="card block wideSpotlightCard noScale">
+            <div class="cardImageContainer cardBox">
 
                 <div class="cardImage coveredImage coveredImage-noScale"></div>
 
@@ -13,8 +13,8 @@
             </div>
         </button>
         <div class="horizontalItemsContainer">
-            <button type="button" class="card backdropCard allMoviesCard card-static" data-type="allseries">
-                <div class="cardImageContainer cardBox card-focuscontent">
+            <button type="button" class="card backdropCard allMoviesCard" data-type="allseries">
+                <div class="cardImageContainer cardBox cardBox-focustransform">
 
                     <div class="cardImage coveredImage coveredImage-noScale"></div>
 
@@ -23,8 +23,8 @@
                     </div>
                 </div>
             </button>
-            <button type="button" class="card backdropCard movieFavoritesCard card-static" data-type="genres">
-                <div class="cardImageContainer cardBox card-focuscontent">
+            <button type="button" class="card backdropCard movieFavoritesCard" data-type="genres">
+                <div class="cardImageContainer cardBox cardBox-focustransform">
 
                     <div class="cardImage coveredImage coveredImage-noScale"></div>
 
@@ -33,8 +33,8 @@
                     </div>
                 </div>
             </button>
-            <button type="button" class="card squareCard movieCollectionsCard card-static" data-type="genres">
-                <div class="cardImageContainer coveredImage cardBox noScale card-focuscontent">
+            <button type="button" class="card squareCard movieCollectionsCard" data-type="genres">
+                <div class="cardImageContainer coveredImage cardBox noScale cardBox-focustransform">
 
                     <i class="cardImageIcon md-icon">&#xE2C8;</i>
 
@@ -45,22 +45,34 @@
             </button>
         </div>
     </div>
+</div> -->
+
+<!-- <div class="scrollFrame scrollFrameY itemScrollFrame noPadding">
+  <div class="scrollSlider contentScrollSlider" style="white-space: nowrap;">
+  </div>
+</div> -->
+
+<div class="verticalSection tilesSection">
+  <div class="sectionTitle">${Categories}</div>
+  <div class="tilesContainer" style="white-space: nowrap;">
+
+  </div>
 </div>
 
-<div class="horizontalSection resumeSection hide">
-    <div class="sectionTitle">${ContinueWatching}</div>
-    <div is="emby-itemscontainer" class="itemsContainer">
+<div class="verticalSection latestSection" style="overflow: visible !important;">
+  <div class="sectionTitle">${LatestMovies}</div>
+  <div class="itemsContainer">
 
-    </div>
+  </div>
 </div>
 
-<div class="horizontalSection latestSection hide">
-    <div class="sectionTitle">${LatestMovies}</div>
-    <div is="emby-itemscontainer" class="itemsContainer">
+<div class="verticalSection resumeSection">
+  <div class="sectionTitle">${ContinueWatching}</div>
+  <div class="itemsContainer">
 
-    </div>
+  </div>
 </div>
 
-<div class="recommendations horizontalSection">
+<div class="recommendations verticalSection">
 
 </div>

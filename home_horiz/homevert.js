@@ -1,9 +1,9 @@
-define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop', 'focusManager', 'playbackManager', 'pluginManager', './../skininfo', 'events'], function (connectionManager, loading, tabbedPage, backdrop, focusManager, playbackManager, pluginManager, skinInfo, events) {
+define(['connectionManager', 'apphost', 'loading', './../components/tabbedpagevertical', 'backdrop', 'focusManager', 'playbackManager', 'pluginManager', './../skininfo', 'events'], function (connectionManager, apphost, loading, tabbedPageVertical, backdrop, focusManager, playbackManager, pluginManager, skinInfo, events) {
     'use strict';
 
     function loadViewHtml(page, parentId, html, viewName, autoFocus, self) {
 
-        var homeScrollContent = page.querySelector('.contentScrollSlider');
+        var homeScrollContent = page.querySelector('.viewContentArea');
 
         html = html;
         homeScrollContent.innerHTML = Globalize.translateDocument(html, skinInfo.id);
@@ -106,6 +106,119 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
             needsRefresh = true;
         }
 
+        view.querySelector('.userOptions .settings').addEventListener('click', function(e) {
+          Emby.Page.show('settings/settings.html');
+        });
+
+        view.querySelector('.userOptions .server').addEventListener('click', function(e) {
+          Emby.Page.showSelectServer();
+        });
+
+
+        // Power Options Menu
+        function getButton(label, icon, option) {
+          return '<button class="power-button" data-option="' + option + '"><h3>' + label + '</h3></button>';
+        }
+
+        var powerOptionsHtml = '';
+
+        if (apphost.supports('exit')) {
+          powerOptionsHtml += getButton(Globalize.translate('Exit'), '&#xE879;', 'exit');
+        }
+
+        if (apphost.supports('sleep')) {
+          powerOptionsHtml += getButton(Globalize.translate('Sleep'), '&#xE426;', 'sleep');
+        }
+
+        if (apphost.supports('shutdown')) {
+          powerOptionsHtml += getButton(Globalize.translate('Shutdown'), '&#xE8AC;', 'shutdown');
+        }
+
+        if (apphost.supports('restart')) {
+          powerOptionsHtml += getButton(Globalize.translate('Restart'), '&#xE5D5;', 'restart');
+        }
+
+        powerOptionsHtml += getButton(Globalize.translate('SelectServer'), '&#xE63E;', 'selectserver');
+
+        powerOptionsHtml += getButton(Globalize.translate('SignOut'), '&#xE897;', 'logout');
+
+        view.querySelector('.power-overlay .panel-body').innerHTML = powerOptionsHtml;
+
+        view.querySelector('.userOptions .power').addEventListener('click', function(e) {
+          var powerOverlay = view.querySelector('.power-overlay');
+
+          powerOverlay.style = 'display: block';
+          setTimeout(function() {
+            powerOverlay.classList.remove('unshow');
+          }, 100);
+
+          powerOverlay.querySelector('button').focus();
+
+          powerOverlay.addEventListener('keydown', function(e) {
+            var charCode = e.charCode || e.keyCode || e.which;
+            if (charCode == 27 || charCode == 8){
+              e.preventDefault();
+              e.stopPropagation();
+              powerOverlay.classList.add('unshow');
+              setTimeout(function () {
+                powerOverlay.style = 'display: none';
+              }, 500);
+              view.querySelector('.userOptions .power').focus();
+              return false;
+            }
+          });
+
+          var powerButtons = powerOverlay.querySelectorAll('button');
+
+
+          for (var i = 0; i < powerButtons.length; i++) {
+            powerButtons[i].addEventListener('click', function (e) {
+
+              var powerMenuButton = parentWithClass(e.target, 'power-button');
+
+              var option = '';
+
+              if (powerMenuButton) {
+                option = powerMenuButton.getAttribute('data-option');
+              }
+
+              switch (option) {
+                  case 'logout':
+                      Emby.App.logout();
+                      break;
+                  case 'home':
+                      Emby.Page.goHome();
+                      break;
+                  case 'exit':
+                      apphost.exit();
+                      break;
+                  case 'sleep':
+                      apphost.sleep();
+                      break;
+                  case 'shutdown':
+                      apphost.shutdown();
+                      break;
+                  case 'restart':
+                      apphost.restart();
+                      break;
+                  case 'settings':
+                      Emby.Page.showSettings();
+                      break;
+                  case 'selectserver':
+                      Emby.Page.showSelectServer();
+                      break;
+                  default:
+                      break;
+              }
+            });
+          }
+
+        });
+
+        view.querySelector('.fullscreen-video button').addEventListener('click', function(e) {
+          Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'nowplaying/videoosd.html'));
+        });
+
         events.on(playbackManager, 'playbackstop', onPlaybackStopped);
 
         view.addEventListener('viewbeforeshow', function (e) {
@@ -145,8 +258,8 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
 
         view.addEventListener('viewdestroy', function () {
 
-            if (self.tabbedPage) {
-                self.tabbedPage.destroy();
+            if (self.tabbedPageVertical) {
+                self.tabbedPageVertical.destroy();
             }
             if (self.tabView) {
                 self.tabView.destroy();
@@ -160,12 +273,15 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
             var apiClient = connectionManager.currentApiClient();
             apiClient.getUserViews({}, apiClient.getCurrentUserId()).then(function (result) {
 
-                var tabbedPageInstance = new tabbedPage(view, {
+                var tabbedPageInstance = new tabbedPageVertical(view, {
                     handleFocus: true
                 });
                 tabbedPageInstance.loadViewContent = loadViewContent;
                 tabbedPageInstance.renderTabs(result.Items);
                 pageInstance.tabbedPage = tabbedPageInstance;
+
+                var firstUserView = document.querySelector('.userViewNames button');
+                focusManager.focus(firstUserView);
             });
         }
 

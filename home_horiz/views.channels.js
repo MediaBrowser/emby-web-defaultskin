@@ -1,4 +1,4 @@
-define(['cardBuilder', 'globalize', 'emby-itemscontainer'], function (cardBuilder, globalize) {
+define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
     'use strict';
 
     function loadChannels(element, parentId, apiClient, autoFocus) {
@@ -40,7 +40,7 @@ define(['cardBuilder', 'globalize', 'emby-itemscontainer'], function (cardBuilde
 
     function loadLatest(element, channel, apiClient) {
 
-        var html = '<div class="sectionTitle">'+ globalize.translate('LatestFromValue', channel.Name) + '</div><div is="emby-itemscontainer" class="itemsContainer"></div>';
+        var html = '<div class="sectionTitle">'+ Globalize.translate('LatestFromValue', channel.Name) + '</div><div is="emby-itemscontainer" class="itemsContainer"></div>';
 
         var section = document.createElement('div');
         section.classList.add('hide');

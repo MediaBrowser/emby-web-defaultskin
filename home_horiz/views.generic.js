@@ -32,8 +32,7 @@ define(['cardBuilder', 'emby-itemscontainer'], function (cardBuilder) {
                     backdrop: 3
                 },
                 scalable: false,
-                overlayText: true,
-                context: 'folders'
+                overlayText: true
             });
         });
     }

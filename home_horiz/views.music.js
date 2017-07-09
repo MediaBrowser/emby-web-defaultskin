@@ -1,4 +1,4 @@
-define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-itemscontainer'], function (cardBuilder, pluginManager, skinInfo, focusManager) {
+define(['cardBuilder', 'scroller', './../components/focushandler', 'pluginManager', './../components/tile', './../skininfo', 'emby-itemscontainer'], function (cardBuilder, scroller, focusHandler, pluginManager, tile, skinInfo) {
     'use strict';
 
 	function loadLatest(element, parentId) {
@@ -6,7 +6,7 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
         var options = {
 
             IncludeItemTypes: "Audio",
-            Limit: 9,
+            Limit: 30,
             Fields: "PrimaryImageAspectRatio",
             ParentId: parentId,
             ImageTypeLimit: 1,
@@ -22,9 +22,9 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
                 itemsContainer: section.querySelector('.itemsContainer'),
                 shape: 'auto',
                 rows: {
-                    portrait: 2,
-                    square: 3,
-                    backdrop: 3
+                    portrait: 1,
+                    square: 1,
+                    backdrop: 1
                 },
                 scalable: false
             });
@@ -42,7 +42,7 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
             ParentId: parentId,
             Fields: "PrimaryImageAspectRatio,SortName,CumulativeRunTimeTicks,CanDelete",
             StartIndex: 0,
-            Limit: 9
+            Limit: 30
         };
 
         return Emby.Models.playlists(options).then(function (result) {
@@ -56,9 +56,9 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
                 showTitle: true,
                 overlayText: true,
                 rows: {
-                    portrait: 2,
-                    square: 3,
-                    backdrop: 3
+                    portrait: 1,
+                    square: 1,
+                    backdrop: 1
                 },
                 scalable: false
             });
@@ -72,7 +72,7 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
             SortBy: "DatePlayed",
             SortOrder: "Descending",
             IncludeItemTypes: "Audio",
-            Limit: 6,
+            Limit: 30,
             Recursive: true,
             Fields: "PrimaryImageAspectRatio",
             Filters: "IsPlayed",
@@ -91,9 +91,9 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
                 shape: 'auto',
                 action: 'instantmix',
                 rows: {
-                    portrait: 2,
-                    square: 3,
-                    backdrop: 3
+                    portrait: 1,
+                    square: 1,
+                    backdrop: 1
                 },
                 scalable: false
             });
@@ -107,7 +107,7 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
             SortBy: "PlayCount",
             SortOrder: "Descending",
             IncludeItemTypes: "Audio",
-            Limit: 6,
+            Limit: 30,
             Recursive: true,
             Fields: "PrimaryImageAspectRatio",
             Filters: "IsPlayed",
@@ -126,127 +126,233 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
                 shape: 'auto',
                 action: 'instantmix',
                 rows: {
-                    portrait: 2,
-                    square: 3,
-                    backdrop: 3
+                    portrait: 1,
+                    square: 1,
+                    backdrop: 1
                 },
                 scalable: false
             });
         });
     }
 
-    function loadFavoriteSongs(element, parentId) {
+    function initialiseScrollers() {
+      // Categories scroller
+      var scrollFrame = document.querySelector('.tilesSection');
+      var slidee = scrollFrame.querySelector('.tilesContainer');
+      var options = {
+        horizontal: 1,
+        itemNav: 0,
+        mouseDragging: 1,
+        touchDragging: 1,
+        slidee: slidee,
+        itemSelector: '.tile',
+        smart: true,
+        releaseSwing: true,
+        scrollBy: 200,
+        speed: 300,
+        immediateSpeed: 1,
+        elasticBounds: 1,
+        dragHandle: 1,
+        dynamicHandle: 1,
+        clickBar: 1,
+        scrollWidth: 500000
+      };
+      self.tilesScroller = new scroller(scrollFrame, options);
+      self.tilesScroller.init();
+      initFocusHandler(document, slidee, self.tilesScroller);
 
-        var options = {
+      // Latest scroller
+      var scrollFrame = document.querySelector('.latestSection');
+      var slidee = scrollFrame.querySelector('.itemsContainer');
+      var options = {
+        horizontal: 1,
+        itemNav: 0,
+        mouseDragging: 1,
+        touchDragging: 1,
+        slidee: slidee,
+        itemSelector: '.card',
+        smart: true,
+        releaseSwing: true,
+        scrollBy: 200,
+        speed: 300,
+        immediateSpeed: 1,
+        elasticBounds: 1,
+        dragHandle: 1,
+        dynamicHandle: 1,
+        clickBar: 1,
+        scrollWidth: 500000
+      };
+      self.latestScroller = new scroller(scrollFrame, options);
+      self.latestScroller.init();
+      initFocusHandler(document, slidee, self.latestScroller);
 
-            SortBy: "Random",
-            IncludeItemTypes: "Audio",
-            Limit: 6,
-            Recursive: true,
-            Fields: "PrimaryImageAspectRatio",
-            Filters: "IsFavorite",
-            ParentId: parentId,
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb"
-        };
+      // Playlists scroller
+      var scrollFrame = document.querySelector('.playlistsSection');
+      var slidee = scrollFrame.querySelector('.itemsContainer');
+      var options = {
+        horizontal: 1,
+        itemNav: 0,
+        mouseDragging: 1,
+        touchDragging: 1,
+        slidee: slidee,
+        itemSelector: '.card',
+        smart: true,
+        releaseSwing: true,
+        scrollBy: 200,
+        speed: 300,
+        immediateSpeed: 1,
+        elasticBounds: 1,
+        dragHandle: 1,
+        dynamicHandle: 1,
+        clickBar: 1,
+        scrollWidth: 500000
+      };
+      self.playlistsScroller = new scroller(scrollFrame, options);
+      self.playlistsScroller.init();
+      initFocusHandler(document, slidee, self.playlistsScroller);
 
-        return Emby.Models.items(options).then(function (result) {
+      // Recently played scroller
+      var scrollFrame = document.querySelector('.recentlyPlayedSection');
+      var slidee = scrollFrame.querySelector('.itemsContainer');
+      var options = {
+        horizontal: 1,
+        itemNav: 0,
+        mouseDragging: 1,
+        touchDragging: 1,
+        slidee: slidee,
+        itemSelector: '.card',
+        smart: true,
+        releaseSwing: true,
+        scrollBy: 200,
+        speed: 300,
+        immediateSpeed: 1,
+        elasticBounds: 1,
+        dragHandle: 1,
+        dynamicHandle: 1,
+        clickBar: 1,
+        scrollWidth: 500000
+      };
+      self.recentlyPlayedScroller = new scroller(scrollFrame, options);
+      self.recentlyPlayedScroller.init();
+      initFocusHandler(document, slidee, self.recentlyPlayedScroller);
 
-            var section = element.querySelector('.favoriteSongsSection');
-
-            cardBuilder.buildCards(result.Items, {
-                parentContainer: section,
-                itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'auto',
-                action: 'instantmix',
-                rows: {
-                    portrait: 2,
-                    square: 3,
-                    backdrop: 3
-                },
-                scalable: false
-            });
-        });
+      // Frequently played scroller
+      var scrollFrame = document.querySelector('.frequentlyPlayedSection');
+      var slidee = scrollFrame.querySelector('.itemsContainer');
+      var options = {
+        horizontal: 1,
+        itemNav: 0,
+        mouseDragging: 1,
+        touchDragging: 1,
+        slidee: slidee,
+        itemSelector: '.card',
+        smart: true,
+        releaseSwing: true,
+        scrollBy: 200,
+        speed: 300,
+        immediateSpeed: 1,
+        elasticBounds: 1,
+        dragHandle: 1,
+        dynamicHandle: 1,
+        clickBar: 1,
+        scrollWidth: 500000
+      };
+      self.frequentlyPlayedScroller = new scroller(scrollFrame, options);
+      self.frequentlyPlayedScroller.init();
+      initFocusHandler(document, slidee, self.frequentlyPlayedScroller);
     }
 
-    function loadFavoriteAlbums(element, parentId) {
+    function initFocusHandler(view, slidee, scroller) {
+        //if (pageOptions.handleFocus) {
+            var scrollSlider = slidee;
 
-        var options = {
+            var selectedItemInfoElement = view.querySelector('.selectedItemInfo');
+            var selectedIndexElement = view.querySelector('.selectedIndex');
 
-            SortBy: "Random",
-            IncludeItemTypes: "MusicAlbum",
-            Limit: 6,
-            Recursive: true,
-            Fields: "PrimaryImageAspectRatio",
-            Filters: "IsFavorite",
-            ParentId: parentId,
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb"
-        };
-
-        return Emby.Models.items(options).then(function (result) {
-
-            var section = element.querySelector('.favoriteAlbumsSection');
-
-            cardBuilder.buildCards(result.Items, {
-                parentContainer: section,
-                itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'auto',
-                rows: {
-                    portrait: 2,
-                    square: 3,
-                    backdrop: 3
-                },
-                scalable: false
+            self.focusHandler = new focusHandler({
+                parent: scrollSlider,
+                selectedItemInfoElement: selectedItemInfoElement,
+                selectedIndexElement: selectedIndexElement,
+                // animateFocus: pageOptions.animateFocus,
+                animateFocus: null,
+                scroller: scroller,
+                enableBackdrops: true,
+                zoomScale: 1.1
             });
-        });
+        //}
+
+        document.querySelector('.tilesSection').style = 'overflow: visible !important';
+        document.querySelector('.latestSection').style = 'overflow: visible !important';
+        document.querySelector('.playlistsSection').style = 'overflow: visible !important';
+        document.querySelector('.recentlyPlayedSection').style = 'overflow: visible !important';
+        document.querySelector('.frequentlyPlayedSection').style = 'overflow: visible !important';
     }
 
-    function loadFavoriteArtists(element, parentId) {
+    function parentWithClass(elem, className) {
+        while (!elem.classList || !elem.classList.contains(className)) {
+            elem = elem.parentNode;
+            if (!elem) {
+                return null;
+            }
+        }
 
-        var options = {
-
-            SortBy: "Random",
-            Limit: 6,
-            Recursive: true,
-            Fields: "PrimaryImageAspectRatio",
-            Filters: "IsFavorite",
-            ParentId: parentId,
-            ImageTypeLimit: 1,
-            EnableImageTypes: "Primary,Backdrop,Thumb"
-        };
-
-        return Emby.Models.artists(options).then(function (result) {
-
-            var section = element.querySelector('.favoriteArtistsSection');
-
-            cardBuilder.buildCards(result.Items, {
-                parentContainer: section,
-                itemsContainer: section.querySelector('.itemsContainer'),
-                shape: 'auto',
-                rows: {
-                    portrait: 2,
-                    square: 3,
-                    backdrop: 3
-                },
-                scalable: false
-            });
-        });
-    }
-
-    function gotoMusicView(tab, parentId, apiClient) {
-
-        Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'music/music.html?tab=' + tab + "&parentId=" + parentId + "&serverId=" + apiClient.serverId()));
+        return elem;
     }
 
     function view(element, apiClient, parentId, autoFocus) {
         var self = this;
 
         if (autoFocus) {
-            focusManager.autoFocus(element, true);
+            Emby.FocusManager.autoFocus(element, true);
         }
 
         self.loadData = function (isRefresh) {
+            var tileOptions = {
+              target: ".tilesContainer",
+              items: [
+                {
+                  title: Globalize.translate('Artists'),
+                  link: 'music/music.html?tab=artists&parentid=' + parentId,
+                  icon: '&#xE405;'
+                },
+                {
+                  title: Globalize.translate('AlbumArtists'),
+                  link: 'music/music.html?tab=albumartists&parentid=' + parentId,
+                  icon: '&#xE405;'
+                },
+                {
+                  title: Globalize.translate('Albums'),
+                  link: 'music/music.html?tab=albums&parentid=' + parentId,
+                  icon: 'album'
+                },
+                {
+                  title: Globalize.translate('Genres'),
+                  link: 'music/music.html?tab=genres&parentid=' + parentId,
+                  icon: '&#xE405;'
+                },
+                {
+                  title: Globalize.translate('Playlists'),
+                  link: 'music/music.html?tab=playlists&parentid=' + parentId,
+                  icon: ''
+                },
+                {
+                  title: Globalize.translate('Favorites'),
+                  link: 'music/music.html?tab=favorites&parentid=' + parentId,
+                  icon: '&#xE030;'
+                }
+              ]
+            };
+
+            tile(tileOptions);
+
+            var tileElems = document.querySelectorAll('.tile');
+
+            for(var tileEl of tileElems) {
+              tileEl.addEventListener('click', function (e) {
+                var el = parentWithClass(e.target, 'tile');
+                Emby.Page.show(pluginManager.mapRoute(skinInfo.id, el.getAttribute('data-link')));
+              });
+            }
 
             if (isRefresh) {
                 return Promise.resolve();
@@ -257,23 +363,10 @@ define(['cardBuilder', 'pluginManager', './../skininfo', 'focusManager', 'emby-i
                 loadPlaylists(element, parentId),
                 loadRecentlyPlayed(element, parentId),
                 loadFrequentlyPlayed(element, parentId),
-                loadFavoriteSongs(element, parentId),
-                loadFavoriteAlbums(element, parentId),
-                loadFavoriteArtists(element, parentId)
             ]);
         };
 
-        element.querySelector('.artistsCard').addEventListener('click', function () {
-            gotoMusicView('2', parentId, apiClient);
-        });
-
-        element.querySelector('.albumsCard').addEventListener('click', function () {
-            gotoMusicView('1', parentId, apiClient);
-        });
-
-        element.querySelector('.genresCard').addEventListener('click', function () {
-            gotoMusicView('6', parentId, apiClient);
-        });
+        initialiseScrollers();
 
         self.destroy = function () {
 

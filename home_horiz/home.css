@@ -1,50 +1,3 @@
-.userViewNames {
-    padding-left: 3.75%;
-}
-
-.userViewButtonText {
-    font-weight: normal;
-}
-
-.userViewNames h3 {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-weight: 300;
-}
-
-.userViewNames .btnUserViewHeader {
-    min-width: initial;
-    text-transform: none !important;
-    margin-top: 0;
-    padding-top: 0;
-    padding-bottom: .2em;
-}
-
-.homePageContainer .selectedItemInfo {
-    right: 2%;
-    bottom: 2.5%;
-}
-
-.homePageContent .squareCard:not(.scalableCard) .cardImageContainer {
-    width: 21.85vh;
-    height: 21.85vh;
-}
-
-.homePageContent .bannerCard .cardImageContainer {
-    width: 56.32432vh;
-    height: 10.42vh;
-}
-
-.homePageContent .backdropCard .cardImageContainer {
-    width: 38.89vh;
-    height: 21.85vh;
-}
-
-.homePageContent .portraitCard .cardImageContainer {
-    width: 21.94vh;
-    height: 32.96vh;
-}
-
 .wideSpotlightCard {
     width: 100%;
 }
@@ -52,11 +5,3 @@
     .wideSpotlightCard .cardImageContainer {
         height: 44.7vh;
     }
-
-    .wideSpotlightCard.card-focusscale:focus > .cardBox {
-        transform: scale(1.04, 1.04);
-    }
-
-.homePageContainer .cardBox {
-    margin: 4px !important;
-}

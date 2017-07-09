@@ -22,7 +22,7 @@ define(['visibleinviewport', 'itemShortcuts', 'browser'], function (visibleinvie
 
         newCardImageContainer.style.backgroundImage = "url('" + imgUrl + "')";
 
-        card.querySelector('.cardText').innerHTML = item.Name;
+        card.querySelector('.cardText').innerHTML = item.Taglines && item.Taglines.length ? item.Taglines[0] : item.Name;
         card.setAttribute('data-id', item.Id);
         card.setAttribute('data-serverid', item.ServerId);
         card.setAttribute('data-type', item.Type);

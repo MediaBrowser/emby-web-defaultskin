@@ -1,8 +1,8 @@
-<div class="horizontalSection">
+<!-- <div class="horizontalSection">
     <div class="sectionTitle">&nbsp;</div>
     <div class="cardColumn">
-        <button type="button" class="card squareCard homeSquareCard artistsCard coloredCard card-static" data-type="all">
-            <div class="cardImageContainer coveredImage cardBox noScale card-focuscontent">
+        <button type="button" class="card squareCard homeSquareCard artistsCard coloredCard" data-type="all">
+            <div class="cardImageContainer coveredImage cardBox noScale cardBox-focustransform">
 
                 <i class="cardImageIcon md-icon">&#xE405;</i>
 
@@ -11,8 +11,8 @@
                 </div>
             </div>
         </button>
-        <button type="button" class="card squareCard homeSquareCard albumsCard coloredCard card-static" data-type="all">
-            <div class="cardImageContainer coveredImage cardBox noScale card-focuscontent">
+        <button type="button" class="card squareCard homeSquareCard albumsCard coloredCard" data-type="all">
+            <div class="cardImageContainer coveredImage cardBox noScale cardBox-focustransform">
 
                 <i class="cardImageIcon md-icon">album</i>
 
@@ -21,8 +21,8 @@
                 </div>
             </div>
         </button>
-        <button type="button" class="card squareCard homeSquareCard genresCard coloredCard card-static" data-type="all">
-            <div class="cardImageContainer coveredImage cardBox noScale card-focuscontent">
+        <button type="button" class="card squareCard homeSquareCard genresCard coloredCard" data-type="all">
+            <div class="cardImageContainer coveredImage cardBox noScale cardBox-focustransform">
 
                 <i class="cardImageIcon md-icon">&#xE030;</i>
 
@@ -32,52 +32,38 @@
             </div>
         </button>
     </div>
+</div> -->
+
+<div class="verticalSection tilesSection">
+  <div class="sectionTitle">${Categories}</div>
+  <div class="tilesContainer" style="white-space: nowrap;">
+
+  </div>
 </div>
 
-<div class="horizontalSection latestSection hide">
+<div class="verticalSection latestSection">
     <div class="sectionTitle">${LatestMusic}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>
 </div>
 
-<div class="horizontalSection playlistsSection hide">
+<div class="verticalSection playlistsSection">
     <div class="sectionTitle">${Playlists}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>
 </div>
 
-<div class="horizontalSection recentlyPlayedSection hide">
+<div class="verticalSection recentlyPlayedSection">
     <div class="sectionTitle">${RecentlyPlayed}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>
 </div>
 
-<div class="horizontalSection frequentlyPlayedSection hide">
+<div class="verticalSection frequentlyPlayedSection">
     <div class="sectionTitle">${FrequentlyPlayed}</div>
-    <div is="emby-itemscontainer" class="itemsContainer">
-
-    </div>
-</div>
-
-<div class="horizontalSection favoriteArtistsSection hide">
-    <div class="sectionTitle">${FavoriteArtists}</div>
-    <div is="emby-itemscontainer" class="itemsContainer">
-
-    </div>
-</div>
-
-<div class="horizontalSection favoriteAlbumsSection hide">
-    <div class="sectionTitle">${FavoriteAlbums}</div>
-    <div is="emby-itemscontainer" class="itemsContainer">
-
-    </div>
-</div>
-
-<div class="horizontalSection favoriteSongsSection hide">
-    <div class="sectionTitle">${FavoriteSongs}</div>
     <div is="emby-itemscontainer" class="itemsContainer">
 
     </div>
