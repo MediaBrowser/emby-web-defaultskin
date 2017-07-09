@@ -224,4 +224,3 @@ define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop'
     };
 
 });
-});
