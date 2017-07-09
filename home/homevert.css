@@ -18,14 +18,14 @@ div[data-type="home"] {
   background-size: contain;
   background-image: url(../css/images/logowhite.png);
   background-repeat: no-repeat;
-  background-position: left;
+  background-position: center;
 }
 
 .panel-left .userOptions {
   height: 7vh;
   padding: 4vh 0;
   overflow: visible;
-  text-align: center;
+  text-align: left;
 }
 
 .panel-left .userOptions button {
