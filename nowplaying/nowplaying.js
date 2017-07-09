@@ -103,7 +103,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             isEnabled = true;
 
             updatePlayerStateInternal(event, state);
-            updatePlaylist(player);
+            updatePlaylist();
         }
 
         function onPlayPauseStateChanged(e) {
@@ -141,7 +141,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             console.log('nowplaying event: ' + e.type);
             var player = this;
 
-            if (state.NextMediaType !== 'Audio') {
+            if (state.nextMediaType !== 'Audio') {
                 Emby.Page.back();
             }
         }
@@ -169,7 +169,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             events.on(player, 'playbackstop', onPlaybackStopped);
             events.on(player, 'volumechange', onVolumeChanged);
             events.on(player, 'pause', onPlayPauseStateChanged);
-            events.on(player, 'unpause', onPlayPauseStateChanged);
+            events.on(player, 'playing', onPlayPauseStateChanged);
             events.on(player, 'timeupdate', onTimeUpdate);
         }
 
@@ -183,7 +183,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
                 events.off(player, 'playbackstop', onPlaybackStopped);
                 events.off(player, 'volumechange', onVolumeChanged);
                 events.off(player, 'pause', onPlayPauseStateChanged);
-                events.off(player, 'unpause', onPlayPauseStateChanged);
+                events.off(player, 'playing', onPlayPauseStateChanged);
                 events.off(player, 'timeupdate', onTimeUpdate);
 
                 currentPlayer = null;
@@ -211,29 +211,29 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
             updateTimeDisplay(playbackManager.currentTime(player), currentRuntimeTicks);
         }
 
-        function updatePlaylist(player) {
+        function updatePlaylist() {
 
-            playbackManager.getPlaylist(player).then(function (items) {
-                if (items.length > 1) {
-                    view.querySelector('.btnPlaylist').disabled = false;
-                } else {
-                    view.querySelector('.btnPlaylist').disabled = true;
-                }
+            var items = playbackManager.playlist();
 
-                var index = playbackManager.getCurrentPlaylistIndex(player);
+            if (items.length > 1) {
+                view.querySelector('.btnPlaylist').disabled = false;
+            } else {
+                view.querySelector('.btnPlaylist').disabled = true;
+            }
 
-                if (index === 0) {
-                    view.querySelector('.btnPreviousTrack').disabled = true;
-                } else {
-                    view.querySelector('.btnPreviousTrack').disabled = false;
-                }
+            var index = playbackManager.currentPlaylistIndex();
 
-                if (index >= items.length - 1) {
-                    view.querySelector('.btnNextTrack').disabled = true;
-                } else {
-                    view.querySelector('.btnNextTrack').disabled = false;
-                }
-            });
+            if (index === 0) {
+                view.querySelector('.btnPreviousTrack').disabled = true;
+            } else {
+                view.querySelector('.btnPreviousTrack').disabled = false;
+            }
+
+            if (index >= items.length - 1) {
+                view.querySelector('.btnNextTrack').disabled = true;
+            } else {
+                view.querySelector('.btnNextTrack').disabled = false;
+            }
         }
 
         function updatePlayPauseState(isPaused) {
@@ -406,7 +406,7 @@ define(['playbackManager', 'datetime', 'backdrop', 'userdataButtons', 'cardBuild
         nowPlayingPositionSlider.addEventListener('change', function () {
 
             if (currentPlayer) {
-                var newPercent = parseFloat(this.value);
+
                 playbackManager.seekPercent(newPercent, currentPlayer);
             }
         });

@@ -1,4 +1,4 @@
-define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'listView', 'focusManager', 'itemShortcuts', 'globalize', 'emby-itemscontainer'], function (playbackManager, scroller, loading, imageLoader, backdrop, listview, focusManager, itemShortcuts, globalize) {
+define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'listView', 'focusManager', 'itemShortcuts', 'emby-itemscontainer'], function (playbackManager, scroller, loading, imageLoader, backdrop, listview, focusManager, itemShortcuts) {
     'use strict';
 
     function createVerticalScroller(view, pageInstance) {
@@ -70,24 +70,24 @@ define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'li
 
             var section = view.querySelector('.trackList');
 
-            playbackManager.getPlaylist().then(function(items) {
-                section.innerHTML = listview.getListViewHtml({
-                    items: items,
-                    action: 'setplaylistindex',
-                    showParentTitle: true,
-                    enableSideMediaInfo: true
-                });
+            var items = playbackManager.playlist();
 
-                imageLoader.lazyChildren(section);
-
-                focusManager.autoFocus(section);
-                updateCurrentPlaylistItem();
+            section.innerHTML = listview.getListViewHtml({
+                items: items,
+                action: 'setplaylistindex',
+                showParentTitle: true,
+                enableSideMediaInfo: true
             });
+
+            imageLoader.lazyChildren(section);
+
+            focusManager.autoFocus(section);
+            updateCurrentPlaylistItem();
         }
 
         function updateCurrentPlaylistItem() {
 
-            var index = playbackManager.getCurrentPlaylistIndex();
+            var index = playbackManager.currentPlaylistIndex();
 
             var current = view.querySelector('.playlistIndexIndicatorImage');
             if (current) {
@@ -109,7 +109,7 @@ define(['playbackManager', 'scroller', 'loading', 'imageLoader', 'backdrop', 'li
 
             var isRestored = e.detail.isRestored;
 
-            Emby.Page.setTitle(globalize.translate('NowPlaying'));
+            Emby.Page.setTitle(Globalize.translate('NowPlaying'));
 
             Events.on(playbackManager, 'playbackstart', onPlaybackStart);
             Events.on(playbackManager, 'playbackstop', onPlaybackStop);

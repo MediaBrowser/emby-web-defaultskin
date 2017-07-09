@@ -1,4 +1,4 @@
-﻿define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'browser', 'globalize', 'apphost', 'layoutManager', 'scrollStyles', 'emby-slider', 'paper-icon-button-light'], function (playbackManager, dom, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager, browser, globalize, appHost, layoutManager) {
+define(['playbackManager', 'dom', 'inputmanager', 'datetime', 'itemHelper', 'mediaInfo', 'focusManager', 'imageLoader', 'scrollHelper', 'events', 'connectionManager', 'browser', 'globalize', 'apphost', 'scrollStyles', 'emby-slider'], function (playbackManager, dom, inputManager, datetime, itemHelper, mediaInfo, focusManager, imageLoader, scrollHelper, events, connectionManager, browser, globalize, appHost) {
     'use strict';
 
     function seriesImageUrl(item, options) {
@@ -47,7 +47,7 @@
         if (item.ImageTags && item.ImageTags[options.type]) {
 
             options.tag = item.ImageTags[options.type];
-            return connectionManager.getApiClient(item.ServerId).getScaledImageUrl(item.PrimaryImageItemId || item.Id, options);
+            return connectionManager.getApiClient(item.ServerId).getScaledImageUrl(item.Id, options);
         }
 
         if (options.type === 'Primary') {
@@ -86,15 +86,8 @@
         var currentPlayer;
         var currentPlayerSupportedCommands = [];
         var currentRuntimeTicks = 0;
-        var comingUpNextDisplayed;
         var lastUpdateTime = 0;
         var isEnabled;
-        var currentItem;
-        var recordingButtonManager;
-        var enableProgressByTimeOfDay;
-        var programStartDateMs = 0;
-        var programEndDateMs = 0;
-        var playbackStartTimeTicks = 0;
 
         var nowPlayingVolumeSlider = view.querySelector('.osdVolumeSlider');
         var nowPlayingVolumeSliderContainer = view.querySelector('.osdVolumeSliderContainer');
@@ -103,264 +96,33 @@
 
         var nowPlayingPositionText = view.querySelector('.osdPositionText');
         var nowPlayingDurationText = view.querySelector('.osdDurationText');
-        var startTimeText = view.querySelector('.startTimeText');
-        var endTimeText = view.querySelector('.endTimeText');
         var endsAtText = view.querySelector('.endsAtText');
 
+        var scenePicker = view.querySelector('.scenePicker');
+        var isScenePickerRendered;
         var btnRewind = view.querySelector('.btnRewind');
         var btnFastForward = view.querySelector('.btnFastForward');
 
         var transitionEndEventName = dom.whichTransitionEvent();
 
-        var headerElement = document.querySelector('.skinHeader');
-        var osdBottomElement = document.querySelector('.videoOsdBottom');
-        var supportsBrightnessChange;
-
-        var currentVisibleMenu;
-        var statsOverlay;
-
-        function onVerticalSwipe(e, elem, data) {
-            var player = currentPlayer;
-            if (player) {
-
-                var windowSize = dom.getWindowSize();
-
-                if (supportsBrightnessChange && data.clientX < (windowSize.innerWidth / 2)) {
-                    doBrightnessTouch(data.deltaY, player, windowSize.innerHeight);
-                    return;
-                }
-                doVolumeTouch(data.deltaY, player, windowSize.innerHeight);
-            }
+        function getHeaderElement() {
+            return document.querySelector('.skinHeader');
         }
 
-        function doBrightnessTouch(deltaY, player, viewHeight) {
-            var delta = -((deltaY / viewHeight) * 100);
-
-            var newValue = playbackManager.getBrightness(player) + delta;
-
-            newValue = Math.min(newValue, 100);
-            newValue = Math.max(newValue, 0);
-
-            playbackManager.setBrightness(newValue, player);
-        }
-
-        function doVolumeTouch(deltaY, player, viewHeight) {
-
-            var delta = -((deltaY / viewHeight) * 100);
-            var newValue = playbackManager.getVolume(player) + delta;
-
-            newValue = Math.min(newValue, 100);
-            newValue = Math.max(newValue, 0);
-
-            playbackManager.setVolume(newValue, player);
-        }
-
-        function initSwipeEvents() {
-            require(['touchHelper'], function (TouchHelper) {
-                self.touchHelper = new TouchHelper(view, {
-                    swipeYThreshold: 30,
-                    triggerOnMove: true,
-                    preventDefaultOnMove: true,
-                    ignoreTagNames: ['BUTTON', 'INPUT', 'TEXTAREA']
-                });
-
-                events.on(self.touchHelper, 'swipeup', onVerticalSwipe);
-                events.on(self.touchHelper, 'swipedown', onVerticalSwipe);
-            });
-        }
-
-        function getDisplayItem(item) {
-
-            if (item.Type === 'TvChannel') {
-
-                var apiClient = connectionManager.getApiClient(item.ServerId);
-                return apiClient.getItem(apiClient.getCurrentUserId(), item.Id).then(function (refreshedItem) {
-
-                    return {
-                        originalItem: refreshedItem,
-                        displayItem: refreshedItem.CurrentProgram
-                    };
-                });
-            }
-
-            return Promise.resolve({
-                originalItem: item
-            });
-        }
-
-        function updateRecordingButton(item) {
-
-            if (item.Type !== 'Program') {
-
-                if (recordingButtonManager) {
-                    recordingButtonManager.destroy();
-                    recordingButtonManager = null;
-                }
-                view.querySelector('.btnRecord').classList.add('hide');
-                return;
-            }
-
-            if (recordingButtonManager) {
-                recordingButtonManager.refreshItem(item);
-                return;
-            }
-
-            connectionManager.getApiClient(item.ServerId).getCurrentUser().then(function (user) {
-
-                if (!user.Policy.EnableLiveTvManagement) {
-                    return;
-                }
-
-                require(['recordingButton'], function (RecordingButton) {
-
-                    recordingButtonManager = new RecordingButton({
-                        item: item,
-                        button: view.querySelector('.btnRecord')
-                    });
-
-                    view.querySelector('.btnRecord').classList.remove('hide');
-                });
-            });
-        }
-
-        function updateDisplayItem(itemInfo) {
-
-            var item = itemInfo.originalItem;
-            currentItem = item;
-            var displayItem = itemInfo.displayItem || item;
-
-            updateRecordingButton(displayItem);
-            setPoster(displayItem, item);
-
-            var parentName = displayItem.SeriesName || displayItem.Album;
-
-            if (displayItem.EpisodeTitle || displayItem.IsSeries) {
-                parentName = displayItem.Name;
-            }
-
-            setTitle(displayItem, parentName);
-
-            var osdTitle = view.querySelector('.osdTitle');
-            var titleElement;
-
-            titleElement = osdTitle;
-
-            // Don't use this for live tv programs because this is contained in mediaInfo.getPrimaryMediaInfoHtml
-            var displayName = itemHelper.getDisplayName(displayItem, {
-                includeParentInfo: displayItem.Type !== 'Program',
-                includeIndexNumber: displayItem.Type !== 'Program'
-            });
-
-            // Use the series name if there is no episode info
-            if (!displayName && displayItem.Type === 'Program') {
-                //displayName = displayItem.Name;
-            }
-
-            titleElement.innerHTML = displayName;
-
-            if (displayName) {
-                titleElement.classList.remove('hide');
-            } else {
-                titleElement.classList.add('hide');
-            }
-
-            var mediaInfoHtml = mediaInfo.getPrimaryMediaInfoHtml(displayItem, {
-                runtime: false,
-                subtitles: false,
-                tomatoes: false,
-                endsAt: false,
-                episodeTitle: false,
-                originalAirDate: displayItem.Type !== 'Program',
-                episodeTitleIndexNumber: displayItem.Type !== 'Program',
-                programIndicator: false
-            });
-
-            var osdMediaInfo = view.querySelector('.osdMediaInfo');
-            osdMediaInfo.innerHTML = mediaInfoHtml;
-
-            if (mediaInfoHtml) {
-                osdMediaInfo.classList.remove('hide');
-            } else {
-                osdMediaInfo.classList.add('hide');
-            }
-
-            var secondaryMediaInfo = view.querySelector('.osdSecondaryMediaInfo');
-            var secondaryMediaInfoHtml = mediaInfo.getSecondaryMediaInfoHtml(displayItem, {
-                startDate: false,
-                programTime: false
-            });
-            secondaryMediaInfo.innerHTML = secondaryMediaInfoHtml;
-
-            if (secondaryMediaInfoHtml) {
-                secondaryMediaInfo.classList.remove('hide');
-            } else {
-                secondaryMediaInfo.classList.add('hide');
-            }
-
-            if (displayName) {
-                view.querySelector('.osdMainTextContainer').classList.remove('hide');
-            } else {
-                view.querySelector('.osdMainTextContainer').classList.add('hide');
-            }
-
-            if (enableProgressByTimeOfDay) {
-
-                setDisplayTime(startTimeText, displayItem.StartDate);
-                setDisplayTime(endTimeText, displayItem.EndDate);
-
-                startTimeText.classList.remove('hide');
-                endTimeText.classList.remove('hide');
-
-                programStartDateMs = displayItem.StartDate ? datetime.parseISO8601Date(displayItem.StartDate).getTime() : 0;
-                programEndDateMs = displayItem.EndDate ? datetime.parseISO8601Date(displayItem.EndDate).getTime() : 0;
-
-            } else {
-                startTimeText.classList.add('hide');
-                endTimeText.classList.add('hide');
-
-                startTimeText.innerHTML = '';
-                endTimeText.innerHTML = '';
-
-                programStartDateMs = 0;
-                programEndDateMs = 0;
-            }
-        }
-
-        function getDisplayTimeWithoutAmPm(date, showSeconds) {
-
-            if (showSeconds) {
-                return datetime.toLocaleTimeString(date, {
-
-                    hour: 'numeric',
-                    minute: '2-digit',
-                    second: '2-digit'
-
-                }).toLowerCase().replace('am', '').replace('pm', '').trim();
-            }
-
-            return datetime.getDisplayTime(date).toLowerCase().replace('am', '').replace('pm', '').trim();
-        }
-
-        function setDisplayTime(elem, date) {
-
-            var html;
-
-            if (date) {
-                date = datetime.parseISO8601Date(date);
-
-                html = getDisplayTimeWithoutAmPm(date);
-            }
-
-            elem.innerHTML = html || '';
+        function getOsdBottom() {
+            return view.querySelector('.videoOsdBottom');
         }
 
         function updateNowPlayingInfo(state) {
 
+            scenePicker.innerHTML = '';
+            isScenePickerRendered = false;
+
             var item = state.NowPlayingItem;
-            currentItem = item;
+
+            setPoster(item);
 
             if (!item) {
-                setPoster(null);
                 Emby.Page.setTitle('');
                 nowPlayingVolumeSlider.disabled = true;
                 nowPlayingPositionSlider.disabled = true;
@@ -375,8 +137,15 @@
                 return;
             }
 
-            enableProgressByTimeOfDay = item.Type === 'TvChannel';
-            getDisplayItem(item).then(updateDisplayItem);
+            setTitle(item);
+
+            view.querySelector('.osdTitle').innerHTML = itemHelper.getDisplayName(item);
+            view.querySelector('.osdMediaInfo').innerHTML = mediaInfo.getPrimaryMediaInfoHtml(item, {
+                runtime: false,
+                subtitles: false,
+                tomatoes: false,
+                endsAt: false
+            });
 
             nowPlayingVolumeSlider.disabled = false;
             nowPlayingPositionSlider.disabled = false;
@@ -394,15 +163,14 @@
             } else {
                 view.querySelector('.btnAudio').classList.add('hide');
             }
+
         }
 
-        function setTitle(item, parentName) {
+        function setTitle(item) {
 
             var url = logoImageUrl(item, connectionManager.getApiClient(item.ServerId), {});
 
             if (url) {
-
-                Emby.Page.setTitle('');
 
                 var pageTitle = document.querySelector('.pageTitle');
                 pageTitle.style.backgroundImage = "url('" + url + "')";
@@ -410,11 +178,11 @@
                 pageTitle.innerHTML = '';
                 document.querySelector('.headerLogo').classList.add('hide');
             } else {
-                Emby.Page.setTitle(parentName || '');
+                Emby.Page.setTitle('');
             }
         }
 
-        function setPoster(item, secondaryItem) {
+        function setPoster(item) {
 
             var osdPoster = view.querySelector('.osdPoster');
 
@@ -423,12 +191,6 @@
                 var imgUrl = seriesImageUrl(item, { type: 'Primary' }) ||
                     seriesImageUrl(item, { type: 'Thumb' }) ||
                     imageUrl(item, { type: 'Primary' });
-
-                if (!imgUrl && secondaryItem) {
-                    imgUrl = seriesImageUrl(secondaryItem, { type: 'Primary' }) ||
-                        seriesImageUrl(secondaryItem, { type: 'Thumb' }) ||
-                        imageUrl(secondaryItem, { type: 'Primary' });
-                }
 
                 if (imgUrl) {
                     osdPoster.innerHTML = '<img src="' + imgUrl + '" />';
@@ -439,17 +201,23 @@
             osdPoster.innerHTML = '';
         }
 
+        var _osdOpen = true;
+
+        function isOsdOpen() {
+            return _osdOpen;
+        }
+
         function showOsd() {
 
-            slideDownToShow(headerElement);
-            slideUpToShow(osdBottomElement);
+            slideDownToShow(getHeaderElement());
+            slideUpToShow(getOsdBottom());
             startHideTimer();
         }
 
         function hideOsd() {
 
-            slideUpToHide(headerElement);
-            slideDownToHide(osdBottomElement);
+            slideUpToHide(getHeaderElement());
+            slideDownToHide(getOsdBottom());
         }
 
         var hideTimeout;
@@ -485,11 +253,11 @@
 
         function slideUpToShow(elem) {
 
-            if (currentVisibleMenu === 'osd') {
+            if (_osdOpen) {
                 return;
             }
 
-            currentVisibleMenu = 'osd';
+            _osdOpen = true;
 
             clearBottomPanelAnimationEventListeners(elem);
 
@@ -500,9 +268,7 @@
 
             elem.classList.remove('videoOsdBottom-hidden');
 
-            setTimeout(function () {
-                focusManager.focus(elem.querySelector('.btnPause'));
-            }, 50);
+            focusManager.focus(elem.querySelector('.btnPause'));
 
             view.dispatchEvent(new CustomEvent('video-osd-show', {
                 bubbles: true,
@@ -528,7 +294,7 @@
 
         function slideDownToHide(elem) {
 
-            if (currentVisibleMenu !== 'osd') {
+            if (!_osdOpen) {
                 return;
             }
 
@@ -543,7 +309,7 @@
                 once: true
             });
 
-            currentVisibleMenu = null;
+            _osdOpen = false;
         }
 
         var lastMouseMoveData;
@@ -578,7 +344,7 @@
             switch (e.detail.command) {
 
                 case 'left':
-                    if (currentVisibleMenu === 'osd') {
+                    if (isOsdOpen()) {
                         showOsd();
                     } else {
                         e.preventDefault();
@@ -586,7 +352,7 @@
                     }
                     break;
                 case 'right':
-                    if (currentVisibleMenu === 'osd') {
+                    if (isOsdOpen()) {
                         showOsd();
                     } else {
                         e.preventDefault();
@@ -607,38 +373,14 @@
                 case 'previous':
                     showOsd();
                     break;
-                case 'record':
-                    onRecordingCommand();
-                    showOsd();
-                    break;
-                case 'togglestats':
-                    toggleStats();
-                    break;
                 default:
                     break;
             }
         }
 
-        function onRecordingCommand() {
-            var btnRecord = view.querySelector('.btnRecord');
-            if (!btnRecord.classList.contains('hide')) {
-                btnRecord.click();
-            }
-        }
-
-        function updateFullscreenIcon() {
-            if (playbackManager.isFullscreen(currentPlayer)) {
-                view.querySelector('.btnFullscreen').setAttribute('title', globalize.translate('ExitFullscreen'));
-                view.querySelector('.btnFullscreen i').innerHTML = '&#xE5D1;';
-            } else {
-                view.querySelector('.btnFullscreen').setAttribute('title', globalize.translate('Fullscreen'));
-                view.querySelector('.btnFullscreen i').innerHTML = '&#xE5D0;';
-            }
-        }
-
         view.addEventListener('viewbeforeshow', function (e) {
 
-            headerElement.classList.add('osdHeader');
+            getHeaderElement().classList.add('osdHeader');
             // Make sure the UI is completely transparent
             Emby.Page.setTransparency('full');
         });
@@ -648,44 +390,25 @@
             events.on(playbackManager, 'playerchange', onPlayerChange);
             bindToPlayer(playbackManager.getCurrentPlayer());
 
-            dom.addEventListener(document, 'mousemove', onMouseMove, {
-                passive: true
-            });
-            document.body.classList.add('autoScrollY');
+            document.addEventListener('mousemove', onMouseMove);
 
             showOsd();
 
             inputManager.on(window, onInputCommand);
-
-            dom.addEventListener(window, 'keydown', onWindowKeyDown, {
-                passive: true
-            });
         });
 
         view.addEventListener('viewbeforehide', function () {
-
-            if (statsOverlay) {
-                statsOverlay.enabled(false);
-            }
-
-            dom.removeEventListener(window, 'keydown', onWindowKeyDown, {
-                passive: true
-            });
-
             stopHideTimer();
-            headerElement.classList.remove('osdHeader');
-            headerElement.classList.remove('osdHeader-hidden');
-            dom.removeEventListener(document, 'mousemove', onMouseMove, {
-                passive: true
-            });
-            document.body.classList.remove('autoScrollY');
+            getHeaderElement().classList.remove('osdHeader');
+            getHeaderElement().classList.remove('osdHeader-hidden');
+            document.removeEventListener('mousemove', onMouseMove);
 
             inputManager.off(window, onInputCommand);
             events.off(playbackManager, 'playerchange', onPlayerChange);
             releaseCurrentPlayer();
         });
 
-        if (appHost.supports('remotecontrol') && !layoutManager.tv) {
+        if (appHost.supports('remotecontrol')) {
             view.querySelector('.btnCast').classList.remove('hide');
         }
 
@@ -696,15 +419,7 @@
             });
         });
 
-        view.querySelector('.btnFullscreen').addEventListener('click', function () {
-            playbackManager.toggleFullscreen(currentPlayer);
-        });
-
-        view.querySelector('.btnPip').addEventListener('click', function () {
-            playbackManager.togglePictureInPicture(currentPlayer);
-        });
-
-        view.querySelector('.btnVideoOsdSettings').addEventListener('click', onSettingsButtonClick);
+        view.querySelector('.btnSettings').addEventListener('click', onSettingsButtonClick);
 
         function onPlayerChange() {
 
@@ -729,8 +444,8 @@
 
             isEnabled = true;
 
-            updatePlayerStateInternal(event, player, state);
-            updatePlaylist(player);
+            updatePlayerStateInternal(event, state);
+            updatePlaylist();
 
             enableStopOnBack(true);
         }
@@ -768,11 +483,10 @@
         function onPlaybackStopped(e, state) {
 
             currentRuntimeTicks = null;
-            hideComingUpNext();
 
             console.log('nowplaying event: ' + e.type);
 
-            if (state.NextMediaType !== 'Video') {
+            if (state.nextMediaType !== 'Video') {
 
                 view.removeEventListener('viewbeforehide', onViewHideStopPlayback);
 
@@ -803,16 +517,11 @@
             events.on(player, 'playbackstop', onPlaybackStopped);
             events.on(player, 'volumechange', onVolumeChanged);
             events.on(player, 'pause', onPlayPauseStateChanged);
-            events.on(player, 'unpause', onPlayPauseStateChanged);
+            events.on(player, 'playing', onPlayPauseStateChanged);
             events.on(player, 'timeupdate', onTimeUpdate);
-            events.on(player, 'fullscreenchange', updateFullscreenIcon);
-
-            hideComingUpNext();
         }
 
         function releaseCurrentPlayer() {
-
-            destroyStats();
 
             var player = currentPlayer;
 
@@ -822,14 +531,11 @@
                 events.off(player, 'playbackstop', onPlaybackStopped);
                 events.off(player, 'volumechange', onVolumeChanged);
                 events.off(player, 'pause', onPlayPauseStateChanged);
-                events.off(player, 'unpause', onPlayPauseStateChanged);
+                events.off(player, 'playing', onPlayPauseStateChanged);
                 events.off(player, 'timeupdate', onTimeUpdate);
-                events.off(player, 'fullscreenchange', updateFullscreenIcon);
 
                 currentPlayer = null;
             }
-
-            hideComingUpNext();
         }
 
         function onTimeUpdate(e) {
@@ -848,73 +554,7 @@
 
             var player = this;
             currentRuntimeTicks = playbackManager.duration(player);
-
-            var currentTime = playbackManager.currentTime(player);
-            updateTimeDisplay(currentTime, currentRuntimeTicks, playbackManager.playbackStartTime(player));
-
-            refreshProgramInfoIfNeeded(player);
-            showComingUpNextIfNeeded(player, currentTime, currentRuntimeTicks);
-        }
-
-        function showComingUpNextIfNeeded(player, currentTimeTicks, runtimeTicks) {
-
-            if (runtimeTicks && currentTimeTicks) {
-
-                var showAtSecondsLeft = 45;
-                var showAtTicks = runtimeTicks - (showAtSecondsLeft * 1000 * 10000);
-
-                if (currentTimeTicks >= showAtTicks) {
-                    showComingUpNext(player, currentTimeTicks, runtimeTicks);
-                }
-            }
-        }
-
-        function showComingUpNext(player, currentTimeTicks, runtimeTicks) {
-
-            if (currentVisibleMenu) {
-                return;
-            }
-            currentVisibleMenu = 'upnext';
-        }
-
-        function hideComingUpNext() {
-
-            if (currentVisibleMenu !== 'upnext') {
-                return;
-            }
-
-            currentVisibleMenu = null;
-        }
-
-        function refreshProgramInfoIfNeeded(player) {
-            var item = currentItem;
-            if (item.Type !== 'TvChannel') {
-                return;
-            }
-
-            var program = item.CurrentProgram;
-            if (!program || !program.EndDate) {
-                return;
-            }
-
-            try {
-
-                var endDate = datetime.parseISO8601Date(program.EndDate);
-
-                // program has changed and needs to be refreshed
-                if (new Date().getTime() >= endDate.getTime()) {
-
-                    console.log('program info needs to be refreshed');
-
-                    playbackManager.getPlayerState(player).then(function (state) {
-
-                        onStateChanged.call(player, { type: 'init' }, state);
-                    });
-                }
-            }
-            catch (e) {
-                console.log("Error parsing date: " + program.EndDate);
-            }
+            updateTimeDisplay(playbackManager.currentTime(player), currentRuntimeTicks);
         }
 
         function updatePlayPauseState(isPaused) {
@@ -926,16 +566,16 @@
             }
         }
 
-        function updatePlayerStateInternal(event, player, state) {
+        function updatePlayerStateInternal(event, state) {
+
+            var playerInfo = playbackManager.getPlayerInfo();
 
             var playState = state.PlayState || {};
 
             updatePlayPauseState(playState.IsPaused);
 
-            var supportedCommands = playbackManager.getSupportedCommands(player);
+            var supportedCommands = playerInfo.supportedCommands;
             currentPlayerSupportedCommands = supportedCommands;
-
-            supportsBrightnessChange = supportedCommands.indexOf('SetBrightness') !== -1;
 
             //if (supportedCommands.indexOf('SetRepeatMode') == -1) {
             //    toggleRepeatButton.classList.add('hide');
@@ -965,79 +605,41 @@
             btnRewind.disabled = !playState.CanSeek;
 
             var nowPlayingItem = state.NowPlayingItem || {};
-
-            playbackStartTimeTicks = playState.PlaybackStartTimeTicks;
-            updateTimeDisplay(playState.PositionTicks, nowPlayingItem.RunTimeTicks, playState.PlaybackStartTimeTicks);
+            updateTimeDisplay(playState.PositionTicks, nowPlayingItem.RunTimeTicks);
 
             updateNowPlayingInfo(state);
 
             if (state.MediaSource && state.MediaSource.SupportsTranscoding && supportedCommands.indexOf('SetMaxStreamingBitrate') !== -1) {
-                view.querySelector('.btnVideoOsdSettings').classList.remove('hide');
+                view.querySelector('.btnSettings').classList.remove('hide');
             } else {
-                view.querySelector('.btnVideoOsdSettings').classList.add('hide');
+                view.querySelector('.btnSettings').classList.add('hide');
             }
-
-            if (supportedCommands.indexOf('ToggleFullscreen') === -1) {
-                view.querySelector('.btnFullscreen').classList.add('hide');
-            } else {
-                view.querySelector('.btnFullscreen').classList.remove('hide');
-            }
-
-            if (supportedCommands.indexOf('PictureInPicture') === -1) {
-                view.querySelector('.btnPip').classList.add('hide');
-            } else {
-                view.querySelector('.btnPip').classList.remove('hide');
-            }
-
-            updateFullscreenIcon();
         }
 
-        function updateTimeDisplay(positionTicks, runtimeTicks, playbackStartTimeTicks) {
+        function updateTimeDisplay(positionTicks, runtimeTicks) {
 
-            if (enableProgressByTimeOfDay) {
+            if (nowPlayingPositionSlider && !nowPlayingPositionSlider.dragging) {
+                if (runtimeTicks) {
 
-                if (nowPlayingPositionSlider && !nowPlayingPositionSlider.dragging) {
+                    var pct = positionTicks / runtimeTicks;
+                    pct *= 100;
 
-                    if (programStartDateMs && programEndDateMs) {
+                    nowPlayingPositionSlider.value = pct;
 
-                        var currentTimeMs = (playbackStartTimeTicks + (positionTicks || 0)) / 10000;
-                        var programRuntimeMs = programEndDateMs - programStartDateMs;
+                } else {
 
-                        nowPlayingPositionSlider.value = ((currentTimeMs - programStartDateMs) / programRuntimeMs) * 100;
-
-                    } else {
-                        nowPlayingPositionSlider.value = 0;
-                    }
+                    nowPlayingPositionSlider.value = 0;
                 }
 
-                nowPlayingPositionText.innerHTML = '';
-                nowPlayingDurationText.innerHTML = '';
-
-
-            } else {
-                if (nowPlayingPositionSlider && !nowPlayingPositionSlider.dragging) {
-                    if (runtimeTicks) {
-
-                        var pct = positionTicks / runtimeTicks;
-                        pct *= 100;
-
-                        nowPlayingPositionSlider.value = pct;
-
-                    } else {
-
-                        nowPlayingPositionSlider.value = 0;
-                    }
-
-                    if (runtimeTicks && positionTicks != null && currentRuntimeTicks && !enableProgressByTimeOfDay) {
-                        endsAtText.innerHTML = '&nbsp;&nbsp;-&nbsp;&nbsp;' + mediaInfo.getEndsAtFromPosition(runtimeTicks, positionTicks, true);
-                    } else {
-                        endsAtText.innerHTML = '';
-                    }
+                if (runtimeTicks && positionTicks != null) {
+                    endsAtText.innerHTML = '&nbsp;&nbsp;-&nbsp;&nbsp;' + mediaInfo.getEndsAtFromPosition(runtimeTicks, positionTicks, true);
+                } else {
+                    endsAtText.innerHTML = '';
                 }
-
-                updateTimeText(nowPlayingPositionText, positionTicks);
-                updateTimeText(nowPlayingDurationText, runtimeTicks, true);
             }
+
+            updateTimeText(nowPlayingPositionText, positionTicks);
+            updateTimeText(nowPlayingDurationText, runtimeTicks, true);
         }
 
         function updatePlayerVolumeState(isMuted, volumeLevel) {
@@ -1061,10 +663,8 @@
             }
 
             if (isMuted) {
-                view.querySelector('.buttonMute').setAttribute('title', globalize.translate('Unmute'));
                 view.querySelector('.buttonMute i').innerHTML = '&#xE04F;';
             } else {
-                view.querySelector('.buttonMute').setAttribute('title', globalize.translate('Mute'));
                 view.querySelector('.buttonMute i').innerHTML = '&#xE050;';
             }
 
@@ -1089,16 +689,31 @@
             }
         }
 
-        function updatePlaylist(player) {
+        function updatePlaylist() {
+
+            var items = playbackManager.playlist();
+
+            var index = playbackManager.currentPlaylistIndex();
+
+            var previousEnabled = index > 0;
+            var nextEnabled = (index < items.length - 1);
 
             var btnPreviousTrack = view.querySelector('.btnPreviousTrack');
             var btnNextTrack = view.querySelector('.btnNextTrack');
 
-            btnPreviousTrack.classList.remove('hide');
-            btnNextTrack.classList.remove('hide');
+            if (!nextEnabled && !previousEnabled) {
 
-            btnNextTrack.disabled = false;
-            btnPreviousTrack.disabled = false;
+                btnPreviousTrack.classList.add('hide');
+                btnNextTrack.classList.add('hide');
+
+            } else {
+
+                btnPreviousTrack.classList.remove('hide');
+                btnNextTrack.classList.remove('hide');
+
+                btnNextTrack.disabled = !nextEnabled;
+                btnPreviousTrack.disabled = !previousEnabled;
+            }
         }
 
         function updateTimeText(elem, ticks, divider) {
@@ -1120,46 +735,53 @@
         function onSettingsButtonClick(e) {
 
             var btn = this;
+            require(['qualityoptions', 'actionsheet'], function (qualityoptions, actionsheet) {
 
-            require(['playerSettingsMenu'], function (playerSettingsMenu) {
+                //var currentSrc = self.getCurrentSrc(self.currentMediaRenderer).toLowerCase();
+                //var isStatic = currentSrc.indexOf('static=true') != -1;
 
-                playerSettingsMenu.show({
-                    mediaType: 'Video',
-                    player: currentPlayer,
-                    positionTo: btn,
-                    stats: true,
-                    onOption: onSettingsOption
+                var videoStream = playbackManager.currentMediaSource(currentPlayer).MediaStreams.filter(function (stream) {
+                    return stream.Type === "Video";
+                })[0];
+                var videoWidth = videoStream ? videoStream.Width : null;
 
+                var options = qualityoptions.getVideoQualityOptions(playbackManager.getMaxStreamingBitrate(currentPlayer), videoWidth);
+
+                //if (isStatic) {
+                //    options[0].name = "Direct";
+                //}
+
+                var menuItems = options.map(function (o) {
+
+                    var opt = {
+                        name: o.name,
+                        id: o.bitrate
+                    };
+
+                    if (o.selected) {
+                        opt.selected = true;
+                    }
+
+                    return opt;
                 });
+
+                var selectedId = options.filter(function (o) {
+                    return o.selected;
+                });
+                selectedId = selectedId.length ? selectedId[0].bitrate : null;
+                actionsheet.show({
+                    items: menuItems,
+                    positionTo: btn,
+                    callback: function (id) {
+
+                        var bitrate = parseInt(id);
+                        if (bitrate !== selectedId) {
+                            playbackManager.setMaxStreamingBitrate(bitrate, currentPlayer);
+                        }
+                    }
+                });
+
             });
-        }
-
-        function onSettingsOption(selectedOption) {
-
-            if (selectedOption === 'stats') {
-                toggleStats();
-            }
-        }
-
-        function toggleStats() {
-            require(['playerStats'], function (PlayerStats) {
-
-                if (statsOverlay) {
-                    statsOverlay.toggle();
-                } else {
-                    statsOverlay = new PlayerStats({
-                        player: currentPlayer
-                    });
-                }
-            });
-        }
-
-        function destroyStats() {
-
-            if (statsOverlay) {
-                statsOverlay.destroy();
-                statsOverlay = null;
-            }
         }
 
         function showAudioTrackSelection() {
@@ -1251,38 +873,27 @@
 
         view.addEventListener('viewhide', function () {
 
-            headerElement.classList.remove('hide');
+            getHeaderElement().classList.remove('hide');
         });
 
-        view.addEventListener('viewdestroy', function () {
+        dom.addEventListener(window, 'keydown', function (e) {
 
-            if (self.touchHelper) {
-                self.touchHelper.destroy();
-                self.touchHelper = null;
-            }
-            if (recordingButtonManager) {
-                recordingButtonManager.destroy();
-                recordingButtonManager = null;
-            }
-            destroyStats();
-        });
-
-        function onWindowKeyDown(e) {
-            if (e.keyCode === 32 && !currentVisibleMenu) {
+            if (e.keyCode === 32 && !isOsdOpen()) {
                 playbackManager.playPause(currentPlayer);
                 showOsd();
             }
-        }
+        }, {
+            passive: true
+        });
 
         view.querySelector('.pageContainer').addEventListener('click', function () {
 
             // TODO: Replace this check with click vs tap detection
-            if (!layoutManager.mobile) {
+            if (!browser.touch) {
                 playbackManager.playPause(currentPlayer);
             }
+            showOsd();
         });
-
-        view.addEventListener('click', showOsd);
 
         view.querySelector('.buttonMute').addEventListener('click', function () {
 
@@ -1296,124 +907,26 @@
 
         nowPlayingPositionSlider.addEventListener('change', function () {
 
+            stopScenePickerTimer();
             if (currentPlayer) {
 
                 var newPercent = parseFloat(this.value);
 
-                if (enableProgressByTimeOfDay) {
-
-                    var seekAirTimeTicks = (programEndDateMs - programStartDateMs) * (newPercent / 100) * 10000;
-                    seekAirTimeTicks += (programStartDateMs * 10000);
-                    seekAirTimeTicks -= playbackStartTimeTicks;
-
-                    playbackManager.seek(seekAirTimeTicks, currentPlayer);
-                }
-                else {
-                    playbackManager.seekPercent(newPercent, currentPlayer);
-                }
+                playbackManager.seekPercent(newPercent, currentPlayer);
             }
         });
 
-        function getImgUrl(item, chapter, index, maxWidth, apiClient) {
+        nowPlayingPositionSlider.getBubbleText = function (value) {
 
-            if (chapter.ImageTag) {
-
-                return apiClient.getScaledImageUrl(item.Id, {
-                    maxWidth: maxWidth,
-                    tag: chapter.ImageTag,
-                    type: "Chapter",
-                    index: index
-                });
+            if (!currentRuntimeTicks) {
+                return '--:--';
             }
 
-            return null;
-        }
+            var ticks = currentRuntimeTicks;
+            ticks /= 100;
+            ticks *= value;
 
-        function getChapterBubbleHtml(apiClient, item, chapters, positionTicks) {
-
-            var chapter;
-            var index = -1;
-
-            for (var i = 0, length = chapters.length; i < length; i++) {
-
-                var currentChapter = chapters[i];
-
-                if (positionTicks >= currentChapter.StartPositionTicks) {
-                    chapter = currentChapter;
-                    index = i;
-                }
-            }
-
-            if (!chapter) {
-                return null;
-            }
-
-            var src = getImgUrl(item, chapter, index, 400, apiClient);
-
-            if (src) {
-
-                var html = '<div class="chapterThumbContainer">';
-                html += '<img class="chapterThumb" src="' + src + '" />';
-
-                html += '<div class="chapterThumbTextContainer">';
-                html += '<div class="chapterThumbText chapterThumbText-dim">';
-                html += chapter.Name;
-                html += '</div>';
-                html += '<h1 class="chapterThumbText">';
-                html += datetime.getDisplayRunningTime(positionTicks);
-                html += '</h1>';
-                html += '</div>';
-
-                html += '</div>';
-
-                return html;
-            }
-
-            return null;
-        }
-
-        nowPlayingPositionSlider.getBubbleHtml = function (value) {
-
-            showOsd();
-
-            if (enableProgressByTimeOfDay) {
-
-                if (programStartDateMs && programEndDateMs) {
-
-                    var ms = programEndDateMs - programStartDateMs;
-                    ms /= 100;
-                    ms *= value;
-
-                    ms += programStartDateMs;
-
-                    var date = new Date(parseInt(ms));
-
-                    return '<h1 class="sliderBubbleText">' + getDisplayTimeWithoutAmPm(date, true) + '</h1>';
-
-                } else {
-                    return '--:--';
-                }
-
-            } else {
-                if (!currentRuntimeTicks) {
-                    return '--:--';
-                }
-
-                var ticks = currentRuntimeTicks;
-                ticks /= 100;
-                ticks *= value;
-
-                var item = currentItem;
-                if (item && item.Chapters && item.Chapters.length && item.Chapters[0].ImageTag) {
-                    var html = getChapterBubbleHtml(connectionManager.getApiClient(item.ServerId), item, item.Chapters, ticks);
-
-                    if (html) {
-                        return html;
-                    }
-                }
-
-                return '<h1 class="sliderBubbleText">' + datetime.getDisplayRunningTime(ticks) + '</h1>';
-            }
+            return datetime.getDisplayRunningTime(ticks);
         };
 
         view.querySelector('.btnPreviousTrack').addEventListener('click', function () {
@@ -1424,6 +937,11 @@
         view.querySelector('.btnPause').addEventListener('click', function () {
 
             playbackManager.playPause(currentPlayer);
+        });
+
+        view.querySelector('.btnStop').addEventListener('click', function () {
+
+            playbackManager.stop(currentPlayer);
         });
 
         view.querySelector('.btnNextTrack').addEventListener('click', function () {
@@ -1444,9 +962,111 @@
         view.querySelector('.btnAudio').addEventListener('click', showAudioTrackSelection);
         view.querySelector('.btnSubtitles').addEventListener('click', showSubtitleTrackSelection);
 
-        if (browser.touch) {
-            initSwipeEvents();
+        function getChapterHtml(item, chapter, index, maxWidth, apiClient) {
+
+            var html = '';
+
+            var src = getImgUrl(item, chapter, index, maxWidth, apiClient);
+
+            if (src) {
+
+                var pct = currentRuntimeTicks ? (chapter.StartPositionTicks / currentRuntimeTicks) : 0;
+                pct *= 100;
+                chapterPcts[index] = pct;
+
+                html += '<img data-index="' + index + '" class="chapterThumb" src="' + src + '" />';
+            }
+
+            return html;
         }
+
+        function getImgUrl(item, chapter, index, maxWidth, apiClient) {
+
+            if (chapter.ImageTag) {
+
+                return apiClient.getScaledImageUrl(item.Id, {
+                    maxWidth: maxWidth,
+                    tag: chapter.ImageTag,
+                    type: "Chapter",
+                    index: index
+                });
+            }
+
+            return null;
+        }
+
+        function renderScenePicker(progressPct) {
+
+            chapterPcts = [];
+            var item = playbackManager.currentItem(currentPlayer);
+            if (!item) {
+                return;
+            }
+
+            var chapters = item.Chapters || [];
+
+            var currentIndex = -1;
+
+            var apiClient = connectionManager.getApiClient(item.ServerId);
+
+            scenePicker.innerHTML = chapters.map(function (chapter) {
+                currentIndex++;
+                return getChapterHtml(item, chapter, currentIndex, 400, apiClient);
+            }).join('');
+
+            imageLoader.lazyChildren(scenePicker);
+            fadeIn(scenePicker, progressPct);
+        }
+
+        var hideScenePickerTimeout;
+        var chapterPcts = [];
+
+        function showScenePicker() {
+
+            var progressPct = nowPlayingPositionSlider.value;
+
+            if (!isScenePickerRendered) {
+                isScenePickerRendered = true;
+                renderScenePicker();
+            } else {
+                fadeIn(scenePicker, progressPct);
+            }
+
+            if (hideScenePickerTimeout) {
+                clearTimeout(hideScenePickerTimeout);
+            }
+            hideScenePickerTimeout = setTimeout(hideScenePicker, 1600);
+        }
+
+        function hideScenePicker() {
+            fadeOut(scenePicker);
+        }
+
+        var showScenePickerTimeout;
+
+        function startScenePickerTimer() {
+            if (!showScenePickerTimeout) {
+                showScenePickerTimeout = setTimeout(showScenePicker, 100);
+            }
+        }
+
+        function stopScenePickerTimer() {
+            if (showScenePickerTimeout) {
+                clearTimeout(showScenePickerTimeout);
+                showScenePickerTimeout = null;
+            }
+        }
+
+        dom.addEventListener(nowPlayingPositionSlider, 'input', function () {
+
+            if (scenePicker.classList.contains('hide')) {
+                startScenePickerTimer();
+            } else {
+                showScenePicker();
+            }
+        }, {
+            passive: true
+        });
 
         function onViewHideStopPlayback() {
 
@@ -1461,9 +1081,70 @@
 
                 playbackManager.stop(player);
 
-                // or 
+                // or
                 //Emby.Page.setTransparency(Emby.TransparencyLevel.Backdrop);
             }
+        }
+
+        function fadeIn(elem, pct) {
+
+            if (!elem.classList.contains('hide')) {
+                selectChapterThumb(elem, pct);
+                return;
+            }
+
+            elem.classList.remove('hide');
+
+            var keyframes = [
+                { opacity: '0', offset: 0 },
+                { opacity: '1', offset: 1 }
+            ];
+            var timing = { duration: 300, iterations: 1 };
+            elem.animate(keyframes, timing).onfinish = function () {
+                selectChapterThumb(elem, pct);
+            };
+        }
+
+        function selectChapterThumb(elem, pct) {
+            var index = -1;
+            for (var i = 0, length = chapterPcts.length; i < length; i++) {
+
+                if (pct >= chapterPcts[i]) {
+                    index = i;
+                }
+            }
+
+            if (index === -1) {
+                index = 0;
+            }
+
+            var selected = elem.querySelector('.selectedChapterThumb');
+            var newSelected = elem.querySelector('.chapterThumb[data-index="' + index + '"]');
+
+            if (selected !== newSelected) {
+                if (selected) {
+                    selected.classList.remove('selectedChapterThumb');
+                }
+
+                newSelected.classList.add('selectedChapterThumb');
+                scrollHelper.toCenter(elem, newSelected, true);
+            }
+        }
+
+        function fadeOut(elem) {
+
+            if (elem.classList.contains('hide')) {
+                return;
+            }
+
+            var keyframes = [
+                { opacity: '1', offset: 0 },
+                { opacity: '0', offset: 1 }
+            ];
+            var timing = { duration: 300, iterations: 1 };
+            elem.animate(keyframes, timing).onfinish = function () {
+                elem.classList.add('hide');
+            };
         }
 
         function enableStopOnBack(enabled) {
