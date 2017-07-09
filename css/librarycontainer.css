@@ -1,0 +1,130 @@
+.headerBackButton {
+  /*display: none;*/
+}
+
+.libraryContainer {
+  position: relative;
+}
+
+.libraryContainer .panel-left {
+  height: 100vh;
+}
+
+.libraryContainer .panel-left .primary {
+  height: 225px;
+  margin-top: 3vh;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+.libraryContainer .panel-left .itemInfo {
+  padding: 0 1vw;
+}
+
+.libraryContainer .panel-left .itemInfo .textInfo {
+
+}
+
+.libraryContainer .panel-left .itemInfo .textInfo .overview {
+  max-height: 22vh;
+  overflow: auto;
+}
+
+.libraryContainer .panel-left .itemInfo .mediaInfoText {
+  display: inline-block;
+  margin: 10px;
+}
+
+
+.libraryContainer .panel-right {
+  width: 69.5vw;
+  height: 100vh;
+  position: absolute;
+  top: -8vh;
+  left: 30.5vw;
+  box-shadow: inset 0 8vh 16vh -8vh #000, inset 0 -8vh 16vh -8vh #000;
+}
+
+.libraryContainer .panel-right .itemScrollFrame {
+  margin: 0;
+  padding: 8vh 0 0 3vw;
+}
+
+.libraryContainer .panel-right .itemScrollFrame .viewContentArea {
+  margin: 0;
+  padding: 0;
+}
+
+.libraryContainer .panel-right .itemScrollFrame .viewContentArea .cardColumn {
+  margin-right: 1vw;
+}
+
+.libraryContainer .panel-right .itemScrollFrame .viewContentArea .cardColumn:last-of-type {
+  margin-right: 0;
+}
+
+.libraryContainer .panel-right .itemScrollFrame .viewContentArea .cardColumn .card {
+  width: 280px;
+  height: 350px;
+  margin-bottom: 8vh;
+}
+
+.libraryContainer .panel-right .itemScrollFrame .viewContentArea .cardColumn .card .cardImageContainer {
+  height: 350px;
+}
+
+.libraryContainer .horizontalSection {
+  display: block;
+}
+
+
+/* Upcoming TV */
+.libraryContainer.upcoming .card {
+  height: auto !important;
+}
+
+.libraryContainer.upcoming .cardImageContainer {
+  height: 141px !important;
+}
+
+/* Music */
+.libraryContainer.music .card {
+  height: auto !important;
+}
+
+.libraryContainer.music .cardImageContainer {
+  height: 256.25px !important;
+}
+
+/* List */
+.libraryContainer.list .card {
+  height: auto !important;
+}
+
+.libraryContainer.list .cardImageContainer {
+  height: 144px !important;
+}
+
+.libraryContainer.list.collections .cardImageContainer {
+  height: 350px !important;
+}
+
+
+
+/* Live TV */
+.libraryContainer.livetv.channels .card {
+  height: auto !important;
+}
+
+.libraryContainer.livetv.channels .cardImageContainer {
+  height: 256.25px !important;
+}
+
+.libraryContainer.livetv.recordings .card {
+  height: auto !important;
+}
+
+.libraryContainer.livetv.recordings .cardImageContainer {
+  height: 144px !important;
+}
