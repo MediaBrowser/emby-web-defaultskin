@@ -25,7 +25,7 @@ div[data-type="home"] {
   height: 7vh;
   padding: 4vh 0;
   overflow: visible;
-  text-align: left;
+  text-align: center;
 }
 
 .panel-left .userOptions button {
@@ -47,7 +47,7 @@ div[data-type="home"] {
   border-radius: 50%;
   font-size: 4vh;
   line-height: 7vh;
-  text-align: center;
+  text-align: left;
   color: #fff;
 }
 
