@@ -1,4 +1,4 @@
-define(['loading', './../skinsettings', './../skininfo', 'focusManager', 'globalize'], function (loading, skinSettings, skinInfo, focusManager, globalize) {
+define(['loading', './../skinsettings', 'emby-select', 'focusManager'], function (loading, skinSettings, embySelect, focusManager) {
     'use strict';
 
     return function (view, params) {
@@ -9,7 +9,7 @@ define(['loading', './../skinsettings', './../skininfo', 'focusManager', 'global
 
             var isRestored = e.detail.isRestored;
 
-            Emby.Page.setTitle(skinInfo.name);
+            Emby.Page.setTitle(Globalize.translate('SkinName'));
 
             loading.hide();
 
@@ -21,7 +21,17 @@ define(['loading', './../skinsettings', './../skininfo', 'focusManager', 'global
 
         view.addEventListener('viewbeforehide', function (e) {
 
-            skinSettings.enableAntiSpoliers(view.querySelector('.chkEnableEpisodeAntiSpoliers').checked);
+            // skinSettings.enableAntiSpoliers(view.querySelector('.chkEnableEpisodeAntiSpoliers').checked);
+            // skinSettings.dimUnselectedPosters(view.querySelector('.chkDimPosters').checked);
+
+            skinSettings.skinColor(view.querySelector('.selectSkinColor').value);
+
+            skinSettings.apply();
+        });
+
+        view.querySelector('.selectSkinColor').addEventListener('change', function (e) {
+
+            skinSettings.skinColor(view.querySelector('.selectSkinColor').value);
 
             skinSettings.apply();
         });
@@ -30,7 +40,10 @@ define(['loading', './../skinsettings', './../skininfo', 'focusManager', 'global
 
             focusManager.autoFocus(view);
 
-            view.querySelector('.chkEnableEpisodeAntiSpoliers').checked = skinSettings.enableAntiSpoliers();
+            // view.querySelector('.chkEnableEpisodeAntiSpoliers').checked = skinSettings.enableAntiSpoliers();
+            // view.querySelector('.chkDimPosters').checked = skinSettings.dimUnselectedPosters();
+
+            view.querySelector('.selectSkinColor').value = skinSettings.skinColor();
         }
     };
 
