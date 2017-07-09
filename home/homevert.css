@@ -1,0 +1,245 @@
+
+
+div[data-type="home"] {
+  background: rgba(25, 150, 225, 0.2);
+  box-shadow: inset 0 10vh 20vh -10vh #000, inset 0 -10vh 20vh -10vh #000;
+}
+
+.panel-left {
+  box-sizing: border-box;
+  width: 30.5vw;
+  padding: 1vw 0 0;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.panel-left .logo {
+  height: 8vh;
+  margin: 1vh;
+  background-size: contain;
+  background-image: url(../css/images/logowhite.png);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.panel-left .userOptions {
+  height: 7vh;
+  padding: 4vh 0;
+  overflow: visible;
+  text-align: center;
+}
+
+.panel-left .userOptions button {
+  display: inline-block;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.panel-left .userOptions button i {
+  display: inline-block;
+  width: 7vh;
+  height: 7vh;
+  margin: 0 1.5vw;
+  border-radius: 50%;
+  font-size: 4vh;
+  line-height: 7vh;
+  text-align: center;
+  color: #fff;
+}
+
+.panel-left .userOptions button:focus i {
+  background-color: #0f85a5 !important;
+}
+
+.panel-left .userViewNames {
+  max-height: 73vh;
+  overflow: scroll;
+}
+
+.panel-left, .tile, .cardBox {
+  box-shadow: rgba(0,0,0,0.5) 0.1725vw 0.1725vw 0.5vw 0vw;
+}
+
+.panel-left .emby-button-focusscale:focus {
+    -webkit-transform: none;
+    transform: none;
+}
+
+.panel-right {
+  width: 100%;
+  margin-top: 0;
+  padding-top: 8vh;
+  margin-left: 0;
+  overflow: hidden;
+  box-shadow: inset 0 8vh 16vh -8vh #000, inset 0 -8vh 16vh -8vh #000;
+}
+
+.panel-right .viewContentArea {
+  box-sizing: border-box;
+  padding-left: 5vw;
+}
+
+.tilesContainer {
+  display: flex;
+  width: 100%;
+}
+
+.tilesContainer > .tile {
+  display: block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  width: calc(26vh + 4px);
+  height: 16vh;
+  margin: 6px.5em;
+  margin-right: 4vw;
+  padding: 0.8vw;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.8);
+  text-align: center;
+  color: #fff;
+  transition: transform 200ms ease-in-out;
+}
+
+.tilesContainer > .tile:focus {
+  transform: scale(1.05);
+  border: .12em solid #0f85a5;
+  border-radius: .14em;
+  outline: none;
+}
+
+.tilesContainer > .tile .md-icon {
+  font-size: 4vw;
+}
+
+.tilesContainer > .tile .title {
+  display: block;
+  padding-top: 0.75vh;
+  font-size: 1.4vw;
+  font-weight: 100;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", 'Open Sans', sans-serif;
+}
+
+.card > .cardBox-focustransform {
+  transition: top 200ms ease-in-out;
+  top: 0;
+}
+.card:focus > .cardBox-focustransform {
+  top: 1vh;
+}
+
+.wideSpotlightCard {
+    width: 100%;
+}
+
+.wideSpotlightCard .cardImageContainer {
+    height: 44.7vh;
+}
+
+
+/* Power options menu */
+.power-overlay {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  opacity: 1;
+  transition: all 0.35s ease-in-out;
+}
+.power-overlay.unshow {
+  opacity: 0;
+}
+
+.power-panel {
+  width: 600px;
+  margin: 0;
+  position: absolute;
+  top: 18vh;
+  left: calc(50% - 300px);
+  transform: scale(1);
+  transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.power-overlay.unshow .power-panel {
+  transform: scale(0.5);
+}
+
+.power-panel .panel-head {
+  margin: 0;
+  padding: 1.25vh 2vw;
+  background-color: #0f85a5;
+  color: #fff;
+}
+
+.power-panel .panel-head h3 {
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+}
+
+.power-panel .panel-body {
+  margin: 0;
+  padding: 0.75vh 0;
+  text-align: center;
+  background-color: #1a2123;
+}
+
+.power-panel .panel-body button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: none;
+}
+
+.power-panel .panel-body button h3 {
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  font-weight: 200;
+  font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", 'Open Sans', sans-serif;
+  padding: 1.25vh 0;
+}
+
+.power-panel .panel-body button:focus {
+  outline: none !important;
+}
+
+.power-panel .panel-body button:focus h3 {
+  background-color: #0f85a5;
+}
+
+
+/* Full screen video button */
+.transparentDocument .panel-left .userViewNames {
+    max-height: 62vh;
+    overflow: scroll;
+}
+
+.transparentDocument .fullscreen-video {
+  display: block !important;
+}
+
+.fullscreen-video button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+}
+
+.fullscreen-video button:focus {
+  background-color: #0f85a5;
+}
+
+.fullscreen-video button i {
+  margin-right: 1vw;
+  font-size: 4vh;
+}

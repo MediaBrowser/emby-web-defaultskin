@@ -1,39 +1,28 @@
 <div class="pageContainer flex">
 
 </div>
+<div class="scenePicker hide hiddenScrollX">
+</div>
 <div class="videoOsdBottom">
 
     <div class="osdPoster">
 
     </div>
     <div class="osdControls">
-        
-        <div class="osdTextContainer osdMainTextContainer">
-            <h3 class="osdTitle"></h3>
+        <div class="osdTextContainer">
+            <h2 class="osdTitle"></h2>
             <div class="osdMediaInfo"></div>
         </div>
-
-        <div class="osdTextContainer osdSecondaryMediaInfo">
-        </div>
-
-        <div class="flex flex-direction-row align-items-center">
-            <div class="osdTextContainer startTimeText" style="margin: 0 .25em 0 0;"></div>
-            <div class="sliderContainer flex-grow" style="margin: .5em .5em .25em;">
-                <input type="range" step=".01" min="0" max="100" value="0" is="emby-slider" class="osdPositionSlider" />
-            </div>
-            <div class="osdTextContainer endTimeText" style="margin: 0 0 0 .25em;"></div>
+        <div class="sliderContainer" style="margin: .25em .5em;">
+            <input type="range" step=".1" min="0" max="100" value="0" is="emby-slider" class="osdPositionSlider" />
         </div>
 
         <div class="buttons">
-            <button is="paper-icon-button-light" class="btnRecord autoSize hide">
-                <i class="md-icon">&#xE061;</i>
-            </button>
-
             <button is="paper-icon-button-light" class="btnPreviousTrack autoSize hide">
                 <i class="xlargePaperIconButton md-icon">&#xE045;</i>
             </button>
 
-            <button is="paper-icon-button-light" class="btnRewind" title="${Rewind}">
+            <button is="paper-icon-button-light" class="btnRewind">
                 <i class="xlargePaperIconButton md-icon">&#xE020;</i>
             </button>
 
@@ -41,7 +30,11 @@
                 <i class="xlargePaperIconButton md-icon">&#xE034;</i>
             </button>
 
-            <button is="paper-icon-button-light" class="btnFastForward" title="${FastForward}">
+            <button is="paper-icon-button-light" class="btnStop">
+                <i class="xlargePaperIconButton md-icon">&#xE047;</i>
+            </button>
+
+            <button is="paper-icon-button-light" class="btnFastForward">
                 <i class="xlargePaperIconButton md-icon">&#xE01F;</i>
             </button>
 
@@ -49,23 +42,18 @@
                 <i class="xlargePaperIconButton md-icon">&#xE044;</i>
             </button>
 
-            <button is="paper-icon-button-light" class="btnAudio hide autoSize" title="${Audio}">
+            <button is="paper-icon-button-light" class="btnAudio hide autoSize">
                 <i class="xlargePaperIconButton md-icon">&#xE3A1;</i>
             </button>
-            <button is="paper-icon-button-light" class="btnSubtitles hide autoSize" title="${Subtitles}">
+            <button is="paper-icon-button-light" class="btnSubtitles hide autoSize">
                 <i class="xlargePaperIconButton md-icon">&#xE01C;</i>
             </button>
-            <button is="paper-icon-button-light" class="btnCast hide autoSize" title="${PlayOnAnotherDevice}">
+
+            <button is="paper-icon-button-light" class="btnCast hide autoSize">
                 <i class="xlargePaperIconButton md-icon">&#xE307;</i>
             </button>
-            <button is="paper-icon-button-light" class="btnVideoOsdSettings hide autoSize" title="${Settings}">
-                <i class="md-icon">&#xE8B8;</i>
-            </button>
-            <button is="paper-icon-button-light" class="btnFullscreen hide autoSize" title="${Fullscreen}">
-                <i class="xlargePaperIconButton md-icon">&#xE5D0;</i>
-            </button>
-            <button is="paper-icon-button-light" class="btnPip hide autoSize" title="${PictureInPicture}">
-                <i class="xlargePaperIconButton md-icon">&#xE911;</i>
+            <button is="paper-icon-button-light" class="btnSettings hide autoSize">
+                <i class="largePaperIconButton md-icon">&#xE8B8;</i>
             </button>
 
             <div class="osdTimeText"><span class="osdPositionText"></span><span class="osdDurationText"></span><span class="endsAtText"></span></div>
@@ -75,7 +63,7 @@
                     <i class="xlargePaperIconButton md-icon">&#xE050;</i>
                 </button>
                 <div class="sliderContainer osdVolumeSliderContainer">
-                    <input is="emby-slider" type="range" step="1" min="0" max="100" value="0" class="osdVolumeSlider"/>
+                    <input is="emby-slider" type="range" step="1" min="0" max="100" value="0" class="osdVolumeSlider" />
                 </div>
             </div>
         </div>

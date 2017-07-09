@@ -1,247 +1,428 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'userSettings', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, alphaPicker, userSettings, require, focusHandler) {
+define(['loading', 'alphaPicker', './../components/verticallist', './../components/tabbedpagelibrary', 'backdrop', 'emby-itemscontainer'], function (loading, alphaPicker, horizontalList, tabbedPage, backdrop) {
     'use strict';
-
-    function trySelectValue(instance, view, value) {
-
-        var card;
-
-        // If it's the symbol just pick the first card
-        if (value === '#') {
-
-            card = view.querySelector('.card');
-
-            if (card) {
-                instance.scroller.toStart(card, false);
-                return;
-            }
-        }
-
-        card = view.querySelector('.card[data-prefix^=\'' + value + '\']');
-
-        if (card) {
-            instance.scroller.toStart(card, false);
-            return;
-        }
-
-        // go to the previous letter
-        var values = instance.alphaPicker.values();
-        var index = values.indexOf(value);
-
-        if (index < values.length - 2) {
-            trySelectValue(instance, view, values[index + 1]);
-        } else {
-            var all = view.querySelectorAll('.card');
-            card = all.length ? all[all.length - 1] : null;
-
-            if (card) {
-                instance.scroller.toStart(card, false);
-            }
-        }
-    }
-
-    function initAlphaPicker(instance, view) {
-
-        var itemsContainer = view.querySelector('.movieItems');
-
-        instance.alphaPicker = new alphaPicker({
-            element: view.querySelector('.alphaPicker'),
-            itemsContainer: itemsContainer,
-            itemClass: 'card'
-        });
-
-        instance.alphaPicker.on('alphavaluechanged', function () {
-            var value = instance.alphaPicker.value();
-            trySelectValue(instance, itemsContainer, value);
-        });
-    }
-
-    function getDefaultTabIndex(folderId) {
-
-        switch (userSettings.get('landing-' + folderId)) {
-
-            case 'suggestions':
-                return 1;
-            case 'favorites':
-                return 3;
-            case 'collections':
-                return 4;
-            case 'genres':
-                return 5;
-            default:
-                return 0;
-        }
-    }
 
     return function (view, params) {
 
         var self = this;
 
-        var tabControllers = [];
-        var currentTabController;
-
-        function getTabController(index, callback) {
-
-            if (index == null) {
-                throw new Error('index cannot be null');
-            }
-
-            var depends = [];
-
-            switch (index) {
-
-                case 0:
-                    depends.push('./moviestab');
-                    break;
-                case 1:
-                    depends.push('./suggestions');
-                    break;
-                case 2:
-                    depends.push('./moviestab');
-                    break;
-                case 3:
-                    depends.push('./moviestab');
-                    break;
-                case 4:
-                    depends.push('./collections');
-                    break;
-                case 5:
-                    depends.push('./genres');
-                    break;
-                case 6:
-                    depends.push('./years');
-                    break;
-                default:
-                    break;
-            }
-
-            require(depends, function (controllerFactory) {
-
-                var controller = tabControllers[index];
-                if (!controller) {
-
-                    var tabContent = view.querySelector('.tabContent[data-index=\'' + index + '\']');
-                    controller = new controllerFactory(tabContent, params, view);
-                    if (index === 2) {
-                        controller.mode = 'unwatched';
-                    }
-                    else if (index === 3) {
-                        controller.mode = 'favorites';
-                    }
-                    tabControllers[index] = controller;
-                }
-
-                callback(controller);
-            });
-        }
-
-        self.scroller = view.querySelector('.scrollFrameY');
-
-        var alphaPickerContainer = view.querySelector('.alphaPickerContainer');
-        var viewTabs = view.querySelector('.viewTabs');
-        var initialTabIndex = parseInt(params.tab || getDefaultTabIndex(params.parentId));
-
-        var isViewRestored;
-
-        function preLoadTab(index) {
-
-            if (index === 0) {
-                alphaPickerContainer.classList.remove('hide');
-            } else {
-                alphaPickerContainer.classList.add('hide');
-            }
-
-            getTabController(index, function (controller) {
-                if (controller.onBeforeShow) {
-
-                    var refresh = isViewRestored !== true || !controller.refreshed;
-
-                    controller.onBeforeShow({
-                        refresh: refresh
-                    });
-
-                    controller.refreshed = true;
-                }
-            });
-        }
-
-        function loadTab(index) {
-
-            getTabController(index, function (controller) {
-
-                controller.onShow({
-                    autoFocus: initialTabIndex != null
-                });
-                initialTabIndex = null;
-                currentTabController = controller;
-            });
-        }
-
-        initAlphaPicker(this, view);
-
-        viewTabs.addEventListener('beforetabchange', function (e) {
-            preLoadTab(parseInt(e.detail.selectedTabIndex));
-        });
-
-        viewTabs.addEventListener('tabchange', function (e) {
-
-            var newIndex = parseInt(e.detail.selectedTabIndex);
-            var previousTabController = tabControllers[newIndex];
-            if (previousTabController && previousTabController.onHide) {
-                previousTabController.onHide();
-            }
-
-            loadTab(newIndex);
-        });
-
-        view.addEventListener('viewbeforehide', function (e) {
-
-            if (currentTabController && currentTabController.onHide) {
-                currentTabController.onHide();
-            }
-        });
-
-        view.addEventListener('viewbeforeshow', function (e) {
-            isViewRestored = e.detail.isRestored;
-
-            if (initialTabIndex == null) {
-                viewTabs.triggerBeforeTabChange();
-            }
-        });
-
         view.addEventListener('viewshow', function (e) {
 
-            isViewRestored = e.detail.isRestored;
+            if (!self.tabbedPage) {
+                loading.show();
+                renderTabs(view, params.tab, self, params);
+            }
 
             Emby.Page.setTitle('');
-            backdrop.clear();
+        });
 
-            if (initialTabIndex != null) {
-                viewTabs.selectedIndex(initialTabIndex);
-            } else {
-                viewTabs.triggerTabChange();
+        view.addEventListener('viewdestroy', function () {
+
+            if (self.listController) {
+                self.listController.destroy();
+            }
+            if (self.tabbedPage) {
+                self.tabbedPage.destroy();
+            }
+            if (self.alphaPicker) {
+                self.alphaPicker.destroy();
             }
         });
 
-        view.addEventListener('viewdestroy', function (e) {
+        function renderTabs(view, initialTabId, pageInstance, params) {
 
-            tabControllers.forEach(function (t) {
-                if (t.destroy) {
-                    t.destroy();
+            // self.alphaPicker = new alphaPicker({
+            //     element: view.querySelector('.alphaPicker'),
+            //     itemsContainer: view.querySelector('.contentScrollSlider'),
+            //     itemClass: 'card'
+            // });
+
+            var tabs = [
+                {
+                    Name: Globalize.translate('Movies'),
+                    Id: "movies"
+                },
+                {
+                    Name: Globalize.translate('Unwatched'),
+                    Id: "unwatched"
+                },
+                {
+                    Name: Globalize.translate('Collections'),
+                    Id: "collections"
+                },
+                {
+                    Name: Globalize.translate('Genres'),
+                    Id: "genres"
+                },
+                {
+                    Name: Globalize.translate('Years'),
+                    Id: "years"
+                },
+                {
+                    Name: Globalize.translate('TopRated'),
+                    Id: "toprated"
+                },
+                {
+                    Name: Globalize.translate('Favorites'),
+                    Id: "favorites"
+                }
+            ];
+
+            var tabbedPageInstance = new tabbedPage(view, {
+                alphaPicker: self.alphaPicker
+            });
+
+            tabbedPageInstance.loadViewContent = loadViewContent;
+            tabbedPageInstance.params = params;
+            tabbedPageInstance.renderTabs(tabs, initialTabId);
+            pageInstance.tabbedPage = tabbedPageInstance;
+        }
+
+        function loadViewContent(page, id, type) {
+
+            var tabbedPage = this;
+
+            return new Promise(function (resolve, reject) {
+
+                if (self.listController) {
+                    self.listController.destroy();
+                }
+
+                var pageParams = tabbedPage.params;
+
+                var autoFocus = false;
+
+                if (!tabbedPage.hasLoaded) {
+                    autoFocus = true;
+                    tabbedPage.hasLoaded = true;
+                }
+
+                var showAlphaPicker = false;
+
+                switch (id) {
+
+                    case 'movies':
+                        showAlphaPicker = true;
+                        renderMovies(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'unwatched':
+                        showAlphaPicker = true;
+                        renderUnwatchedMovies(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'years':
+                        renderYears(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'toprated':
+                        renderTopRated(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'collections':
+                        renderCollections(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'favorites':
+                        renderFavorites(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'genres':
+                        renderGenres(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (self.alphaPicker) {
+                    self.alphaPicker.visible(showAlphaPicker);
+                    self.alphaPicker.enabled(showAlphaPicker);
+                }
+            });
+        }
+
+        function renderGenres(page, pageParams, autoFocus, scroller, resolve) {
+
+            Emby.Models.genres({
+                ParentId: pageParams.parentid,
+                SortBy: "SortName"
+
+            }).then(function (genresResult) {
+
+                self.listController = new horizontalList({
+                    itemsContainer: page.querySelector('.viewContentArea'),
+                    getItemsMethod: function (startIndex, limit) {
+                        return Emby.Models.items({
+                            StartIndex: startIndex,
+                            Limit: limit,
+                            ParentId: pageParams.parentid,
+                            IncludeItemTypes: "Movie",
+                            Recursive: true,
+                            SortBy: "SortName",
+                            Fields: "Genres"
+                        });
+                    },
+                    listCountElement: page.querySelector('.listCount'),
+                    listNumbersElement: page.querySelector('.listNumbers'),
+                    autoFocus: autoFocus,
+                    selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                    selectedIndexElement: page.querySelector('.selectedIndex'),
+                    scroller: scroller,
+                    onRender: function () {
+                        if (resolve) {
+                            resolve();
+                            resolve = null;
+                        }
+                    },
+                    cardOptions: {
+                        indexBy: 'Genres',
+                        genres: genresResult.Items,
+                        indexLimit: 4,
+                        parentId: pageParams.parentid,
+                        rows: {
+                            portrait: 1,
+                            square: 1,
+                            backdrop: 1
+                        },
+                        scalable: false
+                    }
+                });
+
+                self.listController.render();
+            });
+        }
+
+        function renderFavorites(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "Movie",
+                        Recursive: true,
+                        Filters: "IsFavorite",
+                        SortBy: "SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                },
+                cardOptions: {
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
                 }
             });
 
-            self.scroller = null;
+            self.listController.render();
+        }
 
-            if (self.focusHandler) {
-                self.focusHandler.destroy();
-                self.focusHandler = null;
-            }
+        function renderMovies(page, pageParams, autoFocus, scroller, resolve) {
 
-            if (self.alphaPicker) {
-                self.alphaPicker.destroy();
-                self.alphaPicker = null;
-            }
-        });
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "Movie",
+                        Recursive: true,
+                        SortBy: "SortName",
+                        Fields: "SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                },
+                cardOptions: {
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderUnwatchedMovies(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "Movie",
+                        Recursive: true,
+                        SortBy: "SortName",
+                        Fields: "SortName",
+                        IsPlayed: false
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                },
+                cardOptions: {
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderCollections(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.collections({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        SortBy: "SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                },
+                cardOptions: {
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderYears(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "Movie",
+                        Recursive: true,
+                        SortBy: "ProductionYear,SortName",
+                        SortOrder: "Descending"
+                    });
+                },
+                cardOptions: {
+                    indexBy: 'ProductionYear',
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderTopRated(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "Movie",
+                        Recursive: true,
+                        SortBy: "CommunityRating,SortName",
+                        SortOrder: "Descending"
+                    });
+                },
+                cardOptions: {
+                    indexBy: 'CommunityRating',
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                }
+            });
+
+            self.listController.render();
+        }
     };
 
 });

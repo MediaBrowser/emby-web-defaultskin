@@ -1,25 +1,31 @@
 h1 {
-    font-weight: normal;
-    font-size: 1.72em;
+    font-weight: 300;
 }
 
 h2 {
-    font-weight: normal;
-    font-size: 1.5em;
+    font-weight: 300;
 }
 
 h3 {
-    font-weight: normal;
-    font-size: 1.17em;
+    font-weight: 300;
 }
 
-.layout-tv h2 {
-    font-size: 1.35em;
-}
 
 @media all and (min-height: 720px) {
     html {
         font-size: 22px;
+    }
+
+    h1 {
+        font-size: 44px;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    h3 {
+        font-size: 34px;
     }
 }
 
@@ -28,5 +34,17 @@ h3 {
 
     html {
         font-size: 27px;
+    }
+
+    h1 {
+        font-size: 44px;
+    }
+
+    h2 {
+        font-size: 40px;
+    }
+
+    h3 {
+        font-size: 34px;
     }
 }

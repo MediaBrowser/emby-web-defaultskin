@@ -1,133 +1,226 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'require', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, require) {
+define(['connectionManager', 'loading', './../components/tabbedpage', 'backdrop', 'focusManager', 'playbackManager', 'pluginManager', './../skininfo', 'events'], function (connectionManager, loading, tabbedPage, backdrop, focusManager, playbackManager, pluginManager, skinInfo, events) {
     'use strict';
+
+    function loadViewHtml(page, parentId, html, viewName, autoFocus, self) {
+
+        var homeScrollContent = page.querySelector('.contentScrollSlider');
+
+        html = html;
+        homeScrollContent.innerHTML = Globalize.translateDocument(html, skinInfo.id);
+
+        require([skinInfo.id + '/home/views.' + viewName], function (viewBuilder) {
+
+            var homePanel = homeScrollContent;
+            var apiClient = connectionManager.currentApiClient();
+            var tabView = new viewBuilder(homePanel, apiClient, parentId, autoFocus);
+            tabView.element = homePanel;
+            tabView.loadData();
+            self.tabView = tabView;
+        });
+    }
+
+    function parentWithClass(elem, className) {
+
+        while (!elem.classList || !elem.classList.contains(className)) {
+            elem = elem.parentNode;
+
+            if (!elem) {
+                return null;
+            }
+        }
+
+        return elem;
+    }
 
     return function (view, params) {
 
         var self = this;
+        var needsRefresh;
 
-        var tabControllers = [];
-        var currentTabController;
+        function reloadTabData(tabView) {
 
-        function getTabController(page, index, callback) {
-
-            var depends = [];
-
-            switch (index) {
-
-                case 0:
-                    depends.push('./hometab');
-                    break;
-                case 1:
-                    depends.push('./hometab');
-                    break;
-                case 2:
-                    depends.push('./hometab');
-                    break;
-                default:
-                    break;
+            if (!needsRefresh) {
+                return;
             }
 
-            require(depends, function (controllerFactory) {
+            // view.activeElement gets set by viewManager during viewhide, so that it can be restored later
+            var activeElement = view.activeElement;
 
-                var controller = tabControllers[index];
-                if (!controller) {
-                    var tabContent = view.querySelector('.tabContent[data-index=\'' + index + '\']');
-                    controller = new controllerFactory(tabContent, params, view);
-                    tabControllers[index] = controller;
-                }
+            var card = activeElement ? parentWithClass(activeElement, 'card') : null;
+            var itemId = card ? card.getAttribute('data-id') : null;
 
-                callback(controller);
-            });
-        }
+            var parentItemsContainer = activeElement ? parentWithClass(activeElement, 'itemsContainer') : null;
 
-        self.scroller = view.querySelector('.scrollFrameY');
+            return tabView.loadData(true).then(function () {
 
-        var viewTabs = view.querySelector('.viewTabs');
-        var initialTabIndex = parseInt(params.tab || '0');
-        var isViewRestored;
-
-        function preLoadTab(page, index) {
-
-            getTabController(page, index, function (controller) {
-                if (controller.onBeforeShow) {
-
-                    var refresh = isViewRestored !== true || !controller.refreshed;
-
-                    controller.onBeforeShow({
-                        refresh: refresh
-                    });
-
-                    controller.refreshed = true;
-                }
-            });
-        }
-
-        function loadTab(page, index) {
-
-            getTabController(page, index, function (controller) {
-
-                controller.onShow({
-                    autoFocus: initialTabIndex != null
+                return Promise.resolve({
+                    activeElement: activeElement,
+                    itemId: itemId,
+                    parentItemsContainer: parentItemsContainer,
+                    tabView: tabView
                 });
-                initialTabIndex = null;
-                currentTabController = controller;
             });
         }
 
-        viewTabs.addEventListener('beforetabchange', function (e) {
-            preLoadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
+        function onTabReloaded(tabInfo) {
 
-        viewTabs.addEventListener('tabchange', function (e) {
+            var activeElement = tabInfo.activeElement;
+            var tabView = tabInfo.tabView;
+            var itemId = tabInfo.itemId;
 
-            var previousTabController = tabControllers[parseInt(e.detail.previousIndex)];
-            if (previousTabController && previousTabController.onHide) {
-                previousTabController.onHide();
+            var parentItemsContainer = tabInfo.parentItemsContainer;
+
+            if (activeElement && document.body.contains(activeElement) && focusManager.isCurrentlyFocusable(activeElement)) {
+                console.log('re-focusing activeElement');
+                focusManager.focus(activeElement);
+            } else {
+
+                // need to re-focus
+                // see if there's a card with the same library item
+                if (itemId) {
+                    console.log('focusing by itemId');
+                    var card = tabView.element.querySelector('*[data-id=\'' + itemId + '\']');
+
+                    if (card && document.body.contains(card) && focusManager.isCurrentlyFocusable(card)) {
+
+                        console.log('focusing card by itemId');
+                        focusManager.focus(card);
+                        return;
+                    }
+                }
+
+                if (parentItemsContainer && document.body.contains(parentItemsContainer)) {
+                    console.log('focusing parentItemsContainer');
+                    if (focusManager.autoFocus(parentItemsContainer)) {
+                        console.log('focus parentItemsContainer succeeded');
+                        return;
+                    }
+                }
+
+                console.log('focusing tabview');
+                focusManager.autoFocus(tabView.element);
             }
+        }
 
-            loadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
+        function onPlaybackStopped() {
+            needsRefresh = true;
+        }
 
-        view.addEventListener('viewbeforehide', function (e) {
-
-            if (currentTabController && currentTabController.onHide) {
-                currentTabController.onHide();
-            }
-        });
+        events.on(playbackManager, 'playbackstop', onPlaybackStopped);
 
         view.addEventListener('viewbeforeshow', function (e) {
-            isViewRestored = e.detail.isRestored;
 
-            if (initialTabIndex == null) {
-                viewTabs.triggerBeforeTabChange();
+            self.reloadPromise = null;
+
+            var isRestored = e.detail.isRestored;
+
+            if (isRestored) {
+                if (self.tabView) {
+                    self.reloadPromise = reloadTabData(self.tabView);
+                }
             }
-
-            Emby.Page.setTitle(null);
         });
 
         view.addEventListener('viewshow', function (e) {
 
-            isViewRestored = e.detail.isRestored;
+            var isRestored = e.detail.isRestored;
 
-            backdrop.clear();
+            Emby.Page.setTitle('');
 
-            if (initialTabIndex != null) {
-                viewTabs.selectedIndex(initialTabIndex);
+            if (isRestored) {
+                if (self.reloadPromise) {
+                    self.reloadPromise.then(onTabReloaded);
+                }
             } else {
-                viewTabs.triggerTabChange();
+                loading.show();
+
+                renderTabs(view, self);
             }
         });
 
-        view.addEventListener('viewdestroy', function (e) {
+        view.addEventListener('viewhide', function () {
 
-            tabControllers.forEach(function (t) {
-                if (t.destroy) {
-                    t.destroy();
-                }
-            });
-
-            self.scroller = null;
+            needsRefresh = false;
         });
+
+        view.addEventListener('viewdestroy', function () {
+
+            if (self.tabbedPage) {
+                self.tabbedPage.destroy();
+            }
+            if (self.tabView) {
+                self.tabView.destroy();
+            }
+
+            events.off(playbackManager, 'playbackstop', onPlaybackStopped);
+        });
+
+        function renderTabs(view, pageInstance) {
+
+            var apiClient = connectionManager.currentApiClient();
+            apiClient.getUserViews({}, apiClient.getCurrentUserId()).then(function (result) {
+
+                var tabbedPageInstance = new tabbedPage(view, {
+                    handleFocus: true
+                });
+                tabbedPageInstance.loadViewContent = loadViewContent;
+                tabbedPageInstance.renderTabs(result.Items);
+                pageInstance.tabbedPage = tabbedPageInstance;
+            });
+        }
+
+        var autoFocusTabContent = true;
+
+        function loadViewContent(page, id, type) {
+
+            return new Promise(function (resolve, reject) {
+
+                type = (type || '').toLowerCase();
+
+                var viewName = '';
+
+                switch (type) {
+                    case 'tvshows':
+                        viewName = 'tv';
+                        break;
+                    case 'movies':
+                        viewName = 'movies';
+                        break;
+                    case 'channels':
+                        viewName = 'channels';
+                        break;
+                    case 'music':
+                        viewName = 'music';
+                        break;
+                    case 'playlists':
+                        viewName = 'playlists';
+                        break;
+                    case 'boxsets':
+                        viewName = 'collections';
+                        break;
+                    case 'livetv':
+                        viewName = 'livetv';
+                        break;
+                    default:
+                        viewName = 'generic';
+                        break;
+                }
+
+                require(['text!' + pluginManager.mapPath(skinInfo.id, 'home/views.' + viewName + '.html')], function (html) {
+
+                    if (!autoFocusTabContent) {
+                        var activeElement = document.activeElement;
+                        if (!activeElement || activeElement.tagName === 'BODY' || !document.body.contains(activeElement)) {
+                            autoFocusTabContent = true;
+                        }
+                    }
+
+                    loadViewHtml(page, id, html, viewName, autoFocusTabContent, self);
+                    autoFocusTabContent = false;
+                    resolve();
+                });
+            });
+        }
     };
 
 });

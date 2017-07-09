@@ -1,4 +1,4 @@
-<div class="pageContainer fullWidth vertical">
+<div class="pageContainer itemPageContainer fullWidth vertical">
 
     <div class="itemPageFixedLeft hide">
         <div class="leftFixedDetailImageContainer"></div>
@@ -22,6 +22,8 @@
 
         </div>
     </div>
+
+
     <div class="scrollFrame scrollFrameY itemScrollFrameY itemScrollFrame">
         <div class="scrollSlider itemVerticalScrollSlider">
 
@@ -34,6 +36,12 @@
                 <div class="itemPageMain">
                     <div class="parentName hide" style="margin: 0 0 .5em;"></div>
                     <h1 class="itemTitle" style="margin: .25em 0;"></h1>
+
+                    <div class="peopleSection">
+                        <h2 class="sectionTitle">${CastAndCrew}</h2>
+                        <div is="emby-itemscontainer" class="itemsContainer focuscontainer-x"></div>
+                    </div>
+
                     <div class="mediaInfo mediaInfoPrimary">
 
                     </div>
@@ -97,6 +105,7 @@
                     <div class="trackList vertical-list" is="emby-itemscontainer">
 
                     </div>
+
                     <div class="episodes vertical-list" is="emby-itemscontainer">
 
                     </div>
@@ -117,12 +126,12 @@
             </div>
             <div class="verticalSection itemVerticalSection childrenSection padded-left padded-right hide">
                 <h2 class="sectionTitle"></h2>
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap childrenItemsContainer focuscontainer-x"></div>
+                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap childrenItemsContainer"></div>
             </div>
-            <div class="verticalSection itemVerticalSection peopleSection padded-left padded-right hide">
+            <!-- <div class="verticalSection itemVerticalSection peopleSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${CastAndCrew}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
-            </div>
+            </div> -->
             <div class="verticalSection itemVerticalSection extrasSection padded-left padded-right hide">
                 <h2 class="sectionTitle">${Extras}</h2>
                 <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>

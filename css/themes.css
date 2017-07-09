@@ -1,0 +1,1782 @@
+/* --------------------------------
+ * - brown Theme
+ * -------------------------------- */
+.theme-brown div[data-type="home"] {
+  background: rgba(131, 81, 63, 0.25);
+}
+
+.theme-brown div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(131, 81, 63, 0.25);
+}
+
+.theme-brown a {
+  color: #83513F !important;
+}
+
+.theme-brown .emby-button:focus:not(.btnUserViewHeader) {
+  background: #83513F !important;
+}
+
+.theme-brown a:focus {
+  background: #83513F !important;
+}
+
+.theme-brown .card:focus:not(.card-round) .cardBox {
+  border-color: #83513F !important;
+}
+
+.theme-brown .emby-button:focus:not(.btnUserViewHeader) {
+  background: #83513F !important;
+}
+
+.theme-brown .userViewNames button:focus h3 {
+  background-color: #83513F !important;
+}
+
+.theme-brown .itemProgressBarForeground {
+  background-color: #83513F !important;
+}
+
+.theme-brown .headerAudioPlayerButton {
+  color: #83513F !important;
+}
+
+.theme-brown .repeatActive {
+  color: #83513F !important;
+}
+
+.theme-brown .countIndicator, .playedIndicator {
+  background: #83513F !important;
+}
+
+.theme-brown .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #83513F !important;
+}
+
+.theme-brown .backMenuContent .cardImageContainer-round {
+  background-color: #83513F;
+}
+
+.theme-brown .settingsVerticalSection > div button:focus {
+  background-color: #83513F !important;
+}
+
+.theme-brown .emby-select:focus+.emby-select-selectionbar,
+.theme-brown .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-brown .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #83513F !important;
+}
+
+.theme-brown .selectLabelFocused {
+  color: #83513F !important;
+}
+
+.theme-brown .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #83513F !important;
+}
+
+.theme-brown .paper-icon-button-light:focus {
+  color: #83513F;
+}
+
+.theme-brown .panel-left .userOptions button:focus i {
+  background-color: #83513F !important;
+}
+
+.theme-brown .tilesContainer > .tile:focus {
+  border: .12em solid #83513F;
+}
+
+.theme-brown .power-panel .panel-head {
+  background-color: #83513F;
+}
+
+.theme-brown .power-panel .panel-body button:focus h3 {
+  background-color: #83513F;
+}
+
+.theme-brown .fullscreen-video button:focus {
+  background-color: #83513F;
+}
+
+.theme-brown .bulletSeparator {
+  color: #83513F !important;
+}
+
+.theme-brown .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #83513F !important;
+}
+
+.theme-brown .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #83513F !important;
+}
+
+.theme-brown .guide-date-tab-button.emby-tab-button-active {
+  color: #83513F !important;
+}
+
+.theme-brown .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #83513F !important;
+}
+
+.theme-brown .currentTimeIndicatorBar {
+  background-color: #83513F !important;
+}
+
+.theme-brown .currentTimeIndicatorArrow {
+  color: #83513F !important;
+}
+
+.theme-brown .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #83513F !important;
+}
+
+.theme-brown .guideProgramIndicator, .newTvProgram {
+  background-color: #83513F !important;
+}
+
+
+/* --------------------------------
+ * - charcoal Theme
+ * -------------------------------- */
+.theme-charcoal div[data-type="home"] {
+  background: rgba(102, 102, 102, 0.25);
+}
+
+.theme-charcoal div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(102, 102, 102, 0.25);
+}
+
+.theme-charcoal a {
+  color: #A2A2A2 !important;
+}
+
+.theme-charcoal .emby-button:focus:not(.btnUserViewHeader) {
+  background: #A2A2A2 !important;
+}
+
+.theme-charcoal a:focus {
+  background: #A2A2A2 !important;
+}
+
+.theme-charcoal .card:focus:not(.card-round) .cardBox {
+  border-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .emby-button:focus:not(.btnUserViewHeader) {
+  background: #A2A2A2 !important;
+}
+
+.theme-charcoal .userViewNames button:focus h3 {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .itemProgressBarForeground {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .headerAudioPlayerButton {
+  color: #A2A2A2 !important;
+}
+
+.theme-charcoal .repeatActive {
+  color: #A2A2A2 !important;
+}
+
+.theme-charcoal .countIndicator, .playedIndicator {
+  background: #A2A2A2 !important;
+}
+
+.theme-charcoal .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .backMenuContent .cardImageContainer-round {
+  background-color: #A2A2A2;
+}
+
+.theme-charcoal .settingsVerticalSection > div button:focus {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .emby-select:focus+.emby-select-selectionbar,
+.theme-charcoal .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-charcoal .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .selectLabelFocused {
+  color: #A2A2A2 !important;
+}
+
+.theme-charcoal .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .paper-icon-button-light:focus {
+  color: #A2A2A2;
+}
+
+.theme-charcoal .panel-left .userOptions button:focus i {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .tilesContainer > .tile:focus {
+  border: .12em solid #A2A2A2;
+}
+
+.theme-charcoal .power-panel .panel-head {
+  background-color: #A2A2A2;
+}
+
+.theme-charcoal .power-panel .panel-body button:focus h3 {
+  background-color: #A2A2A2;
+}
+
+.theme-charcoal .fullscreen-video button:focus {
+  background-color: #A2A2A2;
+}
+
+.theme-charcoal .bulletSeparator {
+  color: #A2A2A2 !important;
+}
+
+.theme-charcoal .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #A2A2A2 !important;
+}
+
+.theme-charcoal .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .guide-date-tab-button.emby-tab-button-active {
+  color: #A2A2A2 !important;
+}
+
+.theme-charcoal .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .currentTimeIndicatorBar {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .currentTimeIndicatorArrow {
+  color: #A2A2A2 !important;
+}
+
+.theme-charcoal .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #A2A2A2 !important;
+}
+
+.theme-charcoal .guideProgramIndicator, .newTvProgram {
+  background-color: #A2A2A2 !important;
+}
+
+/* --------------------------------
+ * - chartreuse Theme
+ * -------------------------------- */
+.theme-chartreuse div[data-type="home"] {
+  background: rgba(79, 175, 0, 0.25);
+}
+
+.theme-chartreuse div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(79, 175, 0, 0.25);
+}
+
+.theme-chartreuse a {
+  color: #4FAF00 !important;
+}
+
+.theme-chartreuse .emby-button:focus:not(.btnUserViewHeader) {
+  background: #4FAF00 !important;
+}
+
+.theme-chartreuse a:focus {
+  background: #4FAF00 !important;
+}
+
+.theme-chartreuse .card:focus:not(.card-round) .cardBox {
+  border-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .emby-button:focus:not(.btnUserViewHeader) {
+  background: #4FAF00 !important;
+}
+
+.theme-chartreuse .userViewNames button:focus h3 {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .itemProgressBarForeground {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .headerAudioPlayerButton {
+  color: #4FAF00 !important;
+}
+
+.theme-chartreuse .repeatActive {
+  color: #4FAF00 !important;
+}
+
+.theme-chartreuse .countIndicator, .playedIndicator {
+  background: #4FAF00 !important;
+}
+
+.theme-chartreuse .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .backMenuContent .cardImageContainer-round {
+  background-color: #4FAF00;
+}
+
+.theme-chartreuse .settingsVerticalSection > div button:focus {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .emby-select:focus+.emby-select-selectionbar,
+.theme-chartreuse .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-chartreuse .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .selectLabelFocused {
+  color: #4FAF00 !important;
+}
+
+.theme-chartreuse .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .paper-icon-button-light:focus {
+  color: #4FAF00;
+}
+
+.theme-chartreuse .panel-left .userOptions button:focus i {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .tilesContainer > .tile:focus {
+  border: .12em solid #4FAF00;
+}
+
+.theme-chartreuse .power-panel .panel-head {
+  background-color: #4FAF00;
+}
+
+.theme-chartreuse .power-panel .panel-body button:focus h3 {
+  background-color: #4FAF00;
+}
+
+.theme-chartreuse .fullscreen-video button:focus {
+  background-color: #4FAF00;
+}
+
+.theme-chartreuse .bulletSeparator {
+  color: #4FAF00 !important;
+}
+
+.theme-chartreuse .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #4FAF00 !important;
+}
+
+.theme-chartreuse .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .guide-date-tab-button.emby-tab-button-active {
+  color: #4FAF00 !important;
+}
+
+.theme-chartreuse .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .currentTimeIndicatorBar {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .currentTimeIndicatorArrow {
+  color: #4FAF00 !important;
+}
+
+.theme-chartreuse .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #4FAF00 !important;
+}
+
+.theme-chartreuse .guideProgramIndicator, .newTvProgram {
+  background-color: #4FAF00 !important;
+}
+
+/* --------------------------------
+ * - concrete Theme
+ * -------------------------------- */
+.theme-concrete div[data-type="home"] {
+  background: rgba(96, 125, 139, 0.25);
+}
+
+.theme-concrete div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(96, 125, 139, 0.25);
+}
+
+.theme-concrete a {
+  color: #607D8B !important;
+}
+
+.theme-concrete .emby-button:focus:not(.btnUserViewHeader) {
+  background: #607D8B !important;
+}
+
+.theme-concrete a:focus {
+  background: #607D8B !important;
+}
+
+.theme-concrete .card:focus:not(.card-round) .cardBox {
+  border-color: #607D8B !important;
+}
+
+.theme-concrete .emby-button:focus:not(.btnUserViewHeader) {
+  background: #607D8B !important;
+}
+
+.theme-concrete .userViewNames button:focus h3 {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .itemProgressBarForeground {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .headerAudioPlayerButton {
+  color: #607D8B !important;
+}
+
+.theme-concrete .repeatActive {
+  color: #607D8B !important;
+}
+
+.theme-concrete .countIndicator, .playedIndicator {
+  background: #607D8B !important;
+}
+
+.theme-concrete .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #607D8B !important;
+}
+
+.theme-concrete .backMenuContent .cardImageContainer-round {
+  background-color: #607D8B;
+}
+
+.theme-concrete .settingsVerticalSection > div button:focus {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .emby-select:focus+.emby-select-selectionbar,
+.theme-concrete .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-concrete .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .selectLabelFocused {
+  color: #607D8B !important;
+}
+
+.theme-concrete .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #607D8B !important;
+}
+
+.theme-concrete .paper-icon-button-light:focus {
+  color: #607D8B;
+}
+
+.theme-concrete .panel-left .userOptions button:focus i {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .tilesContainer > .tile:focus {
+  border: .12em solid #607D8B;
+}
+
+.theme-concrete .power-panel .panel-head {
+  background-color: #607D8B;
+}
+
+.theme-concrete .power-panel .panel-body button:focus h3 {
+  background-color: #607D8B;
+}
+
+.theme-concrete .fullscreen-video button:focus {
+  background-color: #607D8B;
+}
+
+.theme-concrete .bulletSeparator {
+  color: #607D8B !important;
+}
+
+.theme-concrete .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #607D8B !important;
+}
+
+.theme-concrete .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .guide-date-tab-button.emby-tab-button-active {
+  color: #607D8B !important;
+}
+
+.theme-concrete .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .currentTimeIndicatorBar {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .currentTimeIndicatorArrow {
+  color: #607D8B !important;
+}
+
+.theme-concrete .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #607D8B !important;
+}
+
+.theme-concrete .guideProgramIndicator, .newTvProgram {
+  background-color: #607D8B !important;
+}
+
+/* --------------------------------
+ * - gold Theme
+ * -------------------------------- */
+.theme-gold div[data-type="home"] {
+  background: rgba(207, 167, 0, 0.25);
+}
+
+.theme-gold div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(207, 167, 0, 0.25);
+}
+
+.theme-gold a {
+  color: #CFA700 !important;
+}
+
+.theme-gold .emby-button:focus:not(.btnUserViewHeader) {
+  background: #CFA700 !important;
+}
+
+.theme-gold a:focus {
+  background: #CFA700 !important;
+}
+
+.theme-gold .card:focus:not(.card-round) .cardBox {
+  border-color: #CFA700 !important;
+}
+
+.theme-gold .emby-button:focus:not(.btnUserViewHeader) {
+  background: #CFA700 !important;
+}
+
+.theme-gold .userViewNames button:focus h3 {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .itemProgressBarForeground {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .headerAudioPlayerButton {
+  color: #CFA700 !important;
+}
+
+.theme-gold .repeatActive {
+  color: #CFA700 !important;
+}
+
+.theme-gold .countIndicator, .playedIndicator {
+  background: #CFA700 !important;
+}
+
+.theme-gold .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #CFA700 !important;
+}
+
+.theme-gold .backMenuContent .cardImageContainer-round {
+  background-color: #CFA700;
+}
+
+.theme-gold .settingsVerticalSection > div button:focus {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .emby-select:focus+.emby-select-selectionbar,
+.theme-gold .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-gold .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .selectLabelFocused {
+  color: #CFA700 !important;
+}
+
+.theme-gold .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #CFA700 !important;
+}
+
+.theme-gold .paper-icon-button-light:focus {
+  color: #CFA700;
+}
+
+.theme-gold .panel-left .userOptions button:focus i {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .tilesContainer > .tile:focus {
+  border: .12em solid #CFA700;
+}
+
+.theme-gold .power-panel .panel-head {
+  background-color: #CFA700;
+}
+
+.theme-gold .power-panel .panel-body button:focus h3 {
+  background-color: #CFA700;
+}
+
+.theme-gold .fullscreen-video button:focus {
+  background-color: #CFA700;
+}
+
+.theme-gold .bulletSeparator {
+  color: #CFA700 !important;
+}
+
+.theme-gold .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #CFA700 !important;
+}
+
+.theme-gold .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .guide-date-tab-button.emby-tab-button-active {
+  color: #CFA700 !important;
+}
+
+.theme-gold .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .currentTimeIndicatorBar {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .currentTimeIndicatorArrow {
+  color: #CFA700 !important;
+}
+
+.theme-gold .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #CFA700 !important;
+}
+
+.theme-gold .guideProgramIndicator, .newTvProgram {
+  background-color: #CFA700 !important;
+}
+
+
+/* --------------------------------
+ * - green Theme
+ * -------------------------------- */
+.theme-green div[data-type="home"] {
+  background: rgba(36, 202, 122, 0.25);
+}
+
+.theme-green div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(36, 202, 122, 0.25);
+}
+
+.theme-green a {
+  color: #24CA7A !important;
+}
+
+.theme-green .emby-button:focus:not(.btnUserViewHeader) {
+  background: #24CA7A !important;
+}
+
+.theme-green a:focus {
+  background: #24CA7A !important;
+}
+
+.theme-green .card:focus:not(.card-round) .cardBox {
+  border-color: #24CA7A !important;
+}
+
+.theme-green .emby-button:focus:not(.btnUserViewHeader) {
+  background: #24CA7A !important;
+}
+
+.theme-green .userViewNames button:focus h3 {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .itemProgressBarForeground {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .headerAudioPlayerButton {
+  color: #24CA7A !important;
+}
+
+.theme-green .repeatActive {
+  color: #24CA7A !important;
+}
+
+.theme-green .countIndicator, .playedIndicator {
+  background: #24CA7A !important;
+}
+
+.theme-green .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #24CA7A !important;
+}
+
+.theme-green .backMenuContent .cardImageContainer-round {
+  background-color: #24CA7A;
+}
+
+.theme-green .settingsVerticalSection > div button:focus {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .emby-select:focus+.emby-select-selectionbar,
+.theme-green .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-green .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .selectLabelFocused {
+  color: #24CA7A !important;
+}
+
+.theme-green .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #24CA7A !important;
+}
+
+.theme-green .paper-icon-button-light:focus {
+  color: #24CA7A;
+}
+
+.theme-green .panel-left .userOptions button:focus i {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .tilesContainer > .tile:focus {
+  border: .12em solid #24CA7A;
+}
+
+.theme-green .power-panel .panel-head {
+  background-color: #24CA7A;
+}
+
+.theme-green .power-panel .panel-body button:focus h3 {
+  background-color: #24CA7A;
+}
+
+.theme-green .fullscreen-video button:focus {
+  background-color: #24CA7A;
+}
+
+.theme-green .bulletSeparator {
+  color: #24CA7A !important;
+}
+
+.theme-green .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #24CA7A !important;
+}
+
+.theme-green .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .guide-date-tab-button.emby-tab-button-active {
+  color: #24CA7A !important;
+}
+
+.theme-green .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .currentTimeIndicatorBar {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .currentTimeIndicatorArrow {
+  color: #24CA7A !important;
+}
+
+.theme-green .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #24CA7A !important;
+}
+
+.theme-green .guideProgramIndicator, .newTvProgram {
+  background-color: #24CA7A !important;
+}
+
+/* --------------------------------
+ * - maroon Theme
+ * -------------------------------- */
+.theme-maroon div[data-type="home"] {
+  background: rgba(196, 3, 0, 0.25);
+}
+
+.theme-maroon div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(196, 3, 0, 0.25);
+}
+
+.theme-maroon a {
+  color: #C40300 !important;
+}
+
+.theme-maroon .emby-button:focus:not(.btnUserViewHeader) {
+  background: #C40300 !important;
+}
+
+.theme-maroon a:focus {
+  background: #C40300 !important;
+}
+
+.theme-maroon .card:focus:not(.card-round) .cardBox {
+  border-color: #C40300 !important;
+}
+
+.theme-maroon .emby-button:focus:not(.btnUserViewHeader) {
+  background: #C40300 !important;
+}
+
+.theme-maroon .userViewNames button:focus h3 {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .itemProgressBarForeground {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .headerAudioPlayerButton {
+  color: #C40300 !important;
+}
+
+.theme-maroon .repeatActive {
+  color: #C40300 !important;
+}
+
+.theme-maroon .countIndicator, .playedIndicator {
+  background: #C40300 !important;
+}
+
+.theme-maroon .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #C40300 !important;
+}
+
+.theme-maroon .backMenuContent .cardImageContainer-round {
+  background-color: #C40300;
+}
+
+.theme-maroon .settingsVerticalSection > div button:focus {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .emby-select:focus+.emby-select-selectionbar,
+.theme-maroon .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-maroon .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .selectLabelFocused {
+  color: #C40300 !important;
+}
+
+.theme-maroon .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #C40300 !important;
+}
+
+.theme-maroon .paper-icon-button-light:focus {
+  color: #C40300;
+}
+
+.theme-maroon .panel-left .userOptions button:focus i {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .tilesContainer > .tile:focus {
+  border: .12em solid #C40300;
+}
+
+.theme-maroon .power-panel .panel-head {
+  background-color: #C40300;
+}
+
+.theme-maroon .power-panel .panel-body button:focus h3 {
+  background-color: #C40300;
+}
+
+.theme-maroon .fullscreen-video button:focus {
+  background-color: #C40300;
+}
+
+.theme-maroon .bulletSeparator {
+  color: #C40300 !important;
+}
+
+.theme-maroon .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #C40300 !important;
+}
+
+.theme-maroon .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .guide-date-tab-button.emby-tab-button-active {
+  color: #C40300 !important;
+}
+
+.theme-maroon .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .currentTimeIndicatorBar {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .currentTimeIndicatorArrow {
+  color: #C40300 !important;
+}
+
+.theme-maroon .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #C40300 !important;
+}
+
+.theme-maroon .guideProgramIndicator, .newTvProgram {
+  background-color: #C40300 !important;
+}
+
+/* --------------------------------
+ * - midnight Theme
+ * -------------------------------- */
+.theme-midnight div[data-type="home"] {
+  background: rgba(40, 102, 164, 0.25);
+}
+
+.theme-midnight div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(40, 102, 164, 0.25);
+}
+
+.theme-midnight a {
+  color: #2866A4 !important;
+}
+
+.theme-midnight .emby-button:focus:not(.btnUserViewHeader) {
+  background: #2866A4 !important;
+}
+
+.theme-midnight a:focus {
+  background: #2866A4 !important;
+}
+
+.theme-midnight .card:focus:not(.card-round) .cardBox {
+  border-color: #2866A4 !important;
+}
+
+.theme-midnight .emby-button:focus:not(.btnUserViewHeader) {
+  background: #2866A4 !important;
+}
+
+.theme-midnight .userViewNames button:focus h3 {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .itemProgressBarForeground {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .headerAudioPlayerButton {
+  color: #2866A4 !important;
+}
+
+.theme-midnight .repeatActive {
+  color: #2866A4 !important;
+}
+
+.theme-midnight .countIndicator, .playedIndicator {
+  background: #2866A4 !important;
+}
+
+.theme-midnight .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #2866A4 !important;
+}
+
+.theme-midnight .backMenuContent .cardImageContainer-round {
+  background-color: #2866A4;
+}
+
+.theme-midnight .settingsVerticalSection > div button:focus {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .emby-select:focus+.emby-select-selectionbar,
+.theme-midnight .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-midnight .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .selectLabelFocused {
+  color: #2866A4 !important;
+}
+
+.theme-midnight .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #2866A4 !important;
+}
+
+.theme-midnight .paper-icon-button-light:focus {
+  color: #2866A4;
+}
+
+.theme-midnight .panel-left .userOptions button:focus i {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .tilesContainer > .tile:focus {
+  border: .12em solid #2866A4;
+}
+
+.theme-midnight .power-panel .panel-head {
+  background-color: #2866A4;
+}
+
+.theme-midnight .power-panel .panel-body button:focus h3 {
+  background-color: #2866A4;
+}
+
+.theme-midnight .fullscreen-video button:focus {
+  background-color: #2866A4;
+}
+
+.theme-midnight .bulletSeparator {
+  color: #2866A4 !important;
+}
+
+.theme-midnight .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #2866A4 !important;
+}
+
+.theme-midnight .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .guide-date-tab-button.emby-tab-button-active {
+  color: #2866A4 !important;
+}
+
+.theme-midnight .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .currentTimeIndicatorBar {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .currentTimeIndicatorArrow {
+  color: #2866A4 !important;
+}
+
+.theme-midnight .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #2866A4 !important;
+}
+
+.theme-midnight .guideProgramIndicator, .newTvProgram {
+  background-color: #2866A4 !important;
+}
+
+/* --------------------------------
+ * - orange Theme
+ * -------------------------------- */
+.theme-orange div[data-type="home"] {
+  background: rgba(255, 152, 0, 0.25);
+}
+
+.theme-orange div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(255, 152, 0, 0.25);
+}
+
+.theme-orange a {
+  color: #FF9800 !important;
+}
+
+.theme-orange .emby-button:focus:not(.btnUserViewHeader) {
+  background: #FF9800 !important;
+}
+
+.theme-orange a:focus {
+  background: #FF9800 !important;
+}
+
+.theme-orange .card:focus:not(.card-round) .cardBox {
+  border-color: #FF9800 !important;
+}
+
+.theme-orange .emby-button:focus:not(.btnUserViewHeader) {
+  background: #FF9800 !important;
+}
+
+.theme-orange .userViewNames button:focus h3 {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .itemProgressBarForeground {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .headerAudioPlayerButton {
+  color: #FF9800 !important;
+}
+
+.theme-orange .repeatActive {
+  color: #FF9800 !important;
+}
+
+.theme-orange .countIndicator, .playedIndicator {
+  background: #FF9800 !important;
+}
+
+.theme-orange .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #FF9800 !important;
+}
+
+.theme-orange .backMenuContent .cardImageContainer-round {
+  background-color: #FF9800;
+}
+
+.theme-orange .settingsVerticalSection > div button:focus {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .emby-select:focus+.emby-select-selectionbar,
+.theme-orange .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-orange .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .selectLabelFocused {
+  color: #FF9800 !important;
+}
+
+.theme-orange .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #FF9800 !important;
+}
+
+.theme-orange .paper-icon-button-light:focus {
+  color: #FF9800;
+}
+
+.theme-orange .panel-left .userOptions button:focus i {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .tilesContainer > .tile:focus {
+  border: .12em solid #FF9800;
+}
+
+.theme-orange .power-panel .panel-head {
+  background-color: #FF9800;
+}
+
+.theme-orange .power-panel .panel-body button:focus h3 {
+  background-color: #FF9800;
+}
+
+.theme-orange .fullscreen-video button:focus {
+  background-color: #FF9800;
+}
+
+.theme-orange .bulletSeparator {
+  color: #FF9800 !important;
+}
+
+.theme-orange .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #FF9800 !important;
+}
+
+.theme-orange .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .guide-date-tab-button.emby-tab-button-active {
+  color: #FF9800 !important;
+}
+
+.theme-orange .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .currentTimeIndicatorBar {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .currentTimeIndicatorArrow {
+  color: #FF9800 !important;
+}
+
+.theme-orange .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #FF9800 !important;
+}
+
+.theme-orange .guideProgramIndicator, .newTvProgram {
+  background-color: #FF9800 !important;
+}
+
+/* --------------------------------
+ * - pink Theme
+ * -------------------------------- */
+.theme-pink div[data-type="home"] {
+  background: rgba(233, 30, 99, 0.25);
+}
+
+.theme-pink div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(233, 30, 99, 0.25);
+}
+
+.theme-pink a {
+  color: #E91E63 !important;
+}
+
+.theme-pink .emby-button:focus:not(.btnUserViewHeader) {
+  background: #E91E63 !important;
+}
+
+.theme-pink a:focus {
+  background: #E91E63 !important;
+}
+
+.theme-pink .card:focus:not(.card-round) .cardBox {
+  border-color: #E91E63 !important;
+}
+
+.theme-pink .emby-button:focus:not(.btnUserViewHeader) {
+  background: #E91E63 !important;
+}
+
+.theme-pink .userViewNames button:focus h3 {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .itemProgressBarForeground {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .headerAudioPlayerButton {
+  color: #E91E63 !important;
+}
+
+.theme-pink .repeatActive {
+  color: #E91E63 !important;
+}
+
+.theme-pink .countIndicator, .playedIndicator {
+  background: #E91E63 !important;
+}
+
+.theme-pink .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #E91E63 !important;
+}
+
+.theme-pink .backMenuContent .cardImageContainer-round {
+  background-color: #E91E63;
+}
+
+.theme-pink .settingsVerticalSection > div button:focus {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .emby-select:focus+.emby-select-selectionbar,
+.theme-pink .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-pink .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .selectLabelFocused {
+  color: #E91E63 !important;
+}
+
+.theme-pink .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #E91E63 !important;
+}
+
+.theme-pink .paper-icon-button-light:focus {
+  color: #E91E63;
+}
+
+.theme-pink .panel-left .userOptions button:focus i {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .tilesContainer > .tile:focus {
+  border: .12em solid #E91E63;
+}
+
+.theme-pink .power-panel .panel-head {
+  background-color: #E91E63;
+}
+
+.theme-pink .power-panel .panel-body button:focus h3 {
+  background-color: #E91E63;
+}
+
+.theme-pink .fullscreen-video button:focus {
+  background-color: #E91E63;
+}
+
+.theme-pink .bulletSeparator {
+  color: #E91E63 !important;
+}
+
+.theme-pink .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #E91E63 !important;
+}
+
+.theme-pink .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .guide-date-tab-button.emby-tab-button-active {
+  color: #E91E63 !important;
+}
+
+.theme-pink .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .currentTimeIndicatorBar {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .currentTimeIndicatorArrow {
+  color: #E91E63 !important;
+}
+
+.theme-pink .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #E91E63 !important;
+}
+
+.theme-pink .guideProgramIndicator, .newTvProgram {
+  background-color: #E91E63 !important;
+}
+
+/* --------------------------------
+ * - rose Theme
+ * -------------------------------- */
+.theme-rose div[data-type="home"] {
+  background: rgba(255, 76, 161, 0.25);
+}
+
+.theme-rose div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(255, 76, 161, 0.25);
+}
+
+.theme-rose a {
+  color: #FF8EC4 !important;
+}
+
+.theme-rose .emby-button:focus:not(.btnUserViewHeader) {
+  background: #FF8EC4 !important;
+}
+
+.theme-rose a:focus {
+  background: #FF8EC4 !important;
+}
+
+.theme-rose .card:focus:not(.card-round) .cardBox {
+  border-color: #FF8EC4 !important;
+}
+
+.theme-rose .emby-button:focus:not(.btnUserViewHeader) {
+  background: #FF8EC4 !important;
+}
+
+.theme-rose .userViewNames button:focus h3 {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .itemProgressBarForeground {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .headerAudioPlayerButton {
+  color: #FF8EC4 !important;
+}
+
+.theme-rose .repeatActive {
+  color: #FF8EC4 !important;
+}
+
+.theme-rose .countIndicator, .playedIndicator {
+  background: #FF8EC4 !important;
+}
+
+.theme-rose .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #FF8EC4 !important;
+}
+
+.theme-rose .backMenuContent .cardImageContainer-round {
+  background-color: #FF8EC4;
+}
+
+.theme-rose .settingsVerticalSection > div button:focus {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .emby-select:focus+.emby-select-selectionbar,
+.theme-rose .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-rose .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .selectLabelFocused {
+  color: #FF8EC4 !important;
+}
+
+.theme-rose .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #FF8EC4 !important;
+}
+
+.theme-rose .paper-icon-button-light:focus {
+  color: #FF8EC4;
+}
+
+.theme-rose .panel-left .userOptions button:focus i {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .tilesContainer > .tile:focus {
+  border: .12em solid #FF8EC4;
+}
+
+.theme-rose .power-panel .panel-head {
+  background-color: #FF8EC4;
+}
+
+.theme-rose .power-panel .panel-body button:focus h3 {
+  background-color: #FF8EC4;
+}
+
+.theme-rose .fullscreen-video button:focus {
+  background-color: #FF8EC4;
+}
+
+.theme-rose .bulletSeparator {
+  color: #FF8EC4 !important;
+}
+
+.theme-rose .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #FF8EC4 !important;
+}
+
+.theme-rose .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .guide-date-tab-button.emby-tab-button-active {
+  color: #FF8EC4 !important;
+}
+
+.theme-rose .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .currentTimeIndicatorBar {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .currentTimeIndicatorArrow {
+  color: #FF8EC4 !important;
+}
+
+.theme-rose .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #FF8EC4 !important;
+}
+
+.theme-rose .guideProgramIndicator, .newTvProgram {
+  background-color: #FF8EC4 !important;
+}
+
+/* --------------------------------
+ * - teal Theme
+ * -------------------------------- */
+.theme-teal div[data-type="home"] {
+  background: rgba(0, 150, 136, 0.25);
+}
+
+.theme-teal div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(0, 150, 136, 0.25);
+}
+
+.theme-teal a {
+  color: #009688 !important;
+}
+
+.theme-teal .emby-button:focus:not(.btnUserViewHeader) {
+  background: #009688 !important;
+}
+
+.theme-teal a:focus {
+  background: #009688 !important;
+}
+
+.theme-teal .card:focus:not(.card-round) .cardBox {
+  border-color: #009688 !important;
+}
+
+.theme-teal .emby-button:focus:not(.btnUserViewHeader) {
+  background: #009688 !important;
+}
+
+.theme-teal .userViewNames button:focus h3 {
+  background-color: #009688 !important;
+}
+
+.theme-teal .itemProgressBarForeground {
+  background-color: #009688 !important;
+}
+
+.theme-teal .headerAudioPlayerButton {
+  color: #009688 !important;
+}
+
+.theme-teal .repeatActive {
+  color: #009688 !important;
+}
+
+.theme-teal .countIndicator, .playedIndicator {
+  background: #009688 !important;
+}
+
+.theme-teal .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #009688 !important;
+}
+
+.theme-teal .backMenuContent .cardImageContainer-round {
+  background-color: #009688;
+}
+
+.theme-teal .settingsVerticalSection > div button:focus {
+  background-color: #009688 !important;
+}
+
+.theme-teal .emby-select:focus+.emby-select-selectionbar,
+.theme-teal .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-teal .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #009688 !important;
+}
+
+.theme-teal .selectLabelFocused {
+  color: #009688 !important;
+}
+
+.theme-teal .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #009688 !important;
+}
+
+.theme-teal .paper-icon-button-light:focus {
+  color: #009688;
+}
+
+.theme-teal .panel-left .userOptions button:focus i {
+  background-color: #009688 !important;
+}
+
+.theme-teal .tilesContainer > .tile:focus {
+  border: .12em solid #009688;
+}
+
+.theme-teal .power-panel .panel-head {
+  background-color: #009688;
+}
+
+.theme-teal .power-panel .panel-body button:focus h3 {
+  background-color: #009688;
+}
+
+.theme-teal .fullscreen-video button:focus {
+  background-color: #009688;
+}
+
+.theme-teal .bulletSeparator {
+  color: #009688 !important;
+}
+
+.theme-teal .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #009688 !important;
+}
+
+.theme-teal .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #009688 !important;
+}
+
+.theme-teal .guide-date-tab-button.emby-tab-button-active {
+  color: #009688 !important;
+}
+
+.theme-teal .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #009688 !important;
+}
+
+.theme-teal .currentTimeIndicatorBar {
+  background-color: #009688 !important;
+}
+
+.theme-teal .currentTimeIndicatorArrow {
+  color: #009688 !important;
+}
+
+.theme-teal .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #009688 !important;
+}
+
+.theme-teal .guideProgramIndicator, .newTvProgram {
+  background-color: #009688 !important;
+}
+
+/* --------------------------------
+ * - violet Theme
+ * -------------------------------- */
+.theme-violet div[data-type="home"] {
+  background: rgba(192, 80, 255, 0.25);
+}
+
+.theme-violet div.mainAnimatedPage:not([data-type="video-osd"]) {
+  background: rgba(192, 80, 255, 0.25);
+}
+
+.theme-violet a {
+  color: #C050FF !important;
+}
+
+.theme-violet .emby-button:focus:not(.btnUserViewHeader) {
+  background: #C050FF !important;
+}
+
+.theme-violet a:focus {
+  background: #C050FF !important;
+}
+
+.theme-violet .card:focus:not(.card-round) .cardBox {
+  border-color: #C050FF !important;
+}
+
+.theme-violet .emby-button:focus:not(.btnUserViewHeader) {
+  background: #C050FF !important;
+}
+
+.theme-violet .userViewNames button:focus h3 {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .itemProgressBarForeground {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .headerAudioPlayerButton {
+  color: #C050FF !important;
+}
+
+.theme-violet .repeatActive {
+  color: #C050FF !important;
+}
+
+.theme-violet .countIndicator, .playedIndicator {
+  background: #C050FF !important;
+}
+
+.theme-violet .card:focus:not(.card-round) .card-focuscontent {
+  border-color: #C050FF !important;
+}
+
+.theme-violet .backMenuContent .cardImageContainer-round {
+  background-color: #C050FF;
+}
+
+.theme-violet .settingsVerticalSection > div button:focus {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .emby-select:focus+.emby-select-selectionbar,
+.theme-violet .mdl-checkbox__input:focus+span+.mdl-checkbox__focus-helper,
+.theme-violet .mdl-checkbox__input:checked+span+span+.checkboxOutline .mdl-checkbox__tick-outline {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .selectLabelFocused {
+  color: #C050FF !important;
+}
+
+.theme-violet .mdl-checkbox__input:checked+span+span+.checkboxOutline {
+  border-color: #C050FF !important;
+}
+
+.theme-violet .paper-icon-button-light:focus {
+  color: #C050FF;
+}
+
+.theme-violet .panel-left .userOptions button:focus i {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .tilesContainer > .tile:focus {
+  border: .12em solid #C050FF;
+}
+
+.theme-violet .power-panel .panel-head {
+  background-color: #C050FF;
+}
+
+.theme-violet .power-panel .panel-body button:focus h3 {
+  background-color: #C050FF;
+}
+
+.theme-violet .fullscreen-video button:focus {
+  background-color: #C050FF;
+}
+
+.theme-violet .bulletSeparator {
+  color: #C050FF !important;
+}
+
+.theme-violet .itemPageContainer.episodeList .episodes .listItem:focus {
+  border: 2px solid #C050FF !important;
+}
+
+.theme-violet .itemPageContainer.music .trackList .listItem:focus {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .guide-date-tab-button.emby-tab-button-active {
+  color: #C050FF !important;
+}
+
+.theme-violet .guide-date-tab-button.emby-button-tv:focus {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .currentTimeIndicatorBar {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .currentTimeIndicatorArrow {
+  color: #C050FF !important;
+}
+
+.theme-violet .channelHeaderCell:focus, .programCell:focus>.programCellInner {
+  background-color: #C050FF !important;
+}
+
+.theme-violet .guideProgramIndicator, .newTvProgram {
+  background-color: #C050FF !important;
+}

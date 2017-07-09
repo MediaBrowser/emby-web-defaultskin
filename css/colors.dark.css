@@ -1,34 +1,34 @@
 html {
-    color: #ddd;
+    color: #fff;
 }
 
 a {
-    color: #52B54B;
+    color: #0f85a5 !important;
     outline: none !important;
     display: inline-block;
     transition: all .15s ease-out;
 }
+
+    a:focus {
+        background: #0f85a5 !important;
+        color: #fff;
+        transform: scale(3);
+        padding-left: .3em;
+        padding-right: .3em;
+        border-radius: .15em;
+    }
 
     a:hover {
         text-decoration: underline;
     }
 
 .backgroundContainer {
-    background: #181818;
-    /*background: linear-gradient(to right, #080808, #282828, #080808);*/
+    /*background: #181818;*/
 }
 
-.skinHeader-withBackground {
-    background: #181818;
-}
-
-.backgroundContainer.withBackdrop {
-    background: linear-gradient(rgba(6, 6, 6, .9), rgba(6, 6, 6, .6), rgba(6, 6, 6, .9));
-}
-
-.detailBackgroundContainer.withBackdrop {
-    background: linear-gradient(to right, rgba(0, 0, 0, .99), rgba(0, 0, 0, .94), rgba(0, 0, 0, .5)) !important;
-}
+    .backgroundContainer.withBackdrop {
+        background: linear-gradient(rgba(6, 6, 6, .9), rgba(6, 6, 6, .6), rgba(6, 6, 6, .9));
+    }
 
 .headerLogo {
     background-image: url(images/logowhite.png);
@@ -50,28 +50,28 @@ a {
     border-color: #bbb;
 }
 
-.headerCastButton.active {
-    color: #4285F4;
-}
-
 .emby-button.raised {
-    background-color: #404040;
+    background-color: rgba(170,170,190, .4);
     color: #fff;
 }
 
-.emby-button:focus:not(.btnUserViewHeader):not(.emby-tab-button) {
-    background: #52B54B;
-    color: #fff !important;
+.emby-button:focus:not(.btnUserViewHeader) {
+    background: #0f85a5 !important;
+    color: #fff;
 }
 
-.card:focus:not(.card-round) .card-focuscontent {
-    border-color: #52B54B;
-    /*border-color: rgba(0, 0, 0, .6);*/
-    border-radius: .14em;
+.cardFooter:not(.cardFooter-round) {
+    background-color: #333;
+}
+
+.card:focus:not(.card-round) .cardBox {
+    border-color: #0f85a5 !important;
+    /*border-width: 0;
+    border-color: rgba(0, 0, 0, 0);*/
 }
 
 .card[data-cardtype='embyconnect'] .cardImageContainer {
-    background-color: #52B54B;
+    background-color: #0f85a5 !important;
 }
 
 .headerBackButton {
@@ -80,7 +80,7 @@ a {
 
 
 .userViewNames button {
-    color: #666;
+    opacity: 1;
 }
 
 .userViewButtonText {
@@ -89,7 +89,35 @@ a {
 
 .userViewNames button.selected {
     color: inherit;
+    opacity: 1;
 }
+
+.userViewNames button h3 {
+  width: 100%;
+  margin: 0;
+  padding: 16px 16px 16px 100px;
+  border: none;
+  color: #fff;
+}
+
+.userViewNames button h3 i {
+  color: #555 !important;
+}
+
+.userViewNames button:focus h3 {
+  background-color: #0f85a5 !important;
+}
+
+.userViewNames button:focus h3 i,
+.userViewNames button.selected h3 i {
+  color: #fff !important;
+}
+
+.userViewNames button:focus h3 i {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #fff !important;
+}
+
 
 .dialog {
     background-color: rgba(20,20,20,1) !important;
@@ -104,7 +132,7 @@ a {
     background: #4CAF50;
 }
 
-.genresCard .cardImageContainer, .channelsLiveTvCard .cardImageContainer {
+.genresCard .cardImageContainer, .scheduledLiveTvCard .cardImageContainer {
     background: #F44336;
 }
 
@@ -124,13 +152,9 @@ a {
     color: #bbb !important;
 }
 
-.userViewNames button:focus {
-    color: #52B54B !important;
+.userViewNames button:focus .userViewButtonText {
+    border-bottom-color: transparent;
 }
-
-    .userViewNames button:focus .userViewButtonText {
-        border-bottom-color: #52B54B;
-    }
 
 .selectedItemSecondaryInfo {
     color: #ddd !important;
@@ -145,18 +169,6 @@ a {
     color: #999 !important;
 }
 
-.playstatebutton-played i {
-    color: #cc3333;
-}
-
-.ratingbutton-withrating i {
-    color: #cc3333;
-}
-
-.downloadbutton-on i {
-    color: #4285F4;
-}
-
-.downloadbutton-complete i {
-    color: #4285F4;
+.itemProgressBarForeground {
+  background-color: #0f85a5 !important;
 }
