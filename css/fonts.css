@@ -1,30 +1,53 @@
-html {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", 'Open Sans', sans-serif;
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400');
+
+* {
+  font-weight: 300;
 }
 
 html {
-    font-size: 88%;
+    font-family: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", 'Open Sans', sans-serif;
+}
+
+html {
+    font-size: 100%;
 }
 
 h1 {
-    font-weight: normal;
-    font-size: 1.72em;
+    font-weight: 100;
 }
 
 h2 {
-    font-weight: normal;
-    font-size: 1.5em;
+    font-weight: 100;
 }
 
 h3 {
-    font-weight: normal;
-    font-size: 1.17em;
+    font-weight: 100;
 }
 
-.layout-tv {
+html.layout-tv {
     font-size: 2.5vh;
 }
 
-    .layout-tv h2 {
-        font-size: 1.35em;
-    }
+.layout-tv h1 {
+    font-size: 4.07vh;
+}
+
+.layout-tv h2 {
+    font-size: 3.3333vh;
+}
+
+.layout-tv h3 {
+    font-size: 3vh;
+}
+
+.panel-left .userViewNames {
+  /*margin-top: 15vh;*/
+}
+
+.panel-left .userViewNames h3 {
+  font-size: 4vh;
+}
+
+.homePageContainer .verticalSection {
+  margin-bottom: 1vh;
+}
