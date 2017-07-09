@@ -63,7 +63,7 @@
 }
 
 .bulletSeparator {
-    color: #52B54B;
+    color: #0f85a5 !important;
     margin: 0 .35em;
 }
 
@@ -234,3 +234,386 @@
 .layout-tv .itemVerticalSection {
     margin-bottom: 3.4em !important;
 }
+
+
+/* ----------------------------
+   Overrides
+   ---------------------------- */
+
+.detailBackgroundContainer.withBackdrop {
+  background: transparent;
+}
+
+/* Movie */
+.itemPageContainer .itemTitle, .tagline {
+  display: block;
+  width: 100%;
+  position: absolute;
+  top: 1vh;
+  left: 0;
+  text-align: center;
+}
+
+.itemPageContainer .tagline {
+  top: 3.5vh;
+  font-weight: 200;
+}
+
+.itemPageContainer .detailLogo {
+  position: absolute;
+  top: 3vh;
+  left: 2vw;
+}
+
+.itemPageContainer .detailImage {
+  position: absolute;
+  top: 13vh;
+  left: 3vw;
+  max-height: 78vh;
+  max-width: 29vw;
+}
+
+.itemPageContainer .genres {
+  position: absolute;
+  bottom: 1vh;
+  left: 3vw;
+  width: 26vw;
+  text-align: center;
+}
+
+.itemPageContainer .peopleSection {
+  width: 50vw;
+  position: absolute;
+  top: 13vh;
+  left: 33vw;
+}
+
+.itemPageContainer .peopleSection .sectionTitle {
+  display: none;
+}
+
+.itemPageContainer .peopleSection .personCard {
+  position: relative;
+  width: 10.1vw;
+  font-weight: 200;
+  font-size: 1em;
+}
+
+.itemPageContainer .peopleSection .personCard .cardFooter {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: transparent;
+  background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%);
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.5) 100%);
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.8) 100%);
+  box-sizing: border-box;
+  padding: 1vh 0vw;
+}
+
+.itemPageContainer .mediaInfoPrimary {
+  display: block;
+  width: 50vw;
+  position: absolute;
+  top: 40vh;
+  left: 33vw;
+  background-color: rgba(0,0,0,0.3);
+  padding: 2vh 1vw;
+  box-sizing: border-box;
+  line-height: 4vh;
+}
+
+.itemPageContainer .mediaInfoPrimary > div {
+  display: inline-block;
+}
+
+.itemPageContainer .overview {
+  width: 50vw;
+  height: 27vh;
+  position: absolute;
+  top: 49vh;
+  left: 33vw;
+  box-sizing: border-box;
+  padding: 30px;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.itemPageContainer .itemPageButtonsContainer {
+  display: block;
+  position: absolute;
+  bottom: 6vh;
+  left: 33vw;
+  width: 67vw;
+}
+
+.itemPageContainer .itemPageButtonsContainer .itemPageButtons,
+.itemPageContainer .itemPageButtonsContainer .itemPageUserDataIcons {
+  display: inline-block;
+  margin: 0;
+}
+
+.itemPageContainer .itemPageButtonsContainer button {
+  display: inline-block;
+  width: 8vw !important;
+  height: 10vh !important;
+  margin: 0.075vw !important;
+  border-radius: 0 !important;
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  text-align: center !important;
+}
+
+.itemPageContainer .mediaInfoIcons {
+  position: absolute;
+  bottom: 0vh;
+  right: 8vw;
+}
+.itemPageContainer .mediaInfoIcons .mediaInfoText {
+  background-color: rgba(0,0,0,0.3);
+}
+
+.itemPageContainer .childrenSection, .extrasSection, .moreFromSection, .similarSection, .scenesSection, .itemNextUpSection, .seriesTimerScheduleSection {
+  display: none;
+}
+
+/* Boxset */
+.itemPageContainer.boxset .mediaInfoPrimary,
+.itemPageContainer.boxset .childrenSection .sectionTitle {
+  display: none;
+}
+
+.itemPageContainer.boxset .childrenSection {
+  display: block;
+  width: 53vw;
+  height: 41vh;
+  padding: 0!important;
+  position: absolute;
+  top: 10vh;
+  left: 30vw;
+  overflow-y: auto;
+  margin-bottom: 0 !important;
+}
+
+.itemPageContainer.boxset .childrenSection .childrenItemsContainer {
+  padding: 2vh 0 2vh 4% !important;
+}
+
+.itemPageContainer.boxset .childrenSection .portraitCard-scalable {
+  display: block;
+  width: 25%;
+  padding: 0 !important;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Series */
+.itemPageContainer.seasons .overview,
+.itemPageContainer.seasons .peopleSection,
+.itemPageContainer.seasons .mediaInfoPrimary,
+.itemPageContainer.seasons .itemPageButtonsContainer {
+  display: none;
+}
+
+.itemPageContainer.seasons .childrenSection {
+  display: block;
+  width: 50vw;
+  height: 82vh;
+  position: absolute;
+  top: 10vh;
+  left: 30vw;
+  overflow-y: auto;
+}
+
+.itemPageContainer.seasons .childrenSection .portraitCard-scalable {
+  display: block;
+  width: 25%;
+  padding: 0 !important;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+
+/* Episodes */
+.itemPageContainer.episodeList .overview,
+.itemPageContainer.episodeList .peopleSection,
+.itemPageContainer.episodeList .mediaInfoPrimary,
+.itemPageContainer.episodeList .itemPageButtonsContainer {
+  display: none;
+}
+
+.itemPageContainer.episodeList .episodes {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 95%;
+  height: 90%;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 10%;
+  left: 0%;
+  overflow-y: auto;
+}
+
+.itemPageContainer.episodeList .episodes::-webkit-scrollbar {
+  display: none;
+}
+
+.itemPageContainer.episodeList .episodes .listItem {
+  display:block;
+  box-sizing: border-box;
+  width: 23%;
+  margin: 1%;
+  padding: 2px;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.itemPageContainer.episodeList .episodes .listItem:focus {
+  background: rgba(0, 0, 0, 0.4) !important;
+  border-radius: 0;
+  border: 2px solid #0f85a5 !important;
+}
+
+.itemPageContainer.episodeList .episodes .listItem .listItemImage {
+  width: 100%;
+  height: 18vh;
+  margin: 0;
+}
+
+.itemPageContainer.episodeList .episodes .listItem .listItemBody {
+  display: block;
+  width: 100%;
+  padding: 0;
+  text-align: center;
+}
+
+.itemPageContainer.episodeList .episodes .listItem .listItemBody .secondary {
+  display: none;
+}
+
+/* Episode */
+.itemPageContainer.episode .peopleSection {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.itemPageContainer.episode .peopleSection::-webkit-scrollbar {
+  display: none;
+}
+
+/* Music */
+.itemPageContainer.music .overview,
+.itemPageContainer.music .peopleSection,
+.itemPageContainer.music .mediaInfoPrimary,
+.itemPageContainer.music .genres,
+.itemPageContainer.music .itemPageButtonsContainer {
+  display: none;
+}
+
+.itemPageContainer.music .detailImage {
+  position: absolute;
+  top: 0vh;
+  left: 3vw;
+  max-height: 78vh;
+  max-width: 29vw;
+}
+
+.itemPageContainer.music .itemPageButtons {
+  position: absolute;
+  top: 60vh;
+  left: 10vw;
+  width: 15vw;
+}
+
+.itemPageContainer.music .itemPageUserDataIcons {
+  position: absolute;
+  top: 78vh;
+  left: 10vw;
+  width: 15vw;
+}
+
+.itemPageContainer.music .childrenSection {
+  display: block;
+  width: 60vw;
+  height: 82vh;
+  position: absolute;
+  top: 10vh;
+  left: 2vw;
+  overflow-y: auto;
+}
+
+.itemPageContainer.music .childrenSection .portraitCard-scalable {
+  display: block;
+  width: 25%;
+  padding: 0 !important;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.itemPageContainer.music .trackList {
+  margin: 4em 0 -4em;
+}
+
+.itemPageContainer.music .trackList .listItem,
+.itemPageContainer.music .trackList .listItem-shaded {
+  background: none;
+}
+
+.itemPageContainer.music .trackList .listItem:focus {
+  background-color: #0f85a5 !important;
+  border-radius: 0;
+}
+
+.itemPageContainer.music .trackList .listItem .listItemBody {
+  padding: 1vh 2vw;
+}
+
+/* List */
+/*.itemPageContainer.list .overview,
+.itemPageContainer.list .peopleSection,
+.itemPageContainer.list .mediaInfoPrimary,
+.itemPageContainer.list .genres,
+.itemPageContainer.list .itemPageButtonsContainer {
+  display: none;
+}
+
+.itemPageContainer.list .detailImage {
+  position: absolute;
+  top: 0vh;
+  left: 3vw;
+  max-height: 78vh;
+  max-width: 29vw;
+}
+
+.itemPageContainer.list .itemPageButtons {
+  position: absolute;
+  top: 60vh;
+  left: 10vw;
+  width: 15vw;
+}
+
+.itemPageContainer.list .itemPageUserDataIcons {
+  position: absolute;
+  top: 78vh;
+  left: 10vw;
+  width: 15vw;
+}
+
+.itemPageContainer.list .childrenSection {
+  display: block;
+  width: 60vw;
+  height: 82vh;
+  position: absolute;
+  top: 10vh;
+  left: 2vw;
+  overflow-y: auto;
+}
+
+.itemPageContainer.list .childrenSection .portraitCard-scalable {
+  display: block;
+  width: 25%;
+  padding: 0 !important;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.4);
+}*/

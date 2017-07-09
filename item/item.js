@@ -1,5 +1,5 @@
-define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'apphost', 'globalize', 'itemShortcuts', 'emby-itemscontainer'],
-    function (itemContextMenu, loading, skinInfo, datetime, scrollHelper, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listView, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom, appHost, globalize, itemShortcuts) {
+define(['itemContextMenu', 'scroller', 'loading', './../skininfo', 'datetime', 'scrollHelper', 'playbackManager', 'connectionManager', 'imageLoader', 'userdataButtons', 'itemHelper', './../components/focushandler', 'backdrop', 'listView', 'mediaInfo', 'inputManager', 'focusManager', './../skinsettings', 'cardBuilder', 'indicators', 'layoutManager', 'browser', 'serverNotifications', 'events', 'dom', 'apphost', 'globalize', 'itemShortcuts', 'emby-itemscontainer'],
+    function (itemContextMenu, scroller, loading, skinInfo, datetime, scrollHelper, playbackManager, connectionManager, imageLoader, userdataButtons, itemHelper, focusHandler, backdrop, listView, mediaInfo, inputManager, focusManager, skinSettings, cardBuilder, indicators, layoutManager, browser, serverNotifications, events, dom, appHost, globalize, itemShortcuts) {
         'use strict';
 
         function focusMainSection() {
@@ -395,7 +395,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 genresElem.innerHTML = genresHtml;
             }
 
-            if (item.IsFolder || item.Type === "MusicArtist") {
+            if (item.IsFolder) {
+                // view.querySelector('.itemPageContainer').classList.add('list');
 
                 view.querySelector('.itemPageFixedLeft .btnPlayText').innerHTML = globalize.translate("PlayAll");
                 view.querySelector('.mainSection .btnPlayText').innerHTML = globalize.translate("PlayAll");
@@ -910,6 +911,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 return;
             }
 
+            view.querySelector('.itemPageContainer').classList.add('episodeList');
+
             var options = {
                 Fields: "Overview"
             };
@@ -996,6 +999,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             if (item.Type === "Series") {
                 headerText.innerHTML = globalize.translate('Seasons');
                 headerText.classList.remove('hide');
+                view.querySelector('.itemPageContainer').classList.add('seasons');
 
             } else if (item.Type === "MusicArtist") {
                 headerText.innerHTML = globalize.translate('Albums');
@@ -1006,11 +1010,13 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
             } else if (item.Type === "BoxSet") {
                 headerText.innerHTML = globalize.translate('Items');
+                view.querySelector('.itemPageContainer').classList.add('boxset');
                 headerText.classList.remove('hide');
 
             } else if (item.Type === "Episode" && item.SeriesId && item.SeasonId) {
                 headerText.innerHTML = globalize.translate('MoreFrom', item.SeasonName);
                 headerText.classList.remove('hide');
+                view.querySelector('.itemPageContainer').classList.add('episode');
 
             } else {
                 section.classList.add('hide');
@@ -1021,7 +1027,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             var userId = apiClient.getCurrentUserId();
             var fields = "ItemCounts,PrimaryImageAspectRatio,BasicSyncInfo,CanDelete";
             var itemsContainer = section.querySelector('.itemsContainer');
-            var scrollX = false;
+            var scrollX = item.Type === 'BoxSet' ? true : false;
 
             var cardOptions = extendVerticalCardOptions({
                 parentContainer: section,
@@ -1038,8 +1044,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 promise = Emby.Models.items({
                     IncludeItemTypes: 'MusicAlbum',
                     Recursive: true,
-                    ArtistIds: item.Id,
-                    SortBy: 'ProductionYear,SortName'
+                    ArtistIds: item.Id
                 });
             }
 
@@ -1050,9 +1055,6 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     UserId: userId,
                     Fields: fields
                 });
-                cardOptions.centerText = true;
-                cardOptions.overlayText = false;
-                cardOptions.showTitle = true;
             }
             else if (item.Type === "Season") {
 
@@ -1119,6 +1121,8 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                         scrollHelper.toStart(itemsContainer, card.previousSibling || card, true);
                     }
                 }
+
+                focusManager.autoFocus(section, true);
             });
         }
 
@@ -1148,6 +1152,53 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                     shape: 'portrait'
                 });
             });
+
+            // People scroller
+            var scrollFrame = document.querySelector('.peopleSection');
+            var slidee = scrollFrame.querySelector('.itemsContainer');
+            var options = {
+              horizontal: 1,
+              itemNav: 0,
+              mouseDragging: 1,
+              touchDragging: 1,
+              slidee: slidee,
+              itemSelector: '.card',
+              smart: true,
+              releaseSwing: true,
+              scrollBy: 200,
+              speed: 300,
+              immediateSpeed: 1,
+              elasticBounds: 1,
+              dragHandle: 1,
+              dynamicHandle: 1,
+              clickBar: 1,
+              scrollWidth: 500000
+            };
+            self.peopleScroller = new scroller(scrollFrame, options);
+            self.peopleScroller.init();
+            initFocusHandler(document, slidee, self.peopleScroller);
+        }
+
+        function initFocusHandler(view, slidee, scroller) {
+
+            //if (pageOptions.handleFocus) {
+
+                var scrollSlider = slidee;
+
+                // var selectedItemInfoElement = view.querySelector('.selectedItemInfo');
+                // var selectedIndexElement = view.querySelector('.selectedIndex');
+
+                self.focusHandler = new focusHandler({
+                    parent: scrollSlider,
+                    // selectedItemInfoElement: selectedItemInfoElement,
+                    // selectedIndexElement: selectedIndexElement,
+                    // animateFocus: pageOptions.animateFocus,
+                    animateFocus: null,
+                    scroller: scroller,
+                    enableBackdrops: true,
+                    zoomScale: 1.1
+                });
+            //}
         }
 
         function renderExtras(view, item, apiClient) {
@@ -1221,8 +1272,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 IncludeItemTypes: "MusicAlbum",
                 ArtistIds: item.AlbumArtists[0].Id,
                 Recursive: true,
-                ExcludeItemIds: item.Id,
-                SortBy: 'ProductionYear,SortName'
+                ExcludeItemIds: item.Id
 
             }).then(function (result) {
 
@@ -1292,7 +1342,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
             }
 
             //return text;
-            var html = '<button style="margin:0;padding:0;text-transform:none;font-weight:normal;" ' + itemShortcuts.getShortcutAttributesHtml(item) + ' type="button" is="emby-button" class="itemAction button-flat" data-action="link">';
+            var html = '<button style="margin:0;padding:0;text-transform:none;font-weight:300;" ' + itemShortcuts.getShortcutAttributesHtml(item) + ' type="button" is="emby-button" class="itemAction button-flat" data-action="link">';
             html += getHeadingText(text);
             html += '</button>';
 
@@ -1542,13 +1592,14 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                         renderExtras(view, item, apiClient);
                         renderSimilar(view, item, apiClient);
                         renderMoreFrom(view, item, apiClient);
-                        createVerticalScroller(view, self);
+                        // createVerticalScroller(view, self);
                         renderSyncLocalContainer(user, item);
 
                         var mainSection = view.querySelector('.mainSection');
                         var itemScrollFrame = view.querySelector('.itemScrollFrame');
 
                         if (enableTrackList(item) || item.Type === 'MusicArtist') {
+                            view.querySelector('.itemPageContainer').classList.add('music');
                             mainSection.classList.remove('focusable');
                             itemScrollFrame.classList.add('clippedLeft');
                             view.querySelector('.itemPageFixedLeft').classList.remove('hide');
@@ -1706,7 +1757,7 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
 
                 var button = this;
 
-                connectionManager.getApiClient(currentItem.ServerId).getCurrentUser().then(function (user) {
+                connectionManager.getApiClient(currentItem.ServerId).getCurrentUser().then(function(user) {
                     itemContextMenu.show(getContextMenuOptions(currentItem, user, button)).then(function (result) {
 
                         if (result.deleted) {
