@@ -1,30 +1,87 @@
-<div class="pageContainer fullWidth vertical flex flex-direction-column" style="padding-top:0;">
+<!-- <div class="pageContainer flex horizontalPageContent listPageContent flex-direction-column">
 
-    <div class="flex align-items-center justify-content-center" style="position: fixed; left: 1em; bottom: 1%; z-index: 1;">
-        <div class="alphaPicker alphaPicker-vertical flex-grow"></div>
+    <div class="listPageButtons hide">
+        <button is="emby-button" class="btnPlay raised">
+            <i class="md-icon">&#xE037;</i>
+            <span>${PlayAll}</span>
+        </button>
+        <button is="emby-button" class="btnQueue raised">
+            <i class="md-icon">&#xE03C;</i>
+            <span>${Queue}</span>
+        </button>
+        <button is="emby-button" class="btnShuffle raised">
+            <i class="md-icon">&#xE043;</i>
+            <span>${Shuffle}</span>
+        </button>
+        <button is="emby-button" class="btnInstantMix raised ">
+            <i class="md-icon">&#xE043;</i>
+            <span>${InstantMix}</span>
+        </button>
     </div>
-
-    <div is="emby-scroller" data-horizontal="false" data-centerfocus="true" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down pageContainerTopPadding" data-bindheader="true">
-
-        <div class="scrollSlider flex-grow padded-left-withalphapicker padded-right padded-top" style="padding-top:2em;">
-
-            <div class="listPageButtons hide padded-bottom">
-                <button is="emby-button" class="btnPlay raised">
-                    <span>${PlayAll}</span>
-                </button>
-                <button is="emby-button" class="btnQueue raised">
-                    <span>${Queue}</span>
-                </button>
-                <button is="emby-button" class="btnShuffle raised">
-                    <span>${Shuffle}</span>
-                </button>
-                <button is="emby-button" class="btnInstantMix raised ">
-                    <span>${InstantMix}</span>
-                </button>
-            </div>
-
-            <div is="emby-itemscontainer" class="vertical-wrap itemsContainer" style="padding: 0 0 10vh 0;" data-alphanumericshortcuts="true">
-            </div>
+    <div class="scrollFrame scrollFrameX itemScrollFrame" style="white-space: nowrap;">
+        <div is="emby-itemscontainer" class="scrollSlider focuscontainer-x" style="text-align: center;">
         </div>
     </div>
+    <div class="alphaPicker"></div>
+    <div class="selectedItemInfo">
+    </div>
+    <div class="listNumbers hide">
+        <span class="selectedIndex"></span>
+        <span class="listNumbersDivider">|</span>
+        <span class="listCount"></span>
+    </div>
+</div> -->
+
+<div class="libraryContainer list">
+  <div class="panel-left">
+    <div class="userViewNames" style="display: none;"></div>
+
+    <div class="selectedItemInfo"></div>
+
+    <div class="itemInfo">
+      <div class="overview"></div>
+    </div>
+
+    <div class="listPageButtons hide">
+        <button is="emby-button" class="btnPlay raised">
+            <i class="md-icon">&#xE037;</i>
+            <span>${PlayAll}</span>
+        </button>
+        <button is="emby-button" class="btnQueue raised">
+            <i class="md-icon">&#xE03C;</i>
+            <span>${Queue}</span>
+        </button>
+        <button is="emby-button" class="btnShuffle raised">
+            <i class="md-icon">&#xE043;</i>
+            <span>${Shuffle}</span>
+        </button>
+        <button is="emby-button" class="btnInstantMix raised ">
+            <i class="md-icon">&#xE043;</i>
+            <span>${InstantMix}</span>
+        </button>
+    </div>
+
+    <div class="listNumbers hide">
+      <span class="selectedIndex"></span>
+      <span class="listNumbersDivider">|</span>
+      <span class="listCount"></span>
+    </div>
+  </div>
+
+  <div class="panel-right">
+    <div class="scrollFrame scrollFrameY itemScrollFrame">
+      <div class="viewContentArea">
+
+      </div>
+    </div>
+
+    <!-- <div class="pageContainer flex horizontalPageContent">
+      <div class="alphaPicker"></div>
+
+      <div class="scrollFrame scrollFrameY itemScrollFrame topPadded" style="white-space: nowrap;">
+          <div is="emby-itemscontainer" class="scrollSlider contentScrollSlider">
+          </div>
+      </div>
+    </div> -->
+  </div>
 </div>

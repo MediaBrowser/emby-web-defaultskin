@@ -1,21 +1,72 @@
-define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManager', 'alphaPicker', './../components/itemslist', 'emby-itemscontainer', 'emby-scroller'], function (globalize, loading, connectionManager, scroller, playbackManager, alphaPicker, itemsList) {
+define(['loading', 'scroller', 'playbackManager', 'alphaPicker', './../components/verticallist', 'focusManager', 'pluginManager', 'connectionManager', 'imageLoader', './../skininfo', 'emby-itemscontainer'], function (loading, scroller, playbackManager, alphaPicker, horizontalList, focusManager, pluginManager, connectionManager, imageLoader, skinInfo) {
     'use strict';
 
-    function getItems(params, item, startIndex, limit) {
+    var apiClient = connectionManager.currentApiClient();
+    var viewParent = null;
 
-        var apiClient = connectionManager.getApiClient(params.serverId);
+    function parentWithClass(elem, className) {
 
-        if (params.type === 'nextup') {
+        while (!elem.classList || !elem.classList.contains(className)) {
+            elem = elem.parentNode;
 
-            return apiClient.getNextUpEpisodes({
-                Limit: limit,
-                Fields: "PrimaryImageAspectRatio,SeriesInfo,DateCreated,BasicSyncInfo",
-                UserId: apiClient.getCurrentUserId(),
-                ImageTypeLimit: 1,
-                EnableImageTypes: "Primary,Backdrop,Thumb",
-                EnableTotalRecordCount: false
-            });
+            if (!elem) {
+                return null;
+            }
         }
+
+        return elem;
+    }
+
+    function createHorizontalScroller(instance, view, item, loading) {
+
+        var scrollFrame = view.querySelector('.scrollFrame');
+
+        scrollFrame.style.display = 'block';
+
+        var options = {
+            horizontal: 0,
+            itemNav: 0,
+            mouseDragging: 1,
+            touchDragging: 1,
+            slidee: view.querySelector('.viewContentArea'),
+            itemSelector: '.card',
+            smart: true,
+            releaseSwing: true,
+            scrollBar: view.querySelector('.scrollbar'),
+            scrollBy: 200,
+            speed: 270,
+            elasticBounds: 1,
+            dragHandle: 1,
+            dynamicHandle: 1,
+            clickBar: 1,
+            //centerOffset: window.innerWidth * .05,
+            scrollWidth: 500000
+        };
+
+        instance.scroller = new scroller(scrollFrame, options);
+        instance.scroller.init();
+        loadChildren(instance, view, item, loading);
+
+        viewParent = view;
+        view.addEventListener('focus', libraryItemFocus, true);
+
+        view.addEventListener('click', function (e) {
+          var elem = parentWithClass(e.target, 'itemAction');
+          if (elem) {
+            var viewId = elem.getAttribute('data-id');
+            var viewType = elem.getAttribute('data-type');
+
+            if(viewType == 'Folder' || viewType == 'UserView') {
+              Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'list/list.html?parentid=' + viewId + '&serverId=' + apiClient.serverId()));
+            }
+            else {
+              Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'item/item.html?id=' + viewId + '&serverId=' + apiClient.serverId()));
+            }
+          }
+        });
+    }
+
+    function getItems(params, item, startIndex, limit) {
 
         if (params.type === 'collections') {
 
@@ -24,7 +75,6 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
                 EnableImageTypes: "Primary,Backdrop,Thumb",
                 StartIndex: startIndex,
                 Limit: limit,
-                Fields: 'PrimaryImageAspectRatio,SortName',
                 SortBy: 'SortName'
             });
         }
@@ -36,7 +86,6 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
                 EnableImageTypes: "Primary,Backdrop,Thumb",
                 StartIndex: startIndex,
                 Limit: limit,
-                Fields: 'PrimaryImageAspectRatio,SortName',
                 SortBy: 'SortName',
                 IncludeItemTypes: 'Movie',
                 Recursive: true,
@@ -44,93 +93,329 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
             });
         }
 
-        if (item.Type === 'Genre' || item.Type === 'GameGenre' || item.Type === 'MusicGenre' || item.Type === 'Studio') {
+        if (params.genreId) {
 
-            var query = {
+            return Emby.Models.items({
                 StartIndex: startIndex,
                 Limit: limit,
-                Fields: 'PrimaryImageAspectRatio,SortName',
                 SortBy: 'SortName',
                 Recursive: true,
-                parentId: params.parentId
-            };
+                GenreIds: params.genreId,
+                ParentId: item.Id,
+                IncludeItemTypes: item.CollectionType === 'tvshows' ? 'Series' : (item.CollectionType === 'movies' ? 'Movie' : 'MusicAlbum')
+            });
 
-            if (item.Type === 'Studio') {
-                query.StudioIds = item.Id;
-            } else {
-                query.GenreIds = item.Id;
-            }
-
-            if (item.Type === 'MusicGenre') {
-                query.IncludeItemTypes = 'MusicAlbum';
-            }
-            else if (item.Type === 'GameGenre') {
-                query.IncludeItemTypes = 'Game';
-            }
-            else if (item.CollectionType === 'movies') {
-                query.IncludeItemTypes = 'Movie';
-            }
-            else if (item.CollectionType === 'tvshows') {
-                query.IncludeItemTypes = 'Series';
-            }
-            else if (item.Type === 'Genre') {
-                query.IncludeItemTypes = 'Movie,Series';
-            }
-
-            return Emby.Models.items(query);
         }
-
         return Emby.Models.children(item, {
             StartIndex: startIndex,
             Limit: limit,
-            Fields: 'PrimaryImageAspectRatio,SortName'
+            Fields: 'SortName'
         });
     }
 
-    function loadChildren(instance, view, params, item, loading) {
+    function loadChildren(instance, view, item, loading) {
 
-        var posterOptions = {
-            shape: "autoVertical",
-            showTitle: item && item.Type !== 'PhotoAlbum',
-            showYear: item && item.Type !== 'PhotoAlbum',
-            centerText: true,
-            coverImage: true
-        };
-
-        if (params.type === 'nextup') {
-
-            posterOptions = Object.assign(posterOptions, {
-                preferThumb: true,
-                shape: "backdrop",
-                scalable: true,
-                showTitle: true,
-                showParentTitle: true,
-                overlayText: false,
-                overlayPlayButton: true
-            });
+        if(instance.params.type === 'collections') {
+          view.querySelector('.libraryContainer.list').classList.add('collections');
         }
 
-        instance.listController = new itemsList({
+        instance.listController = new horizontalList({
 
-            itemsContainer: view.querySelector('.itemsContainer'),
+            itemsContainer: view.querySelector('.viewContentArea'),
             getItemsMethod: function (startIndex, limit) {
 
                 return getItems(instance.params, item, startIndex, limit);
             },
-            cardOptions: posterOptions
+            listCountElement: view.querySelector('.listCount'),
+            listNumbersElement: view.querySelector('.listNumbers'),
+            selectedItemInfoElement: view.querySelector('.selectedItemInfo'),
+            selectedIndexElement: view.querySelector('.selectedIndex'),
+            scroller: instance.scroller,
+            cardOptions: {
+                coverImage: true,
+                rows: {
+                    portrait: 1,
+                    square: 1,
+                    backdrop: 1
+                },
+                scalable: false
+            }
         });
 
         instance.listController.render();
     }
 
-    function getItem(params) {
-
-        if (params.type === 'nextup' || params.type === 'collections') {
-            return Promise.resolve(null);
+    function libraryItemFocus(e) {
+        var oldSelectedItem = document.querySelector('.selectedItemId')
+        var oldSelectedItemId = '';
+        if(oldSelectedItem) {
+            oldSelectedItemId = oldSelectedItem.getAttribute('data-selected-id');
         }
 
-        var apiClient = connectionManager.getApiClient(params.serverId);
-        return apiClient.getItem(apiClient.getCurrentUserId(), (params.genreId || params.gameGenreId || params.musicGenreId || params.studioId || params.parentId));
+        // Build Item Info Pane
+        var itemInfoElement = viewParent.querySelector('.itemInfo');
+        var selectedIndexElement = viewParent.querySelector('.selectedIndex');
+        var focused = focusManager.focusableParent(e.target);
+
+        var itemId = focused.getAttribute('data-id');
+
+        if(itemId === oldSelectedItemId) return;
+
+        Emby.Models.item(itemId).then(function (item) {
+            console.log('itemResult', item);
+
+            var imageUrlPrimary = apiClient.getImageUrl(item.Id, {
+                type: "Primary",
+                maxHeight: 400,
+                maxWidth: 300,
+                tag: item.ImageTags.Primary
+            });
+
+            var imageUrlBackdrop = apiClient.getImageUrl(item.Id, {
+                type: "Backdrop",
+                maxHeight: 1920,
+                maxWidth: 1080,
+                tag: item.BackDropImageTags
+            });
+
+            var html = '';
+            html += '<div class="selectedItemId hide" data-selected-id="' + itemId + '"></div>'
+            html += '<div class="primary lazy" data-src="' + imageUrlPrimary + '"></div>';
+            html += '<div class="backdrop lazy" data-src="' + imageUrlBackdrop + '"></div>';
+
+            html += '<div class="textInfo">';
+            html += '<h1 class="name">' + item.Name + '</h1>';
+
+            if(item.ProductionYear){
+                html += '<h1 class="year">' + item.ProductionYear + '</h1>';
+            }
+            if(item.Genres.length > 0){
+                html += '<h2 class="genres">' + item.Genres.join(' / ') + '</h2>';
+            }
+
+            if(item.Overview){
+                html += '<p class="overview">' + item.Overview + '</p>';
+            }
+            html += '</div>';
+            if(item.CommunityRating) {
+                html += '<div class="communityRating"><span class="rating">' + item.CommunityRating + '</span><span divider>/</span>10</div>';
+            }
+
+            if(item.RunTimeTicks)
+            {
+                var runTime = Math.ceil((item.RunTimeTicks / 10000) / 60000);
+                html += '<div class="runTime">' + runTime + ' minutes</div>';
+            }
+
+            // var videoStream = (item.MediaStreams || []).filter(function (i) {
+            //     return i.Type == 'Video';
+            // })[0] || {};
+            // var audioStream = (item.MediaStreams || []).filter(function (i) {
+            //     return i.Type == 'Audio';
+            // })[0] || {};
+            //
+            // console.log('videoStream', videoStream);
+            // console.log('audioStream', audioStream);
+            //
+            // if(videoStream) {
+            //     html += '';
+            // }
+
+            if(item.MediaSources && item.MediaSources.length > 0) {
+              html += '<div class="mediaInfoPrimary">';
+              var mediaSource = item.MediaSources[0];
+
+              var videoStream = (mediaSource.MediaStreams || []).filter(function (i) {
+                  return i.Type == 'Video';
+              })[0] || {};
+              var audioStream = (mediaSource.MediaStreams || []).filter(function (i) {
+                  return i.Type == 'Audio';
+              })[0] || {};
+
+              var resolutionText = getResolutionText(item);
+              if (resolutionText) {
+                  html += '<div class="mediaInfoIcon mediaInfoText">' + resolutionText + '</div>';
+              }
+
+              var channels = getChannels(item);
+              var channelText;
+
+              if (channels == 8) {
+
+                  channelText = '7.1';
+
+              } else if (channels == 7) {
+
+                  channelText = '6.1';
+
+              } else if (channels == 6) {
+
+                  channelText = '5.1';
+
+              } else if (channels == 2) {
+
+                  channelText = '2.0';
+              }
+
+              if (channelText) {
+                  html += '<div class="mediaInfoIcon mediaInfoText">' + channelText + '</div>';
+              }
+
+              html += '</div>';
+
+              html += '<div class="mediaInfo">';
+
+              if (mediaSource.Container) {
+                  html += '<div class="mediaInfoIcon mediaInfoText">' + mediaSource.Container + '</div>';
+              }
+
+              if (videoStream.Codec) {
+                  html += '<div class="mediaInfoIcon mediaInfoText">' + videoStream.Codec + '</div>';
+              }
+
+              if (audioStream.Codec == 'dca' && audioStream.Profile) {
+                  html += '<div class="mediaInfoIcon mediaInfoText">' + audioStream.Profile + '</div>';
+              } else if (audioStream.Codec) {
+                  html += '<div class="mediaInfoIcon mediaInfoText">' + audioStream.Codec + '</div>';
+              }
+
+              if (videoStream.AspectRatio) {
+                  html += '<div class="mediaInfoIcon mediaInfoText">' + videoStream.AspectRatio + '</div>';
+              }
+
+              html += '</div>';
+            }
+
+            itemInfoElement.innerHTML = html;
+
+            imageLoader.lazyChildren(itemInfoElement);
+
+
+            var index = focused.getAttribute('data-index');
+            if (index) {
+                selectedIndexElement.innerHTML = 1 + parseInt(index);
+            }
+
+            var overviewElement = itemInfoElement.querySelector('.overview');
+
+            if(overviewElement) {
+              var overviewHeight = overviewElement.scrollHeight;
+              console.log('overviewElement.clientHeight', overviewElement.clientHeight);
+              console.log('overviewElement.scrollHeight', overviewElement.scrollHeight);
+
+              var scrollTime = 5000;
+
+              //initOverviewScroll(overviewElement, overviewHeight, scrollTime);
+
+              setTimeout(function () {
+                scrollOverview(overviewElement);
+              }, 3000);
+            }
+
+
+
+            // // Selected Menu
+            // var selectedMenu = document.querySelector('.selectedMenu');
+            //
+            // var html = '';
+            // if(item.UserData.PlaybackPositionTicks > 0)
+            // {
+            //     // Convert ticks to hours and minutes
+            //     var positionTime = Math.ceil((item.UserData.PlaybackPositionTicks / 10000) / 60000);
+            //
+            //     html += '<button class="playbackResume" data-item-id="' + itemId + '">Resume from ' + positionTime + ' minutes</button>';
+            // }
+            //
+            // html += '<button class="playbackPlay" data-item-id="' + itemId + '">Play</button>';
+            //
+            // html += '<button class="moreInfo" data-item-id="' + itemId + '">More info</button>';
+            //
+            // if(item.LocalTrailerCount > 0)
+            // {
+            //     html += '<button class="playbackTrailer" data-item-id="' + itemId + '">Trailer</button>';
+            // }
+            //
+            // html += '<button>Mark as watched</button>';
+            //
+            // selectedMenu.innerHTML = html;
+            //
+            // bindSelectedMenuEvents(selectedMenu);
+        });
+    }
+
+    function scrollOverview(overviewElement)
+    {
+        var currentPosition = overviewElement.scrollTop;
+        var elementScrollHeight = overviewElement.scrollHeight;
+        var elementClientHeight = overviewElement.clientHeight;
+
+        if(currentPosition >= (elementScrollHeight - elementClientHeight) - 1) {
+            setTimeout(function() {
+                overviewElement.scrollTop = 0;
+                setTimeout(function () {
+                    scrollOverview(overviewElement);
+                }, 3000);
+            }, 4000);
+            return;
+        }
+
+        overviewElement.scrollTop += 1;
+
+        setTimeout(function() {
+            scrollOverview(overviewElement);
+        }, 75);
+    }
+
+    function getResolutionText(item) {
+
+        if (!item.MediaSources || !item.MediaSources.length) {
+            return null;
+        }
+
+        return item.MediaSources[0].MediaStreams.filter(function (i) {
+
+            return i.Type == 'Video';
+
+        }).map(function (i) {
+
+            if (i.Height) {
+
+                if (i.Width >= 4000) {
+                    return '4K';
+                }
+                if (i.Width >= 2500) {
+                    return '1440P';
+                }
+                if (i.Width >= 1900) {
+                    return '1080P';
+                }
+                if (i.Width >= 1260) {
+                    return '720P';
+                }
+                if (i.Width >= 700) {
+                    return '480P';
+                }
+
+            }
+            return null;
+        })[0];
+
+    }
+
+    function getChannels(item) {
+
+        if (!item.MediaSources || !item.MediaSources.length) {
+            return 0;
+        }
+
+        return item.MediaSources[0].MediaStreams.filter(function (i) {
+
+            return i.Type == 'Audio';
+
+        }).map(function (i) {
+            return i.Channels;
+        })[0];
+
     }
 
     return function (view, params) {
@@ -139,7 +424,7 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
         self.params = params;
         var currentItem;
 
-        var contentScrollSlider = view.querySelector('.scrollSlider');
+        var contentScrollSlider = view.querySelector('.viewContentArea');
 
         view.addEventListener('viewshow', function (e) {
 
@@ -149,31 +434,45 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
                 loading.show();
             }
 
-            getItem(params).then(function (item) {
+            Emby.Models.item(params.parentid).then(function (item) {
 
-                setTitle(item);
+                if (!params.genreId) {
+                    setTitle(item);
+                }
                 currentItem = item;
 
                 if (!isRestored) {
-                    loadChildren(self, view, params, item, loading);
+                    createHorizontalScroller(self, view, item, loading);
 
-                    if (item && item.Type !== 'PhotoAlbum') {
+                    if (item.Type !== 'PhotoAlbum') {
                         initAlphaPicker();
                     }
                 }
 
-                if (item && item.Type === 'MusicGenre') {
-                    view.querySelector('.listPageButtons').classList.remove('hide');
-                } else {
+                if (!params.genreId) {
                     view.querySelector('.listPageButtons').classList.add('hide');
                 }
-
-                if (item && playbackManager.canQueue(item)) {
-                    view.querySelector('.btnQueue').classList.remove('hide');
-                } else {
-                    view.querySelector('.btnQueue').classList.add('hide');
-                }
             });
+
+            if (params.genreId) {
+                Emby.Models.item(params.genreId).then(function (item) {
+
+                    currentItem = item;
+                    Emby.Page.setTitle(item.Name);
+
+                    if (item.Type === 'MusicGenre') {
+                        view.querySelector('.listPageButtons').classList.remove('hide');
+                    } else {
+                        view.querySelector('.listPageButtons').classList.add('hide');
+                    }
+
+                    if (playbackManager.canQueue(item)) {
+                        view.querySelector('.btnQueue').classList.remove('hide');
+                    } else {
+                        view.querySelector('.btnQueue').classList.add('hide');
+                    }
+                });
+            }
 
             if (!isRestored) {
                 view.querySelector('.btnPlay').addEventListener('click', play);
@@ -185,16 +484,13 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
         });
 
         function initAlphaPicker() {
-
-            self.scroller = view.querySelector('.scrollFrameY');
-
-            self.alphaPicker = new alphaPicker({
-                element: view.querySelector('.alphaPicker'),
-                itemsContainer: view.querySelector('.scrollSlider'),
-                itemClass: 'card'
-            });
-
-            self.alphaPicker.on('alphavaluechanged', onAlphaPickerValueChanged);
+            // self.alphaPicker = new alphaPicker({
+            //     element: view.querySelector('.alphaPicker'),
+            //     itemsContainer: view.querySelector('.scrollSlider'),
+            //     itemClass: 'card'
+            // });
+            //
+            // self.alphaPicker.on('alphavaluechanged', onAlphaPickerValueChanged);
         }
 
         function onAlphaPickerValueChanged() {
@@ -214,7 +510,7 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
                 card = contentScrollSlider.querySelector('.card');
 
                 if (card) {
-                    self.scroller.toStart(card, false);
+                    self.scroller.toCenter(card, false);
                     return;
                 }
             }
@@ -222,7 +518,7 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
             card = contentScrollSlider.querySelector('.card[data-prefix^=\'' + value + '\']');
 
             if (card) {
-                self.scroller.toStart(card, false);
+                self.scroller.toCenter(card, false);
                 return;
             }
 
@@ -237,7 +533,7 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
                 card = all.length ? all[all.length - 1] : null;
 
                 if (card) {
-                    self.scroller.toStart(card, false);
+                    self.scroller.toCenter(card, false);
                 }
             }
         }
@@ -245,11 +541,9 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
         function setTitle(item) {
 
             if (params.type === 'collections') {
-                Emby.Page.setTitle(globalize.translate('Collections'));
-            } else if (params.type === 'nextup') {
-                Emby.Page.setTitle(globalize.translate('NextUp'));
+                Emby.Page.setTitle(Globalize.translate('Collections'));
             } else if (params.type === 'favoritemovies') {
-                Emby.Page.setTitle(globalize.translate('FavoriteMovies'));
+                Emby.Page.setTitle(Globalize.translate('FavoriteMovies'));
             } else {
                 Emby.Page.setTitle(item.Name);
             }
@@ -270,15 +564,18 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
         }
 
         function instantMix() {
-            playbackManager.instantMix(currentItem);
+            playbackManager.instantMix(currentItem.Id);
         }
 
         function shuffle() {
-            playbackManager.shuffle(currentItem);
+            playbackManager.shuffle(currentItem.Id);
         }
 
         view.addEventListener('viewdestroy', function () {
 
+            if (self.scroller) {
+                self.scroller.destroy();
+            }
             if (self.listController) {
                 self.listController.destroy();
             }
@@ -286,7 +583,6 @@ define(['globalize', 'loading', 'connectionManager', 'scroller', 'playbackManage
                 self.alphaPicker.off('alphavaluechanged', onAlphaPickerValueChanged);
                 self.alphaPicker.destroy();
             }
-            self.scroller = null;
         });
     };
 
