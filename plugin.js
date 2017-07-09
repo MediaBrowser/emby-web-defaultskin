@@ -17,9 +17,9 @@ define(['playbackManager', 'pluginManager', 'browser', 'connectionManager', 'eve
 
         var self = this;
 
-        self.name = 'Flextuary Skin';
+        self.name = 'Smoothie Skin';
         self.type = 'skin';
-        self.id = 'flextuaryskin';
+        self.id = 'smoothieskin';
 
         var dependencyPrefix = self.id;
         var settingsObjectName = dependencyPrefix + '/skinsettings';
