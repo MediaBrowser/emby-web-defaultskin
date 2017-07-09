@@ -130,7 +130,8 @@ define(['loading', 'scroller', './focushandler', 'focusManager', 'scrollHelper',
 
             page.querySelector('.userViewNames').innerHTML = tabs.map(function (i) {
 
-                return '<' + tagName + ' is="emby-button" class="flat btnUserViewHeader button-flat violet" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h3 class="userViewButtonText"><i class="md-icon">' + icons[i.CollectionType || 'default'] + '</i>' + i.Name + '</h3></' + tagName + '>';
+                               return '<' + tagName + ' is="emby-button" class="flat btnUserViewHeader button-flat violet" data-id="' + i.Id + '" data-type="' + (i.CollectionType || '') + '"><h3 class="userViewButtonText"><i class="md-icon">' + icons[i.CollectionType || 'default'] + '</i>' + i.Name + '</h3></' + tagName + '>';
+
 
             }).join('');
 
