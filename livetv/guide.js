@@ -1,4 +1,4 @@
-define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo'], function (globalize, tvguide, events, datetime, imageLoader, backdrop, mediaInfo) {
+define(['tvguide', 'events', 'datetime', 'imageLoader', 'backdrop', 'mediaInfo'], function (tvguide, events, datetime, imageLoader, backdrop, mediaInfo) {
     'use strict';
 
     return function (view, params) {
@@ -13,7 +13,7 @@ define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop',
 
         view.addEventListener('viewshow', function (e) {
 
-            Emby.Page.setTitle(globalize.translate('Guide'));
+            Emby.Page.setTitle(Globalize.translate('Guide'));
             backdrop.clear();
 
             if (e.detail.isRestored) {
@@ -57,7 +57,7 @@ define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop',
             Emby.Models.item(currentItemId).then(function (item) {
 
                 setSelectedInfo(item);
-                //backdrop.setBackdrop(item);
+                backdrop.setBackdrop(item);
             });
         }
 
@@ -77,7 +77,7 @@ define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop',
 
             var html = '';
 
-            html += '<div class="guideSelectedItemPrimaryInfo">';
+            html += '<div style="display:flex;align-items:center;">';
             html += '<h2>' + item.Name + '</h2>';
 
             if (item.IsHD) {
@@ -94,7 +94,7 @@ define(['globalize', 'tvguide', 'events', 'datetime', 'imageLoader', 'backdrop',
 
             var secondaryMediaInfoHtml = mediaInfo.getPrimaryMediaInfoHtml(item);
             if (secondaryMediaInfoHtml) {
-                html += '<div class="dim guideSelectedItemMediaInfo">';
+                html += '<div class="dim" style="margin-top:.15em;display:flex;align-items:center;">';
                 html += secondaryMediaInfoHtml;
                 html += '</div>';
             }

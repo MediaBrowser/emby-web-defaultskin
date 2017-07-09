@@ -1,159 +1,54 @@
-<div class="pageContainer fullWidth vertical flex flex-direction-column" style="padding-top:0;">
+<!-- <div class="pageContainer flex horizontalPageContent flex-direction-column">
 
-    <div is="emby-scroller" data-horizontal="false" data-centerfocus="true" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down pageContainerTopPadding" data-bindheader="true">
-
-        <div class="scrollSlider flex-grow tabs-container">
-
-            <div is="emby-tabs" class="viewTabs" data-index="-1">
-                <div class="emby-tabs-slider" style="text-align:center;">
-                    <button is="emby-button" class="emby-tab-button" data-index="0">
-                        <div class="emby-button-foreground">${Programs}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button hide" data-index="1">
-                        <div class="emby-button-foreground">${Guide}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="2">
-                        <div class="emby-button-foreground">${Channels}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="3">
-                        <div class="emby-button-foreground">${Recordings}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="4">
-                        <div class="emby-button-foreground">${Schedule}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="5">
-                        <div class="emby-button-foreground">${Series}</div>
-                    </button>
-                </div>
-            </div>
-
-            <div class="tabContent padded-top focuscontainer-x" id="suggestionsTab" data-index="0">
-                <div class="activeRecordings verticalSection hide autoScrollSection">
-                    <h2 class="sectionTitle sectionTitle-cards padded-left">${HeaderActiveRecordings}</h2>
-                </div>
-                <div class="activePrograms hide verticalSection withMoreButton autoScrollSection">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${HeaderOnNow}</h2>
-                        <button data-href="livetvitems.html?type=Programs&IsAiring=true" type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="upcomingEpisodes hide verticalSection withMoreButton autoScrollSection">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${Shows}</h2>
-                        <button data-href="livetvitems.html?type=Programs&IsSeries=true&IsMovie=false&IsNews=false" type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="upcomingTvMovies hide verticalSection withMoreButton autoScrollSection">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${Movies}</h2>
-                        <button data-href="livetvitems.html?type=Programs&IsMovie=true" type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="upcomingSports hide verticalSection withMoreButton autoScrollSection">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${Sports}</h2>
-                        <button data-href="livetvitems.html?type=Programs&IsSports=true" type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="upcomingKids hide verticalSection withMoreButton autoScrollSection">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${HeaderForKids}</h2>
-                        <button data-href="livetvitems.html?type=Programs&IsKids=true" type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="upcomingNews hide verticalSection withMoreButton autoScrollSection">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${News}</h2>
-                        <button data-href="livetvitems.html?type=Programs&IsNews=true" type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="tabContent" id="guideTab" data-index="1" style="width:auto;padding-top:0; padding-bottom: 0;">
-            </div>
-            <div class="tabContent padded-left padded-right padded-top focuscontainer-x" data-index="2">
-                <div class="hide" style="text-align: center; display: flex; flex-wrap: wrap; align-items: center; justify-content: center;padding:0 .5em 1em;">
-                    <div class="paging"></div>
-                    <button is="paper-icon-button-light" class="btnFilter autoSize" title="${ButtonFilter}"><i class="md-icon">filter_list</i></button>
-                </div>
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap centered"></div>
-            </div>
-            <div class="tabContent padded-top focuscontainer-x" data-index="3">
-                <div class="activeRecordings verticalSection autoScrollSection hide">
-                    <h2 class="sectionTitle sectionTitle-cards padded-left">${HeaderActiveRecordings}</h2>
-                </div>
-                <div class="latestRecordings verticalSection withMoreButton autoScrollSection hide">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${LatestRecordings}</h2>
-                        <button type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore hide" data-type="latest">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="movieRecordings verticalSection withMoreButton autoScrollSection hide">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${Movies}</h2>
-                        <button type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore hide" data-type="movies">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="episodeRecordings verticalSection withMoreButton autoScrollSection hide">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${Shows}</h2>
-                        <button type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore hide" data-type="episodes">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="sportsRecordings verticalSection withMoreButton autoScrollSection hide">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${Sports}</h2>
-                        <button type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore hide" data-type="sports">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="kidsRecordings verticalSection withMoreButton autoScrollSection hide">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${HeaderForKids}</h2>
-                        <button type="button" is="emby-button" class="raised raised-mini sectionTitleButton btnMore hide" data-type="kids">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                </div>
-                <div class="recordingGroups hide verticalSection">
-                    <div class="sectionTitleContainer">
-                        <h2 class="sectionTitle sectionTitle-cards padded-left">${HeaderRecordingGroups}</h2>
-                        <button type="button" is="emby-button" class="raised raised-mini sectionTitleButton">
-                            <span>${More}</span>
-                        </button>
-                    </div>
-                    <div id="recordingGroupItems"></div>
-                </div>
-            </div>
-            <div class="tabContent padded-top focuscontainer-x" id="scheduleTab" data-index="4">
-                <div class="activeRecordings verticalSection autoScrollSection hide">
-                    <h2 class="sectionTitle sectionTitle-cards padded-left">${HeaderActiveRecordings}</h2>
-                </div>
-                <div class="upcomingRecordings">
-                </div>
-            </div>
-            <div class="tabContent padded-left padded-right padded-top focuscontainer-x" data-index="5">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap centered"></div>
-            </div>
-        </div>
+    <div class="userViewNames">
     </div>
 
+    <div class="scrollFrame scrollFrameX itemScrollFrame topPadded" style="white-space: nowrap;">
+        <div is="emby-itemscontainer" class="scrollSlider contentScrollSlider">
+        </div>
+    </div>
+    <div class="selectedItemInfo">
+    </div>
+    <div class="listNumbers hide">
+        <span class="selectedIndex"></span>
+        <span class="listNumbersDivider">|</span>
+        <span class="listCount"></span>
+    </div>
+
+</div> -->
+
+
+<div class="libraryContainer livetv">
+  <div class="panel-left">
+    <div class="userViewNames" style="display: none;"></div>
+
+    <div class="selectedItemInfo"></div>
+
+    <div class="itemInfo">
+      <div class="overview"></div>
+    </div>
+
+    <div class="listNumbers hide">
+      <span class="selectedIndex"></span>
+      <span class="listNumbersDivider">|</span>
+      <span class="listCount"></span>
+    </div>
+  </div>
+
+  <div class="panel-right">
+    <div class="scrollFrame scrollFrameY itemScrollFrame">
+      <div class="viewContentArea">
+
+      </div>
+    </div>
+
+    <!-- <div class="pageContainer flex horizontalPageContent">
+      <div class="alphaPicker"></div>
+
+      <div class="scrollFrame scrollFrameY itemScrollFrame topPadded" style="white-space: nowrap;">
+          <div is="emby-itemscontainer" class="scrollSlider contentScrollSlider">
+          </div>
+      </div>
+    </div> -->
+  </div>
 </div>
