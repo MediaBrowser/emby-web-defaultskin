@@ -13,12 +13,12 @@ div[data-type="home"] {
 }
 
 .panel-left .logo {
-  height: 8vh;
+  height: 7vh;
   margin: 1vh;
   background-size: contain;
   background-image: url(../css/images/logowhite.png);
   background-repeat: no-repeat;
-  background-position: left;
+  background-position: center;
 }
 
 .panel-left .userOptions {
