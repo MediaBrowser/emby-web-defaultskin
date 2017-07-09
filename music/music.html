@@ -1,116 +1,58 @@
-<div class="pageContainer fullWidth vertical flex flex-direction-column" style="padding-top:0;">
+<!-- <div class="pageContainer flex horizontalPageContent flex-direction-column">
 
-    <div class="flex align-items-center justify-content-center hide alphaPickerContainer focuscontainer-y focuscontainer-left" data-index="1" style="position: fixed; left: 1em; bottom: 1%; z-index: 1;">
-        <div class="alphaPicker alphaPicker-vertical flex-grow" data-index="1"></div>
-    </div>
-
-    <div class="flex align-items-center justify-content-center hide alphaPickerContainer focuscontainer-y focuscontainer-left" data-index="2" style="position: fixed; left: 1em; bottom: 1%; z-index: 1;">
-        <div class="alphaPicker alphaPicker-vertical flex-grow" data-index="2"></div>
-    </div>
-
-    <div class="flex align-items-center justify-content-center hide alphaPickerContainer focuscontainer-y focuscontainer-left" data-index="3" style="position: fixed; left: 1em; bottom: 1%; z-index: 1;">
-        <div class="alphaPicker alphaPicker-vertical flex-grow" data-index="3"></div>
-    </div>
-
-    <div is="emby-scroller" data-horizontal="false" data-centerfocus="true" data-navcommands="card" class="scrollFrameY flex flex-grow focuscontainer-down pageContainerTopPadding" data-bindheader="true">
-
-        <div class="scrollSlider flex-grow tabs-container">
-
-            <div is="emby-tabs" class="viewTabs" data-index="-1">
-                <div class="emby-tabs-slider" style="text-align:center;">
-                    <button is="emby-button" class="emby-tab-button" data-index="0">
-                        <div class="emby-button-foreground">${Suggestions}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="1">
-                        <div class="emby-button-foreground">${Albums}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="2">
-                        <div class="emby-button-foreground">${AlbumArtists}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="3">
-                        <div class="emby-button-foreground">${Artists}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="4">
-                        <div class="emby-button-foreground">${Playlists}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button hide" data-index="5">
-                        <div class="emby-button-foreground">${Songs}</div>
-                    </button>
-                    <button is="emby-button" class="emby-tab-button" data-index="6">
-                        <div class="emby-button-foreground">${Genres}</div>
-                    </button>
-                </div>
-            </div>
-
-            <div class="tabContent padded-top" data-index="0">
-
-                <div class="latestSection hide verticalSection autoScrollSection">
-                    <div>
-                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${LatestMusic}</h2>
-                    </div>
-                </div>
-
-                <div class="playlistsSection hide verticalSection autoScrollSection">
-                    <div>
-                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${Playlists}</h2>
-                    </div>
-                </div>
-
-                <div class="recentlyPlayedSection hide verticalSection autoScrollSection">
-                    <div>
-                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${RecentlyPlayed}</h2>
-                    </div>
-                </div>
-
-                <div class="frequentlyPlayedSection hide verticalSection autoScrollSection">
-                    <div>
-                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FrequentlyPlayed}</h2>
-                    </div>
-                </div>
-
-                <div class="favoriteArtistsSection hide verticalSection autoScrollSection">
-                    <div>
-                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteArtists}</h2>
-                    </div>
-                </div>
-
-                <div class="favoriteAlbumsSection hide verticalSection autoScrollSection">
-                    <div>
-                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteAlbums}</h2>
-                    </div>
-                </div>
-
-                <div class="favoriteSongsSection hide verticalSection autoScrollSection">
-                    <div>
-                        <h2 class="sectionTitle sectionTitle-cards padded-left padded-right" style="display: inline-block; vertical-align: middle;">${FavoriteSongs}</h2>
-                    </div>
-                </div>
-
-                <div class="favoriteSections"></div>
-
-            </div>
-            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="1">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
-            </div>
-            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="2">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
-            </div>
-            <div class="tabContent padded-left padded-left-withalphapicker padded-right padded-top" data-index="3">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap itemsContainer-withalphapicker focuscontainer-right focuscontainer-down" data-alphanumericshortcuts="true"></div>
-            </div>
-
-            <div class="tabContent padded-left padded-right padded-top" data-index="4">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>
-            </div>
-
-            <div class="tabContent padded-left padded-right padded-top" data-index="5">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x" data-alphanumericshortcuts="true"></div>
-            </div>
-
-            <div class="tabContent padded-left padded-right padded-top" data-index="6">
-                <div is="emby-itemscontainer" class="itemsContainer vertical-wrap focuscontainer-x"></div>
+    <div class="userViewNames">
+        <div class="scrollFrame scrollFrameX" style="white-space: nowrap;">
+            <div class="scrollSlider viewsScrollSlider">
             </div>
         </div>
     </div>
 
+    <div class="scrollFrame scrollFrameX itemScrollFrame topPadded" style="white-space: nowrap;">
+        <div is="emby-itemscontainer" class="scrollSlider contentScrollSlider">
+        </div>
+    </div>
+    <div class="alphaPicker"></div>
+    <div class="selectedItemInfo">
+    </div>
+    <div class="listNumbers hide">
+        <span class="selectedIndex"></span>
+        <span class="listNumbersDivider">|</span>
+        <span class="listCount"></span>
+    </div>
+
+</div> -->
+
+<div class="libraryContainer music">
+  <div class="panel-left">
+    <div class="userViewNames" style="display: none;"></div>
+
+    <div class="selectedItemInfo"></div>
+
+    <div class="itemInfo">
+      <div class="overview"></div>
+    </div>
+
+    <div class="listNumbers hide">
+      <span class="selectedIndex"></span>
+      <span class="listNumbersDivider">|</span>
+      <span class="listCount"></span>
+    </div>
+  </div>
+
+  <div class="panel-right">
+    <div class="scrollFrame scrollFrameY itemScrollFrame">
+      <div class="viewContentArea">
+
+      </div>
+    </div>
+
+    <!-- <div class="pageContainer flex horizontalPageContent">
+      <div class="alphaPicker"></div>
+
+      <div class="scrollFrame scrollFrameY itemScrollFrame topPadded" style="white-space: nowrap;">
+          <div is="emby-itemscontainer" class="scrollSlider contentScrollSlider">
+          </div>
+      </div>
+    </div> -->
+  </div>
 </div>

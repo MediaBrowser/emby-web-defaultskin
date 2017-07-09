@@ -1,233 +1,516 @@
-define(['loading', 'backdrop', 'connectionManager', 'scroller', 'globalize', 'alphaPicker', 'require', './../components/focushandler', 'emby-itemscontainer', 'emby-tabs', 'emby-button', 'emby-scroller'], function (loading, backdrop, connectionManager, scroller, globalize, AlphaPicker, require, focusHandler) {
+define(['loading', './../skininfo', 'alphaPicker', 'cardBuilder', './../components/verticallist', './../components/focushandler', './../components/tabbedpagelibrary', 'backdrop', 'focusManager', 'pluginManager', 'emby-itemscontainer'], function (loading, skinInfo, alphaPicker, cardBuilder, horizontalList, focusHandler, tabbedPage, backdrop, focusManager, pluginManager) {
     'use strict';
-
-    function trySelectValue(instance, alphaPicker, view, value) {
-
-        var card;
-
-        // If it's the symbol just pick the first card
-        if (value === '#') {
-
-            card = view.querySelector('.card');
-
-            if (card) {
-                instance.scroller.toStart(card, false);
-                return;
-            }
-        }
-
-        card = view.querySelector('.card[data-prefix^=\'' + value + '\']');
-
-        if (card) {
-            instance.scroller.toStart(card, false);
-            return;
-        }
-
-        // go to the previous letter
-        var values = alphaPicker.values();
-        var index = values.indexOf(value);
-
-        if (index < values.length - 2) {
-            trySelectValue(instance, alphaPicker, view, values[index + 1]);
-        } else {
-            var all = view.querySelectorAll('.card');
-            card = all.length ? all[all.length - 1] : null;
-
-            if (card) {
-                instance.scroller.toStart(card, false);
-            }
-        }
-    }
-
-    function initAlphaPicker(instance, alphaPickerElement, itemsContainerElement) {
-
-        var alphaPicker = new AlphaPicker({
-            element: alphaPickerElement,
-            itemsContainer: itemsContainerElement,
-            itemClass: 'card'
-        });
-
-        alphaPicker.on('alphavaluechanged', function () {
-            var value = alphaPicker.value();
-            trySelectValue(instance, alphaPicker, itemsContainerElement, value);
-        });
-
-        instance.alphaPickers.push(alphaPicker);
-    }
-
-    function initAlphaPickers(instance, view) {
-
-        var pickers = view.querySelectorAll('.alphaPicker');
-        instance.alphaPickers = [];
-
-        for (var i = 0, length = pickers.length; i < length; i++) {
-
-            var itemsContainer = view.querySelector('.tabContent[data-index="' + pickers[i].getAttribute('data-index') + '"] .itemsContainer');
-
-            initAlphaPicker(instance, pickers[i], itemsContainer);
-        }
-    }
 
     return function (view, params) {
 
         var self = this;
 
-        var tabControllers = [];
-        var currentTabController;
-
-        function getTabController(page, index, callback) {
-
-            var depends = [];
-
-            switch (index) {
-
-                case 0:
-                    depends.push('./suggestions');
-                    break;
-                case 1:
-                    depends.push('./albums');
-                    break;
-                case 2:
-                    depends.push('./artists');
-                    break;
-                case 3:
-                    depends.push('./artists');
-                    break;
-                case 4:
-                    depends.push('./playlists');
-                    break;
-                case 5:
-                    depends.push('./songs');
-                    break;
-                case 6:
-                    depends.push('./genres');
-                    break;
-                default:
-                    break;
-            }
-
-            require(depends, function (controllerFactory) {
-
-                var controller = tabControllers[index];
-                if (!controller) {
-                    var tabContent = view.querySelector('.tabContent[data-index=\'' + index + '\']');
-                    controller = new controllerFactory(tabContent, params, view);
-                    if (index === 2) {
-                        controller.mode = 'albumartists';
-                    }
-                    tabControllers[index] = controller;
-                }
-
-                callback(controller);
-            });
-        }
-
-        self.scroller = view.querySelector('.scrollFrameY');
-
-        var alphaPickerContainers = view.querySelectorAll('.alphaPickerContainer');
-        var viewTabs = view.querySelector('.viewTabs');
-        var initialTabIndex = parseInt(params.tab || '0');
-        var isViewRestored;
-
-        function preLoadTab(page, index) {
-
-            for (var i = 0, length = alphaPickerContainers.length; i < length; i++) {
-                if (alphaPickerContainers[i].getAttribute('data-index') === index.toString()) {
-                    alphaPickerContainers[i].classList.remove('hide');
-                } else {
-                    alphaPickerContainers[i].classList.add('hide');
-                }
-            }
-
-            getTabController(page, index, function (controller) {
-                if (controller.onBeforeShow) {
-
-                    var refresh = isViewRestored !== true || !controller.refreshed;
-
-                    controller.onBeforeShow({
-                        refresh: refresh
-                    });
-
-                    controller.refreshed = true;
-                }
-            });
-        }
-
-        function loadTab(page, index) {
-
-            getTabController(page, index, function (controller) {
-
-                controller.onShow({
-                    autoFocus: initialTabIndex != null
-                });
-                initialTabIndex = null;
-                currentTabController = controller;
-            });
-        }
-
-        initAlphaPickers(this, view);
-
-        viewTabs.addEventListener('beforetabchange', function (e) {
-            preLoadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
-
-        viewTabs.addEventListener('tabchange', function (e) {
-
-            var previousTabController = tabControllers[parseInt(e.detail.previousIndex)];
-            if (previousTabController && previousTabController.onHide) {
-                previousTabController.onHide();
-            }
-
-            loadTab(view, parseInt(e.detail.selectedTabIndex));
-        });
-
-        view.addEventListener('viewbeforehide', function (e) {
-
-            if (currentTabController && currentTabController.onHide) {
-                currentTabController.onHide();
-            }
-        });
-
-        view.addEventListener('viewbeforeshow', function (e) {
-            isViewRestored = e.detail.isRestored;
-
-            if (initialTabIndex == null) {
-                viewTabs.triggerBeforeTabChange();
-            }
-        });
-
         view.addEventListener('viewshow', function (e) {
 
-            isViewRestored = e.detail.isRestored;
+            if (!self.tabbedPage) {
+                loading.show();
+                renderTabs(view, params.tab, self, params);
+            }
 
             Emby.Page.setTitle('');
-            backdrop.clear();
+        });
 
-            if (initialTabIndex != null) {
-                viewTabs.selectedIndex(initialTabIndex);
-            } else {
-                viewTabs.triggerTabChange();
+        view.addEventListener('viewdestroy', function () {
+
+            if (self.focusHandler) {
+                self.focusHandler.destroy();
+            }
+            if (self.listController) {
+                self.listController.destroy();
+            }
+            if (self.tabbedPage) {
+                self.tabbedPage.destroy();
+            }
+            if (self.alphaPicker) {
+                self.alphaPicker.destroy();
             }
         });
 
-        view.addEventListener('viewdestroy', function (e) {
+        function renderTabs(view, initialTabId, pageInstance, params) {
 
-            tabControllers.forEach(function (t) {
-                if (t.destroy) {
-                    t.destroy();
+            // self.alphaPicker = new alphaPicker({
+            //     element: view.querySelector('.alphaPicker'),
+            //     itemsContainer: view.querySelector('.contentScrollSlider'),
+            //     itemClass: 'card'
+            // });
+            //
+            // self.alphaPicker.visible(false);
+
+            var tabs = [
+                {
+                    Name: Globalize.translate('Albums'),
+                    Id: "albums"
+                },
+                {
+                    Name: Globalize.translate('AlbumArtists'),
+                    Id: "albumartists"
+                },
+                {
+                    Name: Globalize.translate('Artists'),
+                    Id: "artists"
+                },
+                {
+                    Name: Globalize.translate('Genres'),
+                    Id: "genres"
+                },
+                {
+                    Name: Globalize.translate('Playlists'),
+                    Id: "playlists"
+                },
+                {
+                    Name: Globalize.translate('Favorites'),
+                    Id: "favorites"
+                }
+            ];
+
+            //tabs.push({
+            //    Name: Globalize.translate('Songs'),
+            //    Id: "songs"
+            //});
+
+            var tabbedPageInstance = new tabbedPage(view, {
+                alphaPicker: self.alphaPicker
+            });
+            tabbedPageInstance.loadViewContent = loadViewContent;
+            tabbedPageInstance.params = params;
+            tabbedPageInstance.renderTabs(tabs, initialTabId);
+            pageInstance.tabbedPage = tabbedPageInstance;
+        }
+
+        function loadViewContent(page, id) {
+
+            var tabbedPage = this;
+
+            return new Promise(function (resolve, reject) {
+
+                if (self.listController) {
+                    self.listController.destroy();
+                }
+                if (self.focusHandler) {
+                    self.focusHandler.destroy();
+                }
+
+                var pageParams = tabbedPage.params;
+
+                var autoFocus = false;
+
+                if (!tabbedPage.hasLoaded) {
+                    autoFocus = true;
+                    tabbedPage.hasLoaded = true;
+                }
+
+                var showAlphaPicker = false;
+
+                var contentScrollSlider = page.querySelector('.viewContentArea');
+                contentScrollSlider.removeEventListener('click', onMusicGenresContainerClick);
+
+                switch (id) {
+
+                    case 'albumartists':
+                        showAlphaPicker = true;
+                        renderAlbumArtists(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'artists':
+                        showAlphaPicker = true;
+                        renderArtists(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'albums':
+                        showAlphaPicker = true;
+                        renderAlbums(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'playlists':
+                        renderPlaylists(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'songs':
+                        renderSongs(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'genres':
+                        contentScrollSlider.addEventListener('click', onMusicGenresContainerClick);
+                        renderGenres(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    case 'favorites':
+                        renderFavorites(page, pageParams, autoFocus, tabbedPage.bodyScroller, resolve);
+                        break;
+                    default:
+                        break;
+                }
+
+                if (self.alphaPicker) {
+                    self.alphaPicker.visible(showAlphaPicker);
+                    self.alphaPicker.enabled(showAlphaPicker);
+                }
+            });
+        }
+
+        function renderGenres(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.genres({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks"
+                    });
+                },
+                cardOptions: {
+                    shape: 'auto',
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    action: 'none',
+                    scalable: false,
+                    showTitle: true,
+                    overlayText: true
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
                 }
             });
 
-            self.scroller = null;
+            self.listController.render();
+        }
 
-            var alphaPickers = self.alphaPickers || [];
-            for (var i = 0, length = alphaPickers.length; i < length; i++) {
+        function parentWithClass(elem, className) {
 
-                alphaPickers[i].destroy();
+            while (!elem.classList || !elem.classList.contains(className)) {
+                elem = elem.parentNode;
+
+                if (!elem) {
+                    return null;
+                }
             }
 
-            self.alphaPickers = null;
-        });
+            return elem;
+        }
+
+        function onMusicGenresContainerClick(e) {
+
+            var card = parentWithClass(e.target, 'card');
+
+            if (card) {
+
+                var value = card.getAttribute('data-id');
+                var parentid = params.parentid;
+
+                e.preventDefault();
+                e.stopPropagation();
+
+                Emby.Page.show(pluginManager.mapRoute(skinInfo.id, 'list/list.html') + '?parentid=' + parentid + '&genreId=' + value);
+
+                return false;
+            }
+        }
+
+        function renderPlaylists(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.playlists({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                },
+                cardOptions: {
+                    overlayText: true,
+                    showTitle: true,
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderAlbums(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "MusicAlbum",
+                        Recursive: true,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks,SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
+                    scalable: false
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderSongs(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.items({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        IncludeItemTypes: "Audio",
+                        Recursive: true,
+                        SortBy: "SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
+                    scalable: false
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderArtists(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.artists({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks,SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true,
+                    overlayText: true,
+                    showTitle: true,
+                    rows: {
+                        portrait: 2,
+                        square: 3,
+                        backdrop: 3
+                    },
+                    scalable: false
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderAlbumArtists(page, pageParams, autoFocus, scroller, resolve) {
+
+            self.listController = new horizontalList({
+                itemsContainer: page.querySelector('.viewContentArea'),
+                getItemsMethod: function (startIndex, limit) {
+                    return Emby.Models.albumArtists({
+                        StartIndex: startIndex,
+                        Limit: limit,
+                        ParentId: pageParams.parentid,
+                        SortBy: "SortName",
+                        Fields: "CumulativeRunTimeTicks,SortName"
+                    });
+                },
+                listCountElement: page.querySelector('.listCount'),
+                listNumbersElement: page.querySelector('.listNumbers'),
+                autoFocus: autoFocus,
+                cardOptions: {
+                    coverImage: true,
+                    overlayText: true,
+                    showTitle: true,
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                },
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo'),
+                selectedIndexElement: page.querySelector('.selectedIndex'),
+                scroller: scroller,
+                onRender: function () {
+                    if (resolve) {
+                        resolve();
+                        resolve = null;
+                    }
+                }
+            });
+
+            self.listController.render();
+        }
+
+        function renderFavorites(page, pageParams, autoFocus, scroller, resolve) {
+
+            require(['text!' + pluginManager.mapPath(skinInfo.id, 'music/views.favorites.html')], function (html) {
+                var parent = page.querySelector('.viewContentArea');
+                parent.innerHTML = Globalize.translateDocument(html, skinInfo.id);
+                loadFavoriteArtists(parent, pageParams, autoFocus, resolve);
+                loadFavoriteAlbums(parent, pageParams);
+            });
+
+            self.focusHandler = new focusHandler({
+                parent: page.querySelector('.contentScrollSlider'),
+                scroller: scroller,
+                selectedItemInfoElement: page.querySelector('.selectedItemInfo')
+            });
+        }
+
+        function loadFavoriteArtists(parent, pageParams, autoFocus, resolve) {
+
+            Emby.Models.artists({
+                ParentId: pageParams.parentid,
+                Recursive: true,
+                Filters: "IsFavorite",
+                SortBy: "SortName"
+
+            }).then(function (result) {
+
+                var section = parent.querySelector('.favoriteArtistsSection');
+
+                if (result.Items.length) {
+                    section.classList.remove('hide');
+                } else {
+                    section.classList.add('hide');
+                }
+
+                cardBuilder.buildCards(result.Items, {
+                    itemsContainer: section.querySelector('.itemsContainer'),
+                    shape: 'auto',
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                });
+
+                if (autoFocus) {
+                    setTimeout(function () {
+                        var firstCard = section.querySelector('.card');
+                        if (firstCard) {
+                            focusManager.focus(firstCard);
+                        }
+                    }, 400);
+                }
+                resolve();
+            });
+        }
+
+        function loadFavoriteAlbums(parent, pageParams) {
+
+            Emby.Models.items({
+                ParentId: pageParams.parentid,
+                IncludeItemTypes: "MusicAlbum",
+                Recursive: true,
+                Filters: "IsFavorite",
+                SortBy: "SortName"
+
+            }).then(function (result) {
+
+                var section = parent.querySelector('.favoriteAlbumsSection');
+
+                if (result.Items.length) {
+                    section.classList.remove('hide');
+                } else {
+                    section.classList.add('hide');
+                }
+
+                cardBuilder.buildCards(result.Items, {
+                    itemsContainer: section.querySelector('.viewContentArea'),
+                    shape: 'auto',
+                    rows: {
+                        portrait: 1,
+                        square: 1,
+                        backdrop: 1
+                    },
+                    scalable: false
+                });
+            });
+        }
     };
 
 });
