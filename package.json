@@ -1,10 +1,10 @@
 {
-    "name": "emby.defaultskin",
-    "displayName": "Default Skin",
+    "name": "emby.smoothie",
+    "displayName": "Smoothie",
     "version": "1.0.0",
-    "description": "The default Emby skin.",
+    "description": "A smooth flow for Emby",
     "plugin": "plugin.js",
-    "homepage": "https://github.com/MediaBrowser/emby-web-defaultskin",
+    "homepage": "https://github.com/KevinHughesPhotography/emby-web-smoothie",
     "thumb": "",
     "backdrop": ""
 }
