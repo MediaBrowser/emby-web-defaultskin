@@ -368,6 +368,22 @@ define(['itemContextMenu', 'loading', './../skininfo', 'datetime', 'scrollHelper
                 genresElem.classList.remove('hide');
                 genresElem.innerHTML = genresHtml;
             }
+            
+            var tags = item.Tags || [];
+            var tagsHtml = tags.map(function (i) {
+
+                return i;
+
+            }).join('<span class="bulletSeparator">&bull;</span>');
+
+            var tagsElem = view.querySelector('.tags');
+
+            if (!tagsHtml) {
+                tagsElem.classList.add('hide');
+            } else {
+                tagsElem.classList.remove('hide');
+                tagsElem.innerHTML = tagsHtml;
+            }
 
             if (item.IsFolder || item.Type === "MusicArtist") {
 
