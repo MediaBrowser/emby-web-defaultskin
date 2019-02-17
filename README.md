@@ -1,9 +1,17 @@
+# emby-web-markdown-aware-skin
+
+This is a fork from emby-web-defaultskin that makes use of Markdown in formatting the Overview section.
+
+The rest of this file is the generic instructions from [emby-web-defaultskin](https://github.com/MediaBrowser/emby-web-defaultskin)
+
+* * *
+
 # emby-web-defaultskin
 
 This default skin for Emby Theater. To create your own skin, follow these steps:
 
 * Fork this repository. After forking, you'll probably want to rename it.
-* Update package.json (see below). 
+* Update package.json (see below).
 * Update skininfo.js with your unique names.
 * Update plugin.js to change the skin name and id, matching the values from skininfo.js
 * Update the installation url below.
